@@ -53,7 +53,39 @@
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
 
+/*****WEEK 3 EX.1*****/
 #if 1
+//motor
+void zmain(void)
+{
+    motor_start();              // enable motor controller
+    motor_forward(0,0);         // set speed to zero to stop motors
+
+    vTaskDelay(1000);
+    
+    motor_forward(100,3000);           //moving forward
+    motor_turn(210,105,500);
+     
+    motor_forward(100,1900);
+    motor_turn(210,105,500);
+    
+    motor_forward(100,2400);
+    motor_turn(200,50,500);
+    
+    motor_forward(100,1300);
+    motor_turn(150,90,500);
+    motor_forward(100,1100);
+    
+    motor_stop();             // disable motor controller
+    
+    while(true)
+    {
+        vTaskDelay(100);
+    }
+}
+#endif
+
+#if 0
 // Hello World!
 void zmain(void)
 {
