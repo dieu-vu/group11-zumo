@@ -1,6 +1,6 @@
-C:\Users\Windows10-Dung Tran\Documents\SmartDevices2021\group11-zumo\ZumoBot.cydsn\ZumoBot.cyprj|e11e7a54-acf9-4951-b7d1-8c66e6f5b53f
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|71998940-7a00-4208-949d-be605cdb9e5d
-\\vmware-host\Shared Folders\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|b7e97d71-4026-4783-aed6-afc43a763374
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|ec20d9d6-d4ce-4382-9cbf-b5da20b7ecd9
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|b08aadd9-bf14-44dd-a9da-993d60fc0fad
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|d1ca236d-9a8b-4db4-9e2b-cf882cf4fa99
+C:\Users\Dieu Vu\Desktop\Zumo\ZumoBot.cydsn\ZumoBot.cyprj|aa8dd766-c84f-4b44-b931-035e3c6932b5
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|5083b4df-60fc-4265-b858-b39152042256
+C:\Users\Dieu Vu\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|21c38182-d39d-44b8-92f2-c7b9f1ff1222
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|12005a78-70cd-4165-8b17-7c234906a5b6
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|3db986c0-283b-4e55-9fdc-f3687feeef76
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|1663cd73-4a4a-415c-b97d-41a5fdb5ed44

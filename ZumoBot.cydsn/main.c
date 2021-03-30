@@ -54,7 +54,7 @@
 */
 
 /*****WEEK 3 EX.1*****/
-#if 1
+#if 0
 //motor
 void zmain(void)
 {
@@ -84,6 +84,46 @@ void zmain(void)
     }
 }
 #endif
+
+
+/*******WEEK 3 EX.2*******/
+
+#if 0
+//ultrasonic sensor - Avoiding obstacles//
+void zmain(void)
+{
+    Ultra_Start();                          // Ultra Sonic Start function
+    while(SW1_Read());
+    vTaskDelay(500);
+    int d = Ultra_GetDistance();
+    motor_start();
+    while(true) {
+        
+        // Print the detected distance (centimeters)
+        d = Ultra_GetDistance();
+        printf("distance = %d\r\n", d);
+        if (d <= 10){
+            printf("Oops, you are about to crash!\t");
+            printf("distance = %d\r\n", d);
+            motor_stop();
+            motor_start();
+            motor_backward(250,600);
+            motor_turn(-100,250,200*2);
+            motor_forward(30,30);   
+            d = Ultra_GetDistance();
+        } 
+        printf("Now safe! distance = %d\r\n", d);
+        motor_forward(80,0);
+        
+        vTaskDelay(200);
+    }
+    motor_stop();
+}   
+#endif
+
+
+
+/**********************/
 
 #if 0
 // Hello World!
