@@ -47,6 +47,9 @@
 #include <sys/time.h>
 #include "serial1.h"
 #include <unistd.h>
+#include <stdlib.h>
+#include <time.h>
+#include <library.h>
 /**
  * @file    main.c
  * @brief   
@@ -121,7 +124,39 @@ void zmain(void)
 }   
 #endif
 
-
+/*****WEEK 3 EX.3*****/
+#if 0
+//motor
+void zmain(void)
+{
+    Ultra_Start();  // Ultra Sonic Start function
+    while(SW1_Read());
+    vTaskDelay(500);
+    srand(time(NULL));
+    int d = Ultra_GetDistance(); // detect original distance
+    motor_start();
+    while(true) {       
+        // Print the detected distance (centimeters)
+        d = Ultra_GetDistance();
+        printf("distance = %d\r\n", d); 
+        // if distance is closer than 10cm, reverses and turn
+        if (d <= 10) {      
+            motor_stop();
+            vTaskDelay(1000);
+            motor_start();
+            motor_backward(200, 10);
+            motor_stop();
+            vTaskDelay(1000);
+            motor_start();
+            motor_tank_turn();  // turn 90 - 270 degrees
+        }
+        // robot go forward 10ms
+        motor_start();
+        motor_forward(100,10); 
+        vTaskDelay(200);
+    }
+}
+#endif
 
 /**********************/
 
