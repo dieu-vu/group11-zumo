@@ -28,7 +28,15 @@
 #include "serial1.h"
 #include <unistd.h>
 
+#ifndef LIBRARY_H_
+#define LIBRARY_H_
+
+#include <stdint.h>
+#include <time.h>
+
 
 void motor_tank_turn();
+
+#endif
 /* [] END OF FILE */
 

@@ -55,6 +55,7 @@
           <File BuildType="BUILD" Toolchain="">ZumoLibrary\serial1.c</File>
           <File BuildType="BUILD" Toolchain="">ZumoLibrary\Reflectance.c</File>
           <File BuildType="BUILD" Toolchain="">ZumoLibrary\simulator.c</File>
+          <File BuildType="BUILD" Toolchain="">ZumoLibrary\library.c</File>
           <File BuildType="BUILD" Toolchain="">..\paho.mqtt.embedded-c\MQTTClient-C\src\MQTTClient.c</File>
           <File BuildType="BUILD" Toolchain="">..\paho.mqtt.embedded-c\MQTTClient-C\src\MQTTClient.h</File>
           <File BuildType="BUILD" Toolchain="">..\paho.mqtt.embedded-c\MQTTClient-C\src\FreeRTOS\MQTTFreeRTOS.c</File>
@@ -104,6 +105,7 @@
           <File BuildType="BUILD" Toolchain="">ZumoLibrary\debug_uart.h</File>
           <File BuildType="BUILD" Toolchain="">ZumoLibrary\serial1.h</File>
           <File BuildType="BUILD" Toolchain="">ZumoLibrary\simulator.h</File>
+          <File BuildType="BUILD" Toolchain="">ZumoLibrary\library.h</File>
           <File BuildType="BUILD" Toolchain="">..\FreeRTOS\Source\portable\GCC\ARM_CM3\portmacro.h</File>
           <File BuildType="BUILD" Toolchain="">..\FreeRTOS\Source\include\croutine.h</File>
           <File BuildType="BUILD" Toolchain="">..\FreeRTOS\Source\include\event_groups.h</File>
