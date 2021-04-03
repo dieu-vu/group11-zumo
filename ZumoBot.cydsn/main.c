@@ -110,17 +110,20 @@ void zmain(void)
             printf("distance = %d\r\n", d);
             motor_stop();
             motor_start();
-            motor_backward(250,600);
-            motor_turn(-100,250,200*2);
-            motor_forward(30,30);   
-            d = Ultra_GetDistance();
+            motor_backward(200,100);
+            //turn 120 degrees
+            motor_turn(0,250,100*2);
+            motor_turn(150,250,100*2);
+            //move forward and check distance again
+            motor_forward(20,10);   
+            d = Ultra_GetDistance(); //Check distance again after the turn
         } 
         printf("Now safe! distance = %d\r\n", d);
         motor_forward(80,0);
         
         vTaskDelay(200);
     }
-    motor_stop();
+    
 }   
 #endif
 
