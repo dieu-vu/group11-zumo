@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 1
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 1
   28:main.c        ****     I2C, UART, Serial<br>
   29:main.c        ****     </p>
   30:main.c        **** */
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 2
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 2
 
 
   31:main.c        **** 
@@ -89,967 +89,1405 @@ ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 1
   56:main.c        ****  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp
   57:main.c        **** */
   58:main.c        **** 
-  59:main.c        **** /*****WEEK 3 EX.1*****/
-  60:main.c        **** #if 0
-  61:main.c        **** //motor
-  62:main.c        **** void zmain(void)
-  63:main.c        **** {
-  64:main.c        ****     motor_start();              // enable motor controller
-  65:main.c        ****     motor_forward(0,0);         // set speed to zero to stop motors
-  66:main.c        **** 
-  67:main.c        ****     vTaskDelay(1000);
-  68:main.c        ****     
-  69:main.c        ****     motor_forward(100,3000);           //moving forward
-  70:main.c        ****     motor_turn(210,105,500);
-  71:main.c        ****      
-  72:main.c        ****     motor_forward(100,1900);
-  73:main.c        ****     motor_turn(210,105,500);
-  74:main.c        ****     
-  75:main.c        ****     motor_forward(100,2400);
-  76:main.c        ****     motor_turn(200,50,500);
-  77:main.c        ****     
-  78:main.c        ****     motor_forward(100,1300);
-  79:main.c        ****     motor_turn(150,90,500);
-  80:main.c        ****     motor_forward(100,1100);
-  81:main.c        ****     
-  82:main.c        ****     motor_stop();             // disable motor controller
-  83:main.c        ****     
-  84:main.c        ****     while(true)
-  85:main.c        ****     {
-  86:main.c        ****         vTaskDelay(100);
-  87:main.c        ****     }
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 3
-
-
-  88:main.c        **** }
-  89:main.c        **** #endif
-  90:main.c        **** 
-  91:main.c        **** 
-  92:main.c        **** /*******WEEK 3 EX.2*******/
-  93:main.c        **** 
-  94:main.c        **** #if 0
-  95:main.c        **** //ultrasonic sensor - Avoiding obstacles//
-  96:main.c        **** void zmain(void)
-  97:main.c        **** {
-  98:main.c        ****     Ultra_Start();                          // Ultra Sonic Start function
-  99:main.c        ****     while(SW1_Read());
- 100:main.c        ****     vTaskDelay(500);
- 101:main.c        ****     int d = Ultra_GetDistance();
- 102:main.c        ****     motor_start();
- 103:main.c        ****     while(true) {
- 104:main.c        ****         
- 105:main.c        ****         // Print the detected distance (centimeters)
- 106:main.c        ****         d = Ultra_GetDistance();
- 107:main.c        ****         printf("distance = %d\r\n", d);
- 108:main.c        ****         if (d <= 10){
- 109:main.c        ****             printf("Oops, you are about to crash!\t");
- 110:main.c        ****             printf("distance = %d\r\n", d);
- 111:main.c        ****             motor_stop();
- 112:main.c        ****             motor_start();
- 113:main.c        ****             motor_backward(200,100);
- 114:main.c        ****             //turn 120 degrees
- 115:main.c        ****             motor_turn(0,250,100*2);
- 116:main.c        ****             motor_turn(150,250,100*2);
- 117:main.c        ****             //move forward and check distance again
- 118:main.c        ****             motor_forward(20,10);   
- 119:main.c        ****             d = Ultra_GetDistance(); //Check distance again after the turn
- 120:main.c        ****         } 
- 121:main.c        ****         printf("Now safe! distance = %d\r\n", d);
- 122:main.c        ****         motor_forward(80,0);
- 123:main.c        ****         
- 124:main.c        ****         vTaskDelay(200);
- 125:main.c        ****     }
- 126:main.c        ****     
- 127:main.c        **** }   
- 128:main.c        **** #endif
- 129:main.c        **** 
- 130:main.c        **** /*****WEEK 3 EX.3*****/
- 131:main.c        **** #if 1
- 132:main.c        **** //motor
- 133:main.c        **** void zmain(void)
- 134:main.c        **** {
-  28              		.loc 1 134 0
+  59:main.c        **** /****WEEK 4 EX.2*****/
+  60:main.c        **** 
+  61:main.c        **** #if 1
+  62:main.c        **** //motor
+  63:main.c        **** void zmain(void)
+  64:main.c        **** {
+  28              		.loc 1 64 0
   29              		.cfi_startproc
-  30              		@ args = 0, pretend = 0, frame = 0
+  30              		@ args = 0, pretend = 0, frame = 16
   31              		@ frame_needed = 0, uses_anonymous_args = 0
-  32 0000 10B5     		push	{r4, lr}
-  33              		.cfi_def_cfa_offset 8
-  34              		.cfi_offset 4, -8
-  35              		.cfi_offset 14, -4
- 135:main.c        ****     Ultra_Start();  // Ultra Sonic Start function
-  36              		.loc 1 135 0
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 4
+  32 0000 00B5     		push	{lr}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 14, -4
+  35 0002 87B0     		sub	sp, sp, #28
+  36              		.cfi_def_cfa_offset 32
+  65:main.c        ****     
+  66:main.c        ****     struct sensors_ dig;
+  67:main.c        ****     
+  68:main.c        ****     reflectance_start();
+  37              		.loc 1 68 0
+  38 0004 FFF7FEFF 		bl	reflectance_start
+  39              	.LVL0:
+  69:main.c        ****     
+  70:main.c        ****     reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swi
+  40              		.loc 1 70 0
+  41 0008 42F6F820 		movw	r0, #11000
+  42 000c 0190     		str	r0, [sp, #4]
+  43 000e 0090     		str	r0, [sp]
+  44 0010 42F22833 		movw	r3, #9000
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 3
 
 
-  37 0002 FFF7FEFF 		bl	Ultra_Start
-  38              	.LVL0:
-  39              	.L2:
- 136:main.c        ****     while(SW1_Read());
-  40              		.loc 1 136 0 discriminator 1
-  41 0006 FFF7FEFF 		bl	SW1_Read
-  42              	.LVL1:
-  43 000a 0028     		cmp	r0, #0
-  44 000c FBD1     		bne	.L2
- 137:main.c        ****     vTaskDelay(500);
-  45              		.loc 1 137 0
-  46 000e 4FF4FA70 		mov	r0, #500
-  47 0012 FFF7FEFF 		bl	vTaskDelay
-  48              	.LVL2:
- 138:main.c        ****     srand(time(NULL));
-  49              		.loc 1 138 0
-  50 0016 0020     		movs	r0, #0
-  51 0018 FFF7FEFF 		bl	time
-  52              	.LVL3:
-  53 001c FFF7FEFF 		bl	srand
-  54              	.LVL4:
- 139:main.c        ****     int d = Ultra_GetDistance(); // detect original distance
-  55              		.loc 1 139 0
-  56 0020 FFF7FEFF 		bl	Ultra_GetDistance
-  57              	.LVL5:
- 140:main.c        ****     motor_start();
-  58              		.loc 1 140 0
-  59 0024 FFF7FEFF 		bl	motor_start
-  60              	.LVL6:
-  61              	.L4:
- 141:main.c        ****     while(true) {       
- 142:main.c        ****         // Print the detected distance (centimeters)
- 143:main.c        ****         d = Ultra_GetDistance();
-  62              		.loc 1 143 0
-  63 0028 FFF7FEFF 		bl	Ultra_GetDistance
-  64              	.LVL7:
-  65 002c 0446     		mov	r4, r0
-  66              	.LVL8:
- 144:main.c        ****         printf("distance = %d\r\n", d); 
-  67              		.loc 1 144 0
-  68 002e 0146     		mov	r1, r0
-  69 0030 1248     		ldr	r0, .L6
-  70              	.LVL9:
-  71 0032 FFF7FEFF 		bl	printf
-  72              	.LVL10:
- 145:main.c        ****         // if distance is closer than 10cm, reverses and turn
- 146:main.c        ****         if (d <= 10) {      
-  73              		.loc 1 146 0
-  74 0036 0A2C     		cmp	r4, #10
-  75 0038 15DC     		bgt	.L3
- 147:main.c        ****             motor_stop();
-  76              		.loc 1 147 0
-  77 003a FFF7FEFF 		bl	motor_stop
-  78              	.LVL11:
- 148:main.c        ****             vTaskDelay(1000);
-  79              		.loc 1 148 0
-  80 003e 4FF47A70 		mov	r0, #1000
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 5
+  45 0014 1A46     		mov	r2, r3
+  46 0016 0146     		mov	r1, r0
+  47 0018 FFF7FEFF 		bl	reflectance_set_threshold
+  48              	.LVL1:
+  71:main.c        ****     IR_Start();
+  49              		.loc 1 71 0
+  50 001c FFF7FEFF 		bl	IR_Start
+  51              	.LVL2:
+  72:main.c        ****     
+  73:main.c        ****     IR_flush(); // clear IR receive buffer
+  52              		.loc 1 73 0
+  53 0020 FFF7FEFF 		bl	IR_flush
+  54              	.LVL3:
+  74:main.c        ****     printf("Buffer cleared\n");
+  55              		.loc 1 74 0
+  56 0024 3F48     		ldr	r0, .L14
+  57 0026 FFF7FEFF 		bl	puts
+  58              	.LVL4:
+  75:main.c        ****     
+  76:main.c        ****     motor_start();              // enable motor controller
+  59              		.loc 1 76 0
+  60 002a FFF7FEFF 		bl	motor_start
+  61              	.LVL5:
+  77:main.c        ****     motor_forward(0,0);         // set speed to zero to stop motors
+  62              		.loc 1 77 0
+  63 002e 0021     		movs	r1, #0
+  64 0030 0846     		mov	r0, r1
+  65 0032 FFF7FEFF 		bl	motor_forward
+  66              	.LVL6:
+  67              	.L2:
+  78:main.c        ****     
+  79:main.c        ****     while(SW1_Read());
+  68              		.loc 1 79 0 discriminator 1
+  69 0036 FFF7FEFF 		bl	SW1_Read
+  70              	.LVL7:
+  71 003a 0028     		cmp	r0, #0
+  72 003c FBD1     		bne	.L2
+  80:main.c        ****     BatteryLed_Write(true);
+  73              		.loc 1 80 0
+  74 003e 0120     		movs	r0, #1
+  75 0040 FFF7FEFF 		bl	BatteryLed_Write
+  76              	.LVL8:
+  81:main.c        ****     vTaskDelay(500);
+  77              		.loc 1 81 0
+  78 0044 4FF4FA70 		mov	r0, #500
+  79 0048 FFF7FEFF 		bl	vTaskDelay
+  80              	.LVL9:
+  82:main.c        ****     BatteryLed_Write(false);
+  81              		.loc 1 82 0
+  82 004c 0020     		movs	r0, #0
+  83 004e FFF7FEFF 		bl	BatteryLed_Write
+  84              	.LVL10:
+  83:main.c        ****     reflectance_digital(&dig);
+  85              		.loc 1 83 0
+  86 0052 03A8     		add	r0, sp, #12
+  87 0054 FFF7FEFF 		bl	reflectance_digital
+  88              	.LVL11:
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 4
 
 
-  81 0042 FFF7FEFF 		bl	vTaskDelay
-  82              	.LVL12:
- 149:main.c        ****             motor_start();
-  83              		.loc 1 149 0
-  84 0046 FFF7FEFF 		bl	motor_start
-  85              	.LVL13:
- 150:main.c        ****             motor_backward(200, 10);
-  86              		.loc 1 150 0
-  87 004a 0A21     		movs	r1, #10
-  88 004c C820     		movs	r0, #200
-  89 004e FFF7FEFF 		bl	motor_backward
-  90              	.LVL14:
- 151:main.c        ****             motor_stop();
-  91              		.loc 1 151 0
-  92 0052 FFF7FEFF 		bl	motor_stop
-  93              	.LVL15:
- 152:main.c        ****             vTaskDelay(1000);
-  94              		.loc 1 152 0
-  95 0056 4FF47A70 		mov	r0, #1000
-  96 005a FFF7FEFF 		bl	vTaskDelay
-  97              	.LVL16:
- 153:main.c        ****             motor_start();
-  98              		.loc 1 153 0
-  99 005e FFF7FEFF 		bl	motor_start
- 100              	.LVL17:
- 154:main.c        ****             motor_tank_turn();  // turn 90 - 270 degrees
- 101              		.loc 1 154 0
- 102 0062 FFF7FEFF 		bl	motor_tank_turn
- 103              	.LVL18:
- 104              	.L3:
- 155:main.c        ****         }
- 156:main.c        ****         // robot go forward 10ms
- 157:main.c        ****         motor_start();
- 105              		.loc 1 157 0
- 106 0066 FFF7FEFF 		bl	motor_start
- 107              	.LVL19:
- 158:main.c        ****         motor_forward(100,10); 
- 108              		.loc 1 158 0
- 109 006a 0A21     		movs	r1, #10
- 110 006c 6420     		movs	r0, #100
- 111 006e FFF7FEFF 		bl	motor_forward
- 112              	.LVL20:
- 159:main.c        ****         vTaskDelay(200);
- 113              		.loc 1 159 0
- 114 0072 C820     		movs	r0, #200
- 115 0074 FFF7FEFF 		bl	vTaskDelay
- 116              	.LVL21:
- 160:main.c        ****     }
- 117              		.loc 1 160 0
- 118 0078 D6E7     		b	.L4
- 119              	.L7:
- 120 007a 00BF     		.align	2
- 121              	.L6:
- 122 007c 00000000 		.word	.LC0
- 123              		.cfi_endproc
- 124              	.LFE85:
- 125              		.size	zmain, .-zmain
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 6
+  84:main.c        ****     
+  85:main.c        ****     printf("Starting sensor \n");
+  89              		.loc 1 85 0
+  90 0058 3348     		ldr	r0, .L14+4
+  91 005a FFF7FEFF 		bl	puts
+  92              	.LVL12:
+  86:main.c        ****     //printf("%5d %5d %5d %5d %5d %5d \r\n", dig.L3, dig.L2, dig.L1, dig.R1, dig.R2, dig.R3); 
+  87:main.c        ****     motor_forward(75,0);     // moving forward
+  93              		.loc 1 87 0
+  94 005e 0021     		movs	r1, #0
+  95 0060 4B20     		movs	r0, #75
+  96 0062 FFF7FEFF 		bl	motor_forward
+  97              	.LVL13:
+  88:main.c        ****          
+  89:main.c        ****     //Stop and wait for the command when the sensor detect the line:
+  90:main.c        ****     while(!(dig.L3==1 && dig.L2==1 && dig.R2==1 && dig.R3==1)){
+  98              		.loc 1 90 0
+  99 0066 02E0     		b	.L3
+ 100              	.L4:
+  91:main.c        ****         reflectance_digital(&dig);
+ 101              		.loc 1 91 0
+ 102 0068 03A8     		add	r0, sp, #12
+ 103 006a FFF7FEFF 		bl	reflectance_digital
+ 104              	.LVL14:
+ 105              	.L3:
+  90:main.c        ****         reflectance_digital(&dig);
+ 106              		.loc 1 90 0
+ 107 006e BDF80C30 		ldrh	r3, [sp, #12]
+ 108 0072 012B     		cmp	r3, #1
+ 109 0074 F8D1     		bne	.L4
+  90:main.c        ****         reflectance_digital(&dig);
+ 110              		.loc 1 90 0 is_stmt 0 discriminator 1
+ 111 0076 BDF80E30 		ldrh	r3, [sp, #14]
+ 112 007a 012B     		cmp	r3, #1
+ 113 007c F4D1     		bne	.L4
+  90:main.c        ****         reflectance_digital(&dig);
+ 114              		.loc 1 90 0 discriminator 2
+ 115 007e BDF81430 		ldrh	r3, [sp, #20]
+ 116 0082 012B     		cmp	r3, #1
+ 117 0084 F0D1     		bne	.L4
+  90:main.c        ****         reflectance_digital(&dig);
+ 118              		.loc 1 90 0 discriminator 3
+ 119 0086 BDF81630 		ldrh	r3, [sp, #22]
+ 120 008a 012B     		cmp	r3, #1
+ 121 008c ECD1     		bne	.L4
+  92:main.c        ****     }
+  93:main.c        ****     motor_forward(0,0);         // stop motors
+ 122              		.loc 1 93 0 is_stmt 1
+ 123 008e 0021     		movs	r1, #0
+ 124 0090 0846     		mov	r0, r1
+ 125 0092 FFF7FEFF 		bl	motor_forward
+ 126              	.LVL15:
+  94:main.c        ****     printf("Reached the line, motor is waiting. Please send IR signal\n");
+ 127              		.loc 1 94 0
+ 128 0096 2548     		ldr	r0, .L14+8
+ 129 0098 FFF7FEFF 		bl	puts
+ 130              	.LVL16:
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 5
 
 
- 126              		.section	.rodata.str1.4,"aMS",%progbits,1
- 127              		.align	2
- 128              	.LC0:
- 129 0000 64697374 		.ascii	"distance = %d\015\012\000"
- 129      616E6365 
- 129      203D2025 
- 129      640D0A00 
- 130              		.text
- 131              	.Letext0:
- 132              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 133              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 134              		.file 4 ".\\ZumoLibrary/Ultra.h"
- 135              		.file 5 "Generated_Source\\PSoC5/SW1.h"
- 136              		.file 6 "..\\FreeRTOS\\Source\\include/task.h"
- 137              		.file 7 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 138              		.file 8 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 139              		.file 9 ".\\ZumoLibrary/Motor.h"
- 140              		.file 10 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
- 141              		.file 11 ".\\ZumoLibrary/library.h"
- 142              		.file 12 "Generated_Source\\PSoC5/core_cm3.h"
- 143              		.section	.debug_info,"",%progbits
- 144              	.Ldebug_info0:
- 145 0000 77020000 		.4byte	0x277
- 146 0004 0400     		.2byte	0x4
- 147 0006 00000000 		.4byte	.Ldebug_abbrev0
- 148 000a 04       		.byte	0x4
- 149 000b 01       		.uleb128 0x1
- 150 000c 59000000 		.4byte	.LASF28
- 151 0010 0C       		.byte	0xc
- 152 0011 B0010000 		.4byte	.LASF29
- 153 0015 19000000 		.4byte	.LASF30
- 154 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 155 001d 00000000 		.4byte	0
- 156 0021 00000000 		.4byte	.Ldebug_line0
- 157 0025 02       		.uleb128 0x2
- 158 0026 01       		.byte	0x1
- 159 0027 06       		.byte	0x6
- 160 0028 ED010000 		.4byte	.LASF0
- 161 002c 02       		.uleb128 0x2
- 162 002d 01       		.byte	0x1
- 163 002e 08       		.byte	0x8
- 164 002f 4B000000 		.4byte	.LASF1
- 165 0033 02       		.uleb128 0x2
- 166 0034 02       		.byte	0x2
- 167 0035 05       		.byte	0x5
- 168 0036 C3010000 		.4byte	.LASF2
- 169 003a 02       		.uleb128 0x2
- 170 003b 02       		.byte	0x2
- 171 003c 07       		.byte	0x7
- 172 003d F9000000 		.4byte	.LASF3
- 173 0041 03       		.uleb128 0x3
- 174 0042 00000000 		.4byte	.LASF9
- 175 0046 02       		.byte	0x2
- 176 0047 3F       		.byte	0x3f
- 177 0048 4C000000 		.4byte	0x4c
- 178 004c 02       		.uleb128 0x2
- 179 004d 04       		.byte	0x4
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 7
+  95:main.c        ****     //printf("%5d %5d %5d %5d %5d %5d \r\n", dig.L3, dig.L2, dig.L1, dig.R1, dig.R2, dig.R3); 
+  96:main.c        ****     IR_wait();
+ 131              		.loc 1 96 0
+ 132 009c FFF7FEFF 		bl	IR_wait
+ 133              	.LVL17:
+  97:main.c        ****     
+  98:main.c        ****     motor_forward(30,0);
+ 134              		.loc 1 98 0
+ 135 00a0 0021     		movs	r1, #0
+ 136 00a2 1E20     		movs	r0, #30
+ 137 00a4 FFF7FEFF 		bl	motor_forward
+ 138              	.LVL18:
+ 139              	.L5:
+  99:main.c        ****     
+ 100:main.c        ****     //follow the curve line
+ 101:main.c        ****     while(true){
+ 102:main.c        ****         reflectance_digital(&dig);
+ 140              		.loc 1 102 0
+ 141 00a8 03A8     		add	r0, sp, #12
+ 142 00aa FFF7FEFF 		bl	reflectance_digital
+ 143              	.LVL19:
+ 103:main.c        ****         if (dig.L1 == 1 || dig.R1 == 1){
+ 144              		.loc 1 103 0
+ 145 00ae BDF81030 		ldrh	r3, [sp, #16]
+ 146 00b2 012B     		cmp	r3, #1
+ 147 00b4 03D0     		beq	.L6
+ 148              		.loc 1 103 0 is_stmt 0 discriminator 1
+ 149 00b6 BDF81230 		ldrh	r3, [sp, #18]
+ 150 00ba 012B     		cmp	r3, #1
+ 151 00bc 04D1     		bne	.L7
+ 152              	.L6:
+ 104:main.c        ****             //move forward if L1 and R1 have sensoring signal
+ 105:main.c        ****             motor_forward(30,0);
+ 153              		.loc 1 105 0 is_stmt 1
+ 154 00be 0021     		movs	r1, #0
+ 155 00c0 1E20     		movs	r0, #30
+ 156 00c2 FFF7FEFF 		bl	motor_forward
+ 157              	.LVL20:
+ 158 00c6 EFE7     		b	.L5
+ 159              	.L7:
+ 106:main.c        ****         }    
+ 107:main.c        ****         else if (dig.L3 ==1 || dig.L2 == 1){
+ 160              		.loc 1 107 0
+ 161 00c8 BDF80C30 		ldrh	r3, [sp, #12]
+ 162 00cc 012B     		cmp	r3, #1
+ 163 00ce 03D0     		beq	.L9
+ 164              		.loc 1 107 0 is_stmt 0 discriminator 1
+ 165 00d0 BDF80E30 		ldrh	r3, [sp, #14]
+ 166 00d4 012B     		cmp	r3, #1
+ 167 00d6 09D1     		bne	.L10
+ 168              	.L9:
+ 108:main.c        ****             //turn left when there is signal on the left
+ 109:main.c        ****             motor_turn(10,125,100);
+ 169              		.loc 1 109 0 is_stmt 1
+ 170 00d8 6422     		movs	r2, #100
+ 171 00da 7D21     		movs	r1, #125
+ 172 00dc 0A20     		movs	r0, #10
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 6
 
 
- 180 004e 05       		.byte	0x5
- 181 004f CD010000 		.4byte	.LASF4
- 182 0053 02       		.uleb128 0x2
- 183 0054 04       		.byte	0x4
- 184 0055 07       		.byte	0x7
- 185 0056 E7000000 		.4byte	.LASF5
- 186 005a 02       		.uleb128 0x2
- 187 005b 08       		.byte	0x8
- 188 005c 05       		.byte	0x5
- 189 005d A2010000 		.4byte	.LASF6
- 190 0061 02       		.uleb128 0x2
- 191 0062 08       		.byte	0x8
- 192 0063 07       		.byte	0x7
- 193 0064 60010000 		.4byte	.LASF7
- 194 0068 04       		.uleb128 0x4
- 195 0069 04       		.byte	0x4
- 196 006a 05       		.byte	0x5
- 197 006b 696E7400 		.ascii	"int\000"
- 198 006f 02       		.uleb128 0x2
- 199 0070 04       		.byte	0x4
- 200 0071 07       		.byte	0x7
- 201 0072 53010000 		.4byte	.LASF8
- 202 0076 03       		.uleb128 0x3
- 203 0077 91010000 		.4byte	.LASF10
- 204 007b 03       		.byte	0x3
- 205 007c 2C       		.byte	0x2c
- 206 007d 41000000 		.4byte	0x41
- 207 0081 02       		.uleb128 0x2
- 208 0082 04       		.byte	0x4
- 209 0083 04       		.byte	0x4
- 210 0084 45000000 		.4byte	.LASF11
- 211 0088 02       		.uleb128 0x2
- 212 0089 08       		.byte	0x8
- 213 008a 04       		.byte	0x4
- 214 008b 29010000 		.4byte	.LASF12
- 215 008f 02       		.uleb128 0x2
- 216 0090 01       		.byte	0x1
- 217 0091 08       		.byte	0x8
- 218 0092 B7010000 		.4byte	.LASF13
- 219 0096 02       		.uleb128 0x2
- 220 0097 08       		.byte	0x8
- 221 0098 04       		.byte	0x4
- 222 0099 E1010000 		.4byte	.LASF14
- 223 009d 02       		.uleb128 0x2
- 224 009e 04       		.byte	0x4
- 225 009f 07       		.byte	0x7
- 226 00a0 99010000 		.4byte	.LASF15
- 227 00a4 05       		.uleb128 0x5
- 228 00a5 4D010000 		.4byte	.LASF31
- 229 00a9 01       		.byte	0x1
- 230 00aa 85       		.byte	0x85
- 231 00ab 00000000 		.4byte	.LFB85
- 232 00af 80000000 		.4byte	.LFE85-.LFB85
- 233 00b3 01       		.uleb128 0x1
- 234 00b4 9C       		.byte	0x9c
- 235 00b5 E4010000 		.4byte	0x1e4
- 236 00b9 06       		.uleb128 0x6
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 8
+ 173 00de FFF7FEFF 		bl	motor_turn
+ 174              	.LVL21:
+ 110:main.c        ****             motor_forward(30,0);       
+ 175              		.loc 1 110 0
+ 176 00e2 0021     		movs	r1, #0
+ 177 00e4 1E20     		movs	r0, #30
+ 178 00e6 FFF7FEFF 		bl	motor_forward
+ 179              	.LVL22:
+ 180 00ea DDE7     		b	.L5
+ 181              	.L10:
+ 111:main.c        ****         } 
+ 112:main.c        ****         else if (dig.R3 ==1 || dig.R2 ==1){
+ 182              		.loc 1 112 0
+ 183 00ec BDF81630 		ldrh	r3, [sp, #22]
+ 184 00f0 012B     		cmp	r3, #1
+ 185 00f2 03D0     		beq	.L11
+ 186              		.loc 1 112 0 is_stmt 0 discriminator 1
+ 187 00f4 BDF81430 		ldrh	r3, [sp, #20]
+ 188 00f8 012B     		cmp	r3, #1
+ 189 00fa 09D1     		bne	.L12
+ 190              	.L11:
+ 113:main.c        ****             //turn right when there is signal on the right
+ 114:main.c        ****             motor_turn(125,10,100);
+ 191              		.loc 1 114 0 is_stmt 1
+ 192 00fc 6422     		movs	r2, #100
+ 193 00fe 0A21     		movs	r1, #10
+ 194 0100 7D20     		movs	r0, #125
+ 195 0102 FFF7FEFF 		bl	motor_turn
+ 196              	.LVL23:
+ 115:main.c        ****             motor_forward(30,0);
+ 197              		.loc 1 115 0
+ 198 0106 0021     		movs	r1, #0
+ 199 0108 1E20     		movs	r0, #30
+ 200 010a FFF7FEFF 		bl	motor_forward
+ 201              	.LVL24:
+ 202 010e CBE7     		b	.L5
+ 203              	.L12:
+ 116:main.c        ****         }
+ 117:main.c        ****         else {
+ 118:main.c        ****             //if no signal found, turn clockwise until robot can find the way again
+ 119:main.c        ****             tank_turn_direction('R',75,0);
+ 204              		.loc 1 119 0
+ 205 0110 0022     		movs	r2, #0
+ 206 0112 4B21     		movs	r1, #75
+ 207 0114 5220     		movs	r0, #82
+ 208 0116 FFF7FEFF 		bl	tank_turn_direction
+ 209              	.LVL25:
+ 120:main.c        ****             motor_forward(30,0);
+ 210              		.loc 1 120 0
+ 211 011a 0021     		movs	r1, #0
+ 212 011c 1E20     		movs	r0, #30
+ 213 011e FFF7FEFF 		bl	motor_forward
+ 214              	.LVL26:
+ 121:main.c        ****             continue;
+ 215              		.loc 1 121 0
+ 216 0122 C1E7     		b	.L5
+ 217              	.L15:
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 7
 
 
- 237 00ba 6400     		.ascii	"d\000"
- 238 00bc 01       		.byte	0x1
- 239 00bd 8B       		.byte	0x8b
- 240 00be 68000000 		.4byte	0x68
- 241 00c2 00000000 		.4byte	.LLST0
- 242 00c6 07       		.uleb128 0x7
- 243 00c7 06000000 		.4byte	.LVL0
- 244 00cb F5010000 		.4byte	0x1f5
- 245 00cf 07       		.uleb128 0x7
- 246 00d0 0A000000 		.4byte	.LVL1
- 247 00d4 00020000 		.4byte	0x200
- 248 00d8 08       		.uleb128 0x8
- 249 00d9 16000000 		.4byte	.LVL2
- 250 00dd 0B020000 		.4byte	0x20b
- 251 00e1 ED000000 		.4byte	0xed
- 252 00e5 09       		.uleb128 0x9
- 253 00e6 01       		.uleb128 0x1
- 254 00e7 50       		.byte	0x50
- 255 00e8 03       		.uleb128 0x3
- 256 00e9 0A       		.byte	0xa
- 257 00ea F401     		.2byte	0x1f4
- 258 00ec 00       		.byte	0
- 259 00ed 08       		.uleb128 0x8
- 260 00ee 1C000000 		.4byte	.LVL3
- 261 00f2 17020000 		.4byte	0x217
- 262 00f6 00010000 		.4byte	0x100
- 263 00fa 09       		.uleb128 0x9
- 264 00fb 01       		.uleb128 0x1
- 265 00fc 50       		.byte	0x50
- 266 00fd 01       		.uleb128 0x1
- 267 00fe 30       		.byte	0x30
- 268 00ff 00       		.byte	0
- 269 0100 07       		.uleb128 0x7
- 270 0101 20000000 		.4byte	.LVL4
- 271 0105 22020000 		.4byte	0x222
- 272 0109 07       		.uleb128 0x7
- 273 010a 24000000 		.4byte	.LVL5
- 274 010e 2D020000 		.4byte	0x22d
- 275 0112 07       		.uleb128 0x7
- 276 0113 28000000 		.4byte	.LVL6
- 277 0117 38020000 		.4byte	0x238
- 278 011b 07       		.uleb128 0x7
- 279 011c 2C000000 		.4byte	.LVL7
- 280 0120 2D020000 		.4byte	0x22d
- 281 0124 08       		.uleb128 0x8
- 282 0125 36000000 		.4byte	.LVL10
- 283 0129 43020000 		.4byte	0x243
- 284 012d 41010000 		.4byte	0x141
- 285 0131 09       		.uleb128 0x9
- 286 0132 01       		.uleb128 0x1
- 287 0133 50       		.byte	0x50
- 288 0134 05       		.uleb128 0x5
- 289 0135 03       		.byte	0x3
- 290 0136 00000000 		.4byte	.LC0
- 291 013a 09       		.uleb128 0x9
- 292 013b 01       		.uleb128 0x1
- 293 013c 51       		.byte	0x51
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 9
+ 218              		.align	2
+ 219              	.L14:
+ 220 0124 00000000 		.word	.LC0
+ 221 0128 10000000 		.word	.LC1
+ 222 012c 24000000 		.word	.LC2
+ 223              		.cfi_endproc
+ 224              	.LFE85:
+ 225              		.size	zmain, .-zmain
+ 226              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 227              		.align	2
+ 228              	.LC0:
+ 229 0000 42756666 		.ascii	"Buffer cleared\000"
+ 229      65722063 
+ 229      6C656172 
+ 229      656400
+ 230 000f 00       		.space	1
+ 231              	.LC1:
+ 232 0010 53746172 		.ascii	"Starting sensor \000"
+ 232      74696E67 
+ 232      2073656E 
+ 232      736F7220 
+ 232      00
+ 233 0021 000000   		.space	3
+ 234              	.LC2:
+ 235 0024 52656163 		.ascii	"Reached the line, motor is waiting. Please send IR "
+ 235      68656420 
+ 235      74686520 
+ 235      6C696E65 
+ 235      2C206D6F 
+ 236 0057 7369676E 		.ascii	"signal\000"
+ 236      616C00
+ 237              		.text
+ 238              	.Letext0:
+ 239              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 240              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 241              		.file 4 ".\\ZumoLibrary/Reflectance.h"
+ 242              		.file 5 ".\\ZumoLibrary/IR.h"
+ 243              		.file 6 ".\\ZumoLibrary/Motor.h"
+ 244              		.file 7 "Generated_Source\\PSoC5/SW1.h"
+ 245              		.file 8 "Generated_Source\\PSoC5/BatteryLed.h"
+ 246              		.file 9 "..\\FreeRTOS\\Source\\include/task.h"
+ 247              		.file 10 ".\\ZumoLibrary/library.h"
+ 248              		.file 11 "Generated_Source\\PSoC5/core_cm3.h"
+ 249              		.file 12 "<built-in>"
+ 250              		.section	.debug_info,"",%progbits
+ 251              	.Ldebug_info0:
+ 252 0000 20040000 		.4byte	0x420
+ 253 0004 0400     		.2byte	0x4
+ 254 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 255 000a 04       		.byte	0x4
+ 256 000b 01       		.uleb128 0x1
+ 257 000c AF000000 		.4byte	.LASF31
+ 258 0010 0C       		.byte	0xc
+ 259 0011 2A020000 		.4byte	.LASF32
+ 260 0015 3F000000 		.4byte	.LASF33
+ 261 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 262 001d 00000000 		.4byte	0
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 8
 
 
- 294 013d 02       		.uleb128 0x2
- 295 013e 74       		.byte	0x74
- 296 013f 00       		.sleb128 0
- 297 0140 00       		.byte	0
- 298 0141 07       		.uleb128 0x7
- 299 0142 3E000000 		.4byte	.LVL11
- 300 0146 4E020000 		.4byte	0x24e
- 301 014a 08       		.uleb128 0x8
- 302 014b 46000000 		.4byte	.LVL12
- 303 014f 0B020000 		.4byte	0x20b
- 304 0153 5F010000 		.4byte	0x15f
- 305 0157 09       		.uleb128 0x9
- 306 0158 01       		.uleb128 0x1
- 307 0159 50       		.byte	0x50
- 308 015a 03       		.uleb128 0x3
- 309 015b 0A       		.byte	0xa
- 310 015c E803     		.2byte	0x3e8
- 311 015e 00       		.byte	0
- 312 015f 07       		.uleb128 0x7
- 313 0160 4A000000 		.4byte	.LVL13
- 314 0164 38020000 		.4byte	0x238
- 315 0168 08       		.uleb128 0x8
- 316 0169 52000000 		.4byte	.LVL14
- 317 016d 59020000 		.4byte	0x259
- 318 0171 81010000 		.4byte	0x181
- 319 0175 09       		.uleb128 0x9
- 320 0176 01       		.uleb128 0x1
- 321 0177 50       		.byte	0x50
- 322 0178 02       		.uleb128 0x2
- 323 0179 09       		.byte	0x9
- 324 017a C8       		.byte	0xc8
- 325 017b 09       		.uleb128 0x9
- 326 017c 01       		.uleb128 0x1
- 327 017d 51       		.byte	0x51
- 328 017e 01       		.uleb128 0x1
- 329 017f 3A       		.byte	0x3a
- 330 0180 00       		.byte	0
- 331 0181 07       		.uleb128 0x7
- 332 0182 56000000 		.4byte	.LVL15
- 333 0186 4E020000 		.4byte	0x24e
- 334 018a 08       		.uleb128 0x8
- 335 018b 5E000000 		.4byte	.LVL16
- 336 018f 0B020000 		.4byte	0x20b
- 337 0193 9F010000 		.4byte	0x19f
- 338 0197 09       		.uleb128 0x9
- 339 0198 01       		.uleb128 0x1
- 340 0199 50       		.byte	0x50
- 341 019a 03       		.uleb128 0x3
- 342 019b 0A       		.byte	0xa
- 343 019c E803     		.2byte	0x3e8
- 344 019e 00       		.byte	0
- 345 019f 07       		.uleb128 0x7
- 346 01a0 62000000 		.4byte	.LVL17
- 347 01a4 38020000 		.4byte	0x238
- 348 01a8 07       		.uleb128 0x7
- 349 01a9 66000000 		.4byte	.LVL18
- 350 01ad 64020000 		.4byte	0x264
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 10
+ 263 0021 00000000 		.4byte	.Ldebug_line0
+ 264 0025 02       		.uleb128 0x2
+ 265 0026 01       		.byte	0x1
+ 266 0027 06       		.byte	0x6
+ 267 0028 08000000 		.4byte	.LASF0
+ 268 002c 02       		.uleb128 0x2
+ 269 002d 01       		.byte	0x1
+ 270 002e 08       		.byte	0x8
+ 271 002f A1000000 		.4byte	.LASF1
+ 272 0033 02       		.uleb128 0x2
+ 273 0034 02       		.byte	0x2
+ 274 0035 05       		.byte	0x5
+ 275 0036 36020000 		.4byte	.LASF2
+ 276 003a 03       		.uleb128 0x3
+ 277 003b 88010000 		.4byte	.LASF4
+ 278 003f 02       		.byte	0x2
+ 279 0040 2B       		.byte	0x2b
+ 280 0041 45000000 		.4byte	0x45
+ 281 0045 02       		.uleb128 0x2
+ 282 0046 02       		.byte	0x2
+ 283 0047 07       		.byte	0x7
+ 284 0048 4F010000 		.4byte	.LASF3
+ 285 004c 03       		.uleb128 0x3
+ 286 004d 35000000 		.4byte	.LASF5
+ 287 0051 02       		.byte	0x2
+ 288 0052 3F       		.byte	0x3f
+ 289 0053 57000000 		.4byte	0x57
+ 290 0057 02       		.uleb128 0x2
+ 291 0058 04       		.byte	0x4
+ 292 0059 05       		.byte	0x5
+ 293 005a 49020000 		.4byte	.LASF6
+ 294 005e 02       		.uleb128 0x2
+ 295 005f 04       		.byte	0x4
+ 296 0060 07       		.byte	0x7
+ 297 0061 3D010000 		.4byte	.LASF7
+ 298 0065 02       		.uleb128 0x2
+ 299 0066 08       		.byte	0x8
+ 300 0067 05       		.byte	0x5
+ 301 0068 0B020000 		.4byte	.LASF8
+ 302 006c 02       		.uleb128 0x2
+ 303 006d 08       		.byte	0x8
+ 304 006e 07       		.byte	0x7
+ 305 006f CA010000 		.4byte	.LASF9
+ 306 0073 04       		.uleb128 0x4
+ 307 0074 04       		.byte	0x4
+ 308 0075 05       		.byte	0x5
+ 309 0076 696E7400 		.ascii	"int\000"
+ 310 007a 02       		.uleb128 0x2
+ 311 007b 04       		.byte	0x4
+ 312 007c 07       		.byte	0x7
+ 313 007d B4010000 		.4byte	.LASF10
+ 314 0081 03       		.uleb128 0x3
+ 315 0082 40020000 		.4byte	.LASF11
+ 316 0086 03       		.byte	0x3
+ 317 0087 24       		.byte	0x24
+ 318 0088 3A000000 		.4byte	0x3a
+ 319 008c 03       		.uleb128 0x3
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 9
 
 
- 351 01b1 07       		.uleb128 0x7
- 352 01b2 6A000000 		.4byte	.LVL19
- 353 01b6 38020000 		.4byte	0x238
- 354 01ba 08       		.uleb128 0x8
- 355 01bb 72000000 		.4byte	.LVL20
- 356 01bf 6F020000 		.4byte	0x26f
- 357 01c3 D3010000 		.4byte	0x1d3
- 358 01c7 09       		.uleb128 0x9
- 359 01c8 01       		.uleb128 0x1
- 360 01c9 50       		.byte	0x50
- 361 01ca 02       		.uleb128 0x2
- 362 01cb 08       		.byte	0x8
- 363 01cc 64       		.byte	0x64
- 364 01cd 09       		.uleb128 0x9
- 365 01ce 01       		.uleb128 0x1
- 366 01cf 51       		.byte	0x51
- 367 01d0 01       		.uleb128 0x1
- 368 01d1 3A       		.byte	0x3a
- 369 01d2 00       		.byte	0
- 370 01d3 0A       		.uleb128 0xa
- 371 01d4 78000000 		.4byte	.LVL21
- 372 01d8 0B020000 		.4byte	0x20b
- 373 01dc 09       		.uleb128 0x9
- 374 01dd 01       		.uleb128 0x1
- 375 01de 50       		.byte	0x50
- 376 01df 02       		.uleb128 0x2
- 377 01e0 08       		.byte	0x8
- 378 01e1 C8       		.byte	0xc8
- 379 01e2 00       		.byte	0
- 380 01e3 00       		.byte	0
- 381 01e4 0B       		.uleb128 0xb
- 382 01e5 0C010000 		.4byte	.LASF32
- 383 01e9 0C       		.byte	0xc
- 384 01ea 1207     		.2byte	0x712
- 385 01ec F0010000 		.4byte	0x1f0
- 386 01f0 0C       		.uleb128 0xc
- 387 01f1 76000000 		.4byte	0x76
- 388 01f5 0D       		.uleb128 0xd
- 389 01f6 41010000 		.4byte	.LASF16
- 390 01fa 41010000 		.4byte	.LASF16
- 391 01fe 04       		.byte	0x4
- 392 01ff 0A       		.byte	0xa
- 393 0200 0D       		.uleb128 0xd
- 394 0201 83010000 		.4byte	.LASF17
- 395 0205 83010000 		.4byte	.LASF17
- 396 0209 05       		.byte	0x5
- 397 020a 29       		.byte	0x29
- 398 020b 0E       		.uleb128 0xe
- 399 020c D6010000 		.4byte	.LASF18
- 400 0210 D6010000 		.4byte	.LASF18
- 401 0214 06       		.byte	0x6
- 402 0215 ED02     		.2byte	0x2ed
- 403 0217 0D       		.uleb128 0xd
- 404 0218 8C010000 		.4byte	.LASF19
- 405 021c 8C010000 		.4byte	.LASF19
- 406 0220 07       		.byte	0x7
- 407 0221 37       		.byte	0x37
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 11
+ 320 008d 7F000000 		.4byte	.LASF12
+ 321 0091 03       		.byte	0x3
+ 322 0092 2C       		.byte	0x2c
+ 323 0093 4C000000 		.4byte	0x4c
+ 324 0097 02       		.uleb128 0x2
+ 325 0098 04       		.byte	0x4
+ 326 0099 04       		.byte	0x4
+ 327 009a 2F000000 		.4byte	.LASF13
+ 328 009e 02       		.uleb128 0x2
+ 329 009f 08       		.byte	0x8
+ 330 00a0 04       		.byte	0x4
+ 331 00a1 93010000 		.4byte	.LASF14
+ 332 00a5 02       		.uleb128 0x2
+ 333 00a6 01       		.byte	0x1
+ 334 00a7 08       		.byte	0x8
+ 335 00a8 31020000 		.4byte	.LASF15
+ 336 00ac 02       		.uleb128 0x2
+ 337 00ad 08       		.byte	0x8
+ 338 00ae 04       		.byte	0x4
+ 339 00af F6010000 		.4byte	.LASF16
+ 340 00b3 02       		.uleb128 0x2
+ 341 00b4 04       		.byte	0x4
+ 342 00b5 07       		.byte	0x7
+ 343 00b6 02020000 		.4byte	.LASF17
+ 344 00ba 05       		.uleb128 0x5
+ 345 00bb 14000000 		.4byte	.LASF34
+ 346 00bf 0C       		.byte	0xc
+ 347 00c0 04       		.byte	0x4
+ 348 00c1 0E       		.byte	0xe
+ 349 00c2 09010000 		.4byte	0x109
+ 350 00c6 06       		.uleb128 0x6
+ 351 00c7 4C3300   		.ascii	"L3\000"
+ 352 00ca 04       		.byte	0x4
+ 353 00cb 0F       		.byte	0xf
+ 354 00cc 81000000 		.4byte	0x81
+ 355 00d0 00       		.byte	0
+ 356 00d1 06       		.uleb128 0x6
+ 357 00d2 4C3200   		.ascii	"L2\000"
+ 358 00d5 04       		.byte	0x4
+ 359 00d6 10       		.byte	0x10
+ 360 00d7 81000000 		.4byte	0x81
+ 361 00db 02       		.byte	0x2
+ 362 00dc 06       		.uleb128 0x6
+ 363 00dd 4C3100   		.ascii	"L1\000"
+ 364 00e0 04       		.byte	0x4
+ 365 00e1 11       		.byte	0x11
+ 366 00e2 81000000 		.4byte	0x81
+ 367 00e6 04       		.byte	0x4
+ 368 00e7 06       		.uleb128 0x6
+ 369 00e8 523100   		.ascii	"R1\000"
+ 370 00eb 04       		.byte	0x4
+ 371 00ec 12       		.byte	0x12
+ 372 00ed 81000000 		.4byte	0x81
+ 373 00f1 06       		.byte	0x6
+ 374 00f2 06       		.uleb128 0x6
+ 375 00f3 523200   		.ascii	"R2\000"
+ 376 00f6 04       		.byte	0x4
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 10
 
 
- 408 0222 0D       		.uleb128 0xd
- 409 0223 30010000 		.4byte	.LASF20
- 410 0227 30010000 		.4byte	.LASF20
- 411 022b 08       		.byte	0x8
- 412 022c 96       		.byte	0x96
- 413 022d 0D       		.uleb128 0xd
- 414 022e F9010000 		.4byte	.LASF21
- 415 0232 F9010000 		.4byte	.LASF21
- 416 0236 04       		.byte	0x4
- 417 0237 0D       		.byte	0xd
- 418 0238 0D       		.uleb128 0xd
- 419 0239 77010000 		.4byte	.LASF22
- 420 023d 77010000 		.4byte	.LASF22
- 421 0241 09       		.byte	0x9
- 422 0242 0B       		.byte	0xb
- 423 0243 0D       		.uleb128 0xd
- 424 0244 BC010000 		.4byte	.LASF23
- 425 0248 BC010000 		.4byte	.LASF23
- 426 024c 0A       		.byte	0xa
- 427 024d BB       		.byte	0xbb
- 428 024e 0D       		.uleb128 0xd
- 429 024f 36010000 		.4byte	.LASF24
- 430 0253 36010000 		.4byte	.LASF24
- 431 0257 09       		.byte	0x9
- 432 0258 0C       		.byte	0xc
- 433 0259 0D       		.uleb128 0xd
- 434 025a 0A000000 		.4byte	.LASF25
- 435 025e 0A000000 		.4byte	.LASF25
- 436 0262 09       		.byte	0x9
- 437 0263 15       		.byte	0x15
- 438 0264 0D       		.uleb128 0xd
- 439 0265 19010000 		.4byte	.LASF26
- 440 0269 19010000 		.4byte	.LASF26
- 441 026d 0B       		.byte	0xb
- 442 026e 26       		.byte	0x26
- 443 026f 0D       		.uleb128 0xd
- 444 0270 0B020000 		.4byte	.LASF27
- 445 0274 0B020000 		.4byte	.LASF27
- 446 0278 09       		.byte	0x9
- 447 0279 0F       		.byte	0xf
- 448 027a 00       		.byte	0
- 449              		.section	.debug_abbrev,"",%progbits
- 450              	.Ldebug_abbrev0:
- 451 0000 01       		.uleb128 0x1
- 452 0001 11       		.uleb128 0x11
- 453 0002 01       		.byte	0x1
- 454 0003 25       		.uleb128 0x25
- 455 0004 0E       		.uleb128 0xe
- 456 0005 13       		.uleb128 0x13
- 457 0006 0B       		.uleb128 0xb
- 458 0007 03       		.uleb128 0x3
- 459 0008 0E       		.uleb128 0xe
- 460 0009 1B       		.uleb128 0x1b
- 461 000a 0E       		.uleb128 0xe
- 462 000b 55       		.uleb128 0x55
- 463 000c 17       		.uleb128 0x17
- 464 000d 11       		.uleb128 0x11
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 12
+ 377 00f7 13       		.byte	0x13
+ 378 00f8 81000000 		.4byte	0x81
+ 379 00fc 08       		.byte	0x8
+ 380 00fd 06       		.uleb128 0x6
+ 381 00fe 523300   		.ascii	"R3\000"
+ 382 0101 04       		.byte	0x4
+ 383 0102 14       		.byte	0x14
+ 384 0103 81000000 		.4byte	0x81
+ 385 0107 0A       		.byte	0xa
+ 386 0108 00       		.byte	0
+ 387 0109 07       		.uleb128 0x7
+ 388 010a AE010000 		.4byte	.LASF35
+ 389 010e 01       		.byte	0x1
+ 390 010f 3F       		.byte	0x3f
+ 391 0110 00000000 		.4byte	.LFB85
+ 392 0114 30010000 		.4byte	.LFE85-.LFB85
+ 393 0118 01       		.uleb128 0x1
+ 394 0119 9C       		.byte	0x9c
+ 395 011a 73030000 		.4byte	0x373
+ 396 011e 08       		.uleb128 0x8
+ 397 011f 64696700 		.ascii	"dig\000"
+ 398 0123 01       		.byte	0x1
+ 399 0124 42       		.byte	0x42
+ 400 0125 BA000000 		.4byte	0xba
+ 401 0129 02       		.uleb128 0x2
+ 402 012a 91       		.byte	0x91
+ 403 012b 6C       		.sleb128 -20
+ 404 012c 09       		.uleb128 0x9
+ 405 012d 08000000 		.4byte	.LVL0
+ 406 0131 84030000 		.4byte	0x384
+ 407 0135 0A       		.uleb128 0xa
+ 408 0136 1C000000 		.4byte	.LVL1
+ 409 013a 8F030000 		.4byte	0x38f
+ 410 013e 6F010000 		.4byte	0x16f
+ 411 0142 0B       		.uleb128 0xb
+ 412 0143 01       		.uleb128 0x1
+ 413 0144 50       		.byte	0x50
+ 414 0145 03       		.uleb128 0x3
+ 415 0146 0A       		.byte	0xa
+ 416 0147 F82A     		.2byte	0x2af8
+ 417 0149 0B       		.uleb128 0xb
+ 418 014a 01       		.uleb128 0x1
+ 419 014b 51       		.byte	0x51
+ 420 014c 03       		.uleb128 0x3
+ 421 014d 0A       		.byte	0xa
+ 422 014e F82A     		.2byte	0x2af8
+ 423 0150 0B       		.uleb128 0xb
+ 424 0151 01       		.uleb128 0x1
+ 425 0152 52       		.byte	0x52
+ 426 0153 03       		.uleb128 0x3
+ 427 0154 0A       		.byte	0xa
+ 428 0155 2823     		.2byte	0x2328
+ 429 0157 0B       		.uleb128 0xb
+ 430 0158 01       		.uleb128 0x1
+ 431 0159 53       		.byte	0x53
+ 432 015a 03       		.uleb128 0x3
+ 433 015b 0A       		.byte	0xa
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 11
 
 
- 465 000e 01       		.uleb128 0x1
- 466 000f 10       		.uleb128 0x10
- 467 0010 17       		.uleb128 0x17
- 468 0011 00       		.byte	0
- 469 0012 00       		.byte	0
- 470 0013 02       		.uleb128 0x2
- 471 0014 24       		.uleb128 0x24
- 472 0015 00       		.byte	0
- 473 0016 0B       		.uleb128 0xb
- 474 0017 0B       		.uleb128 0xb
- 475 0018 3E       		.uleb128 0x3e
- 476 0019 0B       		.uleb128 0xb
- 477 001a 03       		.uleb128 0x3
- 478 001b 0E       		.uleb128 0xe
- 479 001c 00       		.byte	0
- 480 001d 00       		.byte	0
- 481 001e 03       		.uleb128 0x3
- 482 001f 16       		.uleb128 0x16
- 483 0020 00       		.byte	0
- 484 0021 03       		.uleb128 0x3
- 485 0022 0E       		.uleb128 0xe
- 486 0023 3A       		.uleb128 0x3a
- 487 0024 0B       		.uleb128 0xb
- 488 0025 3B       		.uleb128 0x3b
- 489 0026 0B       		.uleb128 0xb
- 490 0027 49       		.uleb128 0x49
- 491 0028 13       		.uleb128 0x13
- 492 0029 00       		.byte	0
- 493 002a 00       		.byte	0
- 494 002b 04       		.uleb128 0x4
- 495 002c 24       		.uleb128 0x24
- 496 002d 00       		.byte	0
- 497 002e 0B       		.uleb128 0xb
- 498 002f 0B       		.uleb128 0xb
- 499 0030 3E       		.uleb128 0x3e
- 500 0031 0B       		.uleb128 0xb
- 501 0032 03       		.uleb128 0x3
- 502 0033 08       		.uleb128 0x8
- 503 0034 00       		.byte	0
- 504 0035 00       		.byte	0
- 505 0036 05       		.uleb128 0x5
- 506 0037 2E       		.uleb128 0x2e
- 507 0038 01       		.byte	0x1
- 508 0039 3F       		.uleb128 0x3f
- 509 003a 19       		.uleb128 0x19
- 510 003b 03       		.uleb128 0x3
- 511 003c 0E       		.uleb128 0xe
- 512 003d 3A       		.uleb128 0x3a
- 513 003e 0B       		.uleb128 0xb
- 514 003f 3B       		.uleb128 0x3b
- 515 0040 0B       		.uleb128 0xb
- 516 0041 27       		.uleb128 0x27
- 517 0042 19       		.uleb128 0x19
- 518 0043 8701     		.uleb128 0x87
- 519 0045 19       		.uleb128 0x19
- 520 0046 11       		.uleb128 0x11
- 521 0047 01       		.uleb128 0x1
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 13
+ 434 015c 2823     		.2byte	0x2328
+ 435 015e 0B       		.uleb128 0xb
+ 436 015f 02       		.uleb128 0x2
+ 437 0160 7D       		.byte	0x7d
+ 438 0161 00       		.sleb128 0
+ 439 0162 03       		.uleb128 0x3
+ 440 0163 0A       		.byte	0xa
+ 441 0164 F82A     		.2byte	0x2af8
+ 442 0166 0B       		.uleb128 0xb
+ 443 0167 02       		.uleb128 0x2
+ 444 0168 7D       		.byte	0x7d
+ 445 0169 04       		.sleb128 4
+ 446 016a 03       		.uleb128 0x3
+ 447 016b 0A       		.byte	0xa
+ 448 016c F82A     		.2byte	0x2af8
+ 449 016e 00       		.byte	0
+ 450 016f 09       		.uleb128 0x9
+ 451 0170 20000000 		.4byte	.LVL2
+ 452 0174 9A030000 		.4byte	0x39a
+ 453 0178 09       		.uleb128 0x9
+ 454 0179 24000000 		.4byte	.LVL3
+ 455 017d A5030000 		.4byte	0x3a5
+ 456 0181 0A       		.uleb128 0xa
+ 457 0182 2A000000 		.4byte	.LVL4
+ 458 0186 B0030000 		.4byte	0x3b0
+ 459 018a 98010000 		.4byte	0x198
+ 460 018e 0B       		.uleb128 0xb
+ 461 018f 01       		.uleb128 0x1
+ 462 0190 50       		.byte	0x50
+ 463 0191 05       		.uleb128 0x5
+ 464 0192 03       		.byte	0x3
+ 465 0193 00000000 		.4byte	.LC0
+ 466 0197 00       		.byte	0
+ 467 0198 09       		.uleb128 0x9
+ 468 0199 2E000000 		.4byte	.LVL5
+ 469 019d BF030000 		.4byte	0x3bf
+ 470 01a1 0A       		.uleb128 0xa
+ 471 01a2 36000000 		.4byte	.LVL6
+ 472 01a6 CA030000 		.4byte	0x3ca
+ 473 01aa B9010000 		.4byte	0x1b9
+ 474 01ae 0B       		.uleb128 0xb
+ 475 01af 01       		.uleb128 0x1
+ 476 01b0 50       		.byte	0x50
+ 477 01b1 01       		.uleb128 0x1
+ 478 01b2 30       		.byte	0x30
+ 479 01b3 0B       		.uleb128 0xb
+ 480 01b4 01       		.uleb128 0x1
+ 481 01b5 51       		.byte	0x51
+ 482 01b6 01       		.uleb128 0x1
+ 483 01b7 30       		.byte	0x30
+ 484 01b8 00       		.byte	0
+ 485 01b9 09       		.uleb128 0x9
+ 486 01ba 3A000000 		.4byte	.LVL7
+ 487 01be D5030000 		.4byte	0x3d5
+ 488 01c2 0A       		.uleb128 0xa
+ 489 01c3 44000000 		.4byte	.LVL8
+ 490 01c7 E0030000 		.4byte	0x3e0
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 12
 
 
- 522 0048 12       		.uleb128 0x12
- 523 0049 06       		.uleb128 0x6
- 524 004a 40       		.uleb128 0x40
- 525 004b 18       		.uleb128 0x18
- 526 004c 9742     		.uleb128 0x2117
- 527 004e 19       		.uleb128 0x19
- 528 004f 01       		.uleb128 0x1
- 529 0050 13       		.uleb128 0x13
- 530 0051 00       		.byte	0
- 531 0052 00       		.byte	0
- 532 0053 06       		.uleb128 0x6
- 533 0054 34       		.uleb128 0x34
- 534 0055 00       		.byte	0
- 535 0056 03       		.uleb128 0x3
- 536 0057 08       		.uleb128 0x8
- 537 0058 3A       		.uleb128 0x3a
- 538 0059 0B       		.uleb128 0xb
- 539 005a 3B       		.uleb128 0x3b
- 540 005b 0B       		.uleb128 0xb
- 541 005c 49       		.uleb128 0x49
- 542 005d 13       		.uleb128 0x13
- 543 005e 02       		.uleb128 0x2
- 544 005f 17       		.uleb128 0x17
- 545 0060 00       		.byte	0
- 546 0061 00       		.byte	0
- 547 0062 07       		.uleb128 0x7
- 548 0063 898201   		.uleb128 0x4109
- 549 0066 00       		.byte	0
- 550 0067 11       		.uleb128 0x11
- 551 0068 01       		.uleb128 0x1
- 552 0069 31       		.uleb128 0x31
- 553 006a 13       		.uleb128 0x13
- 554 006b 00       		.byte	0
- 555 006c 00       		.byte	0
- 556 006d 08       		.uleb128 0x8
- 557 006e 898201   		.uleb128 0x4109
- 558 0071 01       		.byte	0x1
- 559 0072 11       		.uleb128 0x11
- 560 0073 01       		.uleb128 0x1
- 561 0074 31       		.uleb128 0x31
- 562 0075 13       		.uleb128 0x13
- 563 0076 01       		.uleb128 0x1
- 564 0077 13       		.uleb128 0x13
- 565 0078 00       		.byte	0
- 566 0079 00       		.byte	0
- 567 007a 09       		.uleb128 0x9
- 568 007b 8A8201   		.uleb128 0x410a
- 569 007e 00       		.byte	0
- 570 007f 02       		.uleb128 0x2
- 571 0080 18       		.uleb128 0x18
- 572 0081 9142     		.uleb128 0x2111
- 573 0083 18       		.uleb128 0x18
- 574 0084 00       		.byte	0
- 575 0085 00       		.byte	0
- 576 0086 0A       		.uleb128 0xa
- 577 0087 898201   		.uleb128 0x4109
- 578 008a 01       		.byte	0x1
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 14
+ 491 01cb D5010000 		.4byte	0x1d5
+ 492 01cf 0B       		.uleb128 0xb
+ 493 01d0 01       		.uleb128 0x1
+ 494 01d1 50       		.byte	0x50
+ 495 01d2 01       		.uleb128 0x1
+ 496 01d3 31       		.byte	0x31
+ 497 01d4 00       		.byte	0
+ 498 01d5 0A       		.uleb128 0xa
+ 499 01d6 4C000000 		.4byte	.LVL9
+ 500 01da EB030000 		.4byte	0x3eb
+ 501 01de EA010000 		.4byte	0x1ea
+ 502 01e2 0B       		.uleb128 0xb
+ 503 01e3 01       		.uleb128 0x1
+ 504 01e4 50       		.byte	0x50
+ 505 01e5 03       		.uleb128 0x3
+ 506 01e6 0A       		.byte	0xa
+ 507 01e7 F401     		.2byte	0x1f4
+ 508 01e9 00       		.byte	0
+ 509 01ea 0A       		.uleb128 0xa
+ 510 01eb 52000000 		.4byte	.LVL10
+ 511 01ef E0030000 		.4byte	0x3e0
+ 512 01f3 FD010000 		.4byte	0x1fd
+ 513 01f7 0B       		.uleb128 0xb
+ 514 01f8 01       		.uleb128 0x1
+ 515 01f9 50       		.byte	0x50
+ 516 01fa 01       		.uleb128 0x1
+ 517 01fb 30       		.byte	0x30
+ 518 01fc 00       		.byte	0
+ 519 01fd 0A       		.uleb128 0xa
+ 520 01fe 58000000 		.4byte	.LVL11
+ 521 0202 F7030000 		.4byte	0x3f7
+ 522 0206 11020000 		.4byte	0x211
+ 523 020a 0B       		.uleb128 0xb
+ 524 020b 01       		.uleb128 0x1
+ 525 020c 50       		.byte	0x50
+ 526 020d 02       		.uleb128 0x2
+ 527 020e 91       		.byte	0x91
+ 528 020f 6C       		.sleb128 -20
+ 529 0210 00       		.byte	0
+ 530 0211 0A       		.uleb128 0xa
+ 531 0212 5E000000 		.4byte	.LVL12
+ 532 0216 B0030000 		.4byte	0x3b0
+ 533 021a 28020000 		.4byte	0x228
+ 534 021e 0B       		.uleb128 0xb
+ 535 021f 01       		.uleb128 0x1
+ 536 0220 50       		.byte	0x50
+ 537 0221 05       		.uleb128 0x5
+ 538 0222 03       		.byte	0x3
+ 539 0223 10000000 		.4byte	.LC1
+ 540 0227 00       		.byte	0
+ 541 0228 0A       		.uleb128 0xa
+ 542 0229 66000000 		.4byte	.LVL13
+ 543 022d CA030000 		.4byte	0x3ca
+ 544 0231 41020000 		.4byte	0x241
+ 545 0235 0B       		.uleb128 0xb
+ 546 0236 01       		.uleb128 0x1
+ 547 0237 50       		.byte	0x50
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 13
 
 
- 579 008b 11       		.uleb128 0x11
- 580 008c 01       		.uleb128 0x1
- 581 008d 31       		.uleb128 0x31
- 582 008e 13       		.uleb128 0x13
- 583 008f 00       		.byte	0
- 584 0090 00       		.byte	0
- 585 0091 0B       		.uleb128 0xb
- 586 0092 34       		.uleb128 0x34
- 587 0093 00       		.byte	0
- 588 0094 03       		.uleb128 0x3
- 589 0095 0E       		.uleb128 0xe
- 590 0096 3A       		.uleb128 0x3a
- 591 0097 0B       		.uleb128 0xb
- 592 0098 3B       		.uleb128 0x3b
- 593 0099 05       		.uleb128 0x5
- 594 009a 49       		.uleb128 0x49
- 595 009b 13       		.uleb128 0x13
- 596 009c 3F       		.uleb128 0x3f
- 597 009d 19       		.uleb128 0x19
- 598 009e 3C       		.uleb128 0x3c
- 599 009f 19       		.uleb128 0x19
- 600 00a0 00       		.byte	0
- 601 00a1 00       		.byte	0
- 602 00a2 0C       		.uleb128 0xc
- 603 00a3 35       		.uleb128 0x35
- 604 00a4 00       		.byte	0
- 605 00a5 49       		.uleb128 0x49
- 606 00a6 13       		.uleb128 0x13
- 607 00a7 00       		.byte	0
- 608 00a8 00       		.byte	0
- 609 00a9 0D       		.uleb128 0xd
- 610 00aa 2E       		.uleb128 0x2e
- 611 00ab 00       		.byte	0
- 612 00ac 3F       		.uleb128 0x3f
- 613 00ad 19       		.uleb128 0x19
- 614 00ae 3C       		.uleb128 0x3c
- 615 00af 19       		.uleb128 0x19
- 616 00b0 6E       		.uleb128 0x6e
- 617 00b1 0E       		.uleb128 0xe
- 618 00b2 03       		.uleb128 0x3
- 619 00b3 0E       		.uleb128 0xe
- 620 00b4 3A       		.uleb128 0x3a
- 621 00b5 0B       		.uleb128 0xb
- 622 00b6 3B       		.uleb128 0x3b
- 623 00b7 0B       		.uleb128 0xb
- 624 00b8 00       		.byte	0
- 625 00b9 00       		.byte	0
- 626 00ba 0E       		.uleb128 0xe
- 627 00bb 2E       		.uleb128 0x2e
- 628 00bc 00       		.byte	0
- 629 00bd 3F       		.uleb128 0x3f
- 630 00be 19       		.uleb128 0x19
- 631 00bf 3C       		.uleb128 0x3c
- 632 00c0 19       		.uleb128 0x19
- 633 00c1 6E       		.uleb128 0x6e
- 634 00c2 0E       		.uleb128 0xe
- 635 00c3 03       		.uleb128 0x3
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 15
+ 548 0238 02       		.uleb128 0x2
+ 549 0239 08       		.byte	0x8
+ 550 023a 4B       		.byte	0x4b
+ 551 023b 0B       		.uleb128 0xb
+ 552 023c 01       		.uleb128 0x1
+ 553 023d 51       		.byte	0x51
+ 554 023e 01       		.uleb128 0x1
+ 555 023f 30       		.byte	0x30
+ 556 0240 00       		.byte	0
+ 557 0241 0A       		.uleb128 0xa
+ 558 0242 6E000000 		.4byte	.LVL14
+ 559 0246 F7030000 		.4byte	0x3f7
+ 560 024a 55020000 		.4byte	0x255
+ 561 024e 0B       		.uleb128 0xb
+ 562 024f 01       		.uleb128 0x1
+ 563 0250 50       		.byte	0x50
+ 564 0251 02       		.uleb128 0x2
+ 565 0252 91       		.byte	0x91
+ 566 0253 6C       		.sleb128 -20
+ 567 0254 00       		.byte	0
+ 568 0255 0A       		.uleb128 0xa
+ 569 0256 96000000 		.4byte	.LVL15
+ 570 025a CA030000 		.4byte	0x3ca
+ 571 025e 6D020000 		.4byte	0x26d
+ 572 0262 0B       		.uleb128 0xb
+ 573 0263 01       		.uleb128 0x1
+ 574 0264 50       		.byte	0x50
+ 575 0265 01       		.uleb128 0x1
+ 576 0266 30       		.byte	0x30
+ 577 0267 0B       		.uleb128 0xb
+ 578 0268 01       		.uleb128 0x1
+ 579 0269 51       		.byte	0x51
+ 580 026a 01       		.uleb128 0x1
+ 581 026b 30       		.byte	0x30
+ 582 026c 00       		.byte	0
+ 583 026d 0A       		.uleb128 0xa
+ 584 026e 9C000000 		.4byte	.LVL16
+ 585 0272 B0030000 		.4byte	0x3b0
+ 586 0276 84020000 		.4byte	0x284
+ 587 027a 0B       		.uleb128 0xb
+ 588 027b 01       		.uleb128 0x1
+ 589 027c 50       		.byte	0x50
+ 590 027d 05       		.uleb128 0x5
+ 591 027e 03       		.byte	0x3
+ 592 027f 24000000 		.4byte	.LC2
+ 593 0283 00       		.byte	0
+ 594 0284 09       		.uleb128 0x9
+ 595 0285 A0000000 		.4byte	.LVL17
+ 596 0289 02040000 		.4byte	0x402
+ 597 028d 0A       		.uleb128 0xa
+ 598 028e A8000000 		.4byte	.LVL18
+ 599 0292 CA030000 		.4byte	0x3ca
+ 600 0296 A5020000 		.4byte	0x2a5
+ 601 029a 0B       		.uleb128 0xb
+ 602 029b 01       		.uleb128 0x1
+ 603 029c 50       		.byte	0x50
+ 604 029d 01       		.uleb128 0x1
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 14
 
 
- 636 00c4 0E       		.uleb128 0xe
- 637 00c5 3A       		.uleb128 0x3a
- 638 00c6 0B       		.uleb128 0xb
- 639 00c7 3B       		.uleb128 0x3b
- 640 00c8 05       		.uleb128 0x5
- 641 00c9 00       		.byte	0
- 642 00ca 00       		.byte	0
- 643 00cb 00       		.byte	0
- 644              		.section	.debug_loc,"",%progbits
- 645              	.Ldebug_loc0:
- 646              	.LLST0:
- 647 0000 2E000000 		.4byte	.LVL8
- 648 0004 32000000 		.4byte	.LVL9
- 649 0008 0100     		.2byte	0x1
- 650 000a 50       		.byte	0x50
- 651 000b 32000000 		.4byte	.LVL9
- 652 000f 35000000 		.4byte	.LVL10-1
- 653 0013 0100     		.2byte	0x1
- 654 0015 51       		.byte	0x51
- 655 0016 35000000 		.4byte	.LVL10-1
- 656 001a 80000000 		.4byte	.LFE85
- 657 001e 0100     		.2byte	0x1
- 658 0020 54       		.byte	0x54
- 659 0021 00000000 		.4byte	0
- 660 0025 00000000 		.4byte	0
- 661              		.section	.debug_aranges,"",%progbits
- 662 0000 1C000000 		.4byte	0x1c
- 663 0004 0200     		.2byte	0x2
- 664 0006 00000000 		.4byte	.Ldebug_info0
- 665 000a 04       		.byte	0x4
- 666 000b 00       		.byte	0
- 667 000c 0000     		.2byte	0
- 668 000e 0000     		.2byte	0
- 669 0010 00000000 		.4byte	.LFB85
- 670 0014 80000000 		.4byte	.LFE85-.LFB85
- 671 0018 00000000 		.4byte	0
- 672 001c 00000000 		.4byte	0
- 673              		.section	.debug_ranges,"",%progbits
- 674              	.Ldebug_ranges0:
- 675 0000 00000000 		.4byte	.LFB85
- 676 0004 80000000 		.4byte	.LFE85
- 677 0008 00000000 		.4byte	0
- 678 000c 00000000 		.4byte	0
- 679              		.section	.debug_line,"",%progbits
- 680              	.Ldebug_line0:
- 681 0000 56020000 		.section	.debug_str,"MS",%progbits,1
- 681      02002702 
- 681      00000201 
- 681      FB0E0D00 
- 681      01010101 
- 682              	.LASF9:
- 683 0000 5F5F696E 		.ascii	"__int32_t\000"
- 683      7433325F 
- 683      7400
- 684              	.LASF25:
- 685 000a 6D6F746F 		.ascii	"motor_backward\000"
- 685      725F6261 
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 16
+ 605 029e 4E       		.byte	0x4e
+ 606 029f 0B       		.uleb128 0xb
+ 607 02a0 01       		.uleb128 0x1
+ 608 02a1 51       		.byte	0x51
+ 609 02a2 01       		.uleb128 0x1
+ 610 02a3 30       		.byte	0x30
+ 611 02a4 00       		.byte	0
+ 612 02a5 0A       		.uleb128 0xa
+ 613 02a6 AE000000 		.4byte	.LVL19
+ 614 02aa F7030000 		.4byte	0x3f7
+ 615 02ae B9020000 		.4byte	0x2b9
+ 616 02b2 0B       		.uleb128 0xb
+ 617 02b3 01       		.uleb128 0x1
+ 618 02b4 50       		.byte	0x50
+ 619 02b5 02       		.uleb128 0x2
+ 620 02b6 91       		.byte	0x91
+ 621 02b7 6C       		.sleb128 -20
+ 622 02b8 00       		.byte	0
+ 623 02b9 0A       		.uleb128 0xa
+ 624 02ba C6000000 		.4byte	.LVL20
+ 625 02be CA030000 		.4byte	0x3ca
+ 626 02c2 D1020000 		.4byte	0x2d1
+ 627 02c6 0B       		.uleb128 0xb
+ 628 02c7 01       		.uleb128 0x1
+ 629 02c8 50       		.byte	0x50
+ 630 02c9 01       		.uleb128 0x1
+ 631 02ca 4E       		.byte	0x4e
+ 632 02cb 0B       		.uleb128 0xb
+ 633 02cc 01       		.uleb128 0x1
+ 634 02cd 51       		.byte	0x51
+ 635 02ce 01       		.uleb128 0x1
+ 636 02cf 30       		.byte	0x30
+ 637 02d0 00       		.byte	0
+ 638 02d1 0A       		.uleb128 0xa
+ 639 02d2 E2000000 		.4byte	.LVL21
+ 640 02d6 0D040000 		.4byte	0x40d
+ 641 02da F0020000 		.4byte	0x2f0
+ 642 02de 0B       		.uleb128 0xb
+ 643 02df 01       		.uleb128 0x1
+ 644 02e0 50       		.byte	0x50
+ 645 02e1 01       		.uleb128 0x1
+ 646 02e2 3A       		.byte	0x3a
+ 647 02e3 0B       		.uleb128 0xb
+ 648 02e4 01       		.uleb128 0x1
+ 649 02e5 51       		.byte	0x51
+ 650 02e6 02       		.uleb128 0x2
+ 651 02e7 08       		.byte	0x8
+ 652 02e8 7D       		.byte	0x7d
+ 653 02e9 0B       		.uleb128 0xb
+ 654 02ea 01       		.uleb128 0x1
+ 655 02eb 52       		.byte	0x52
+ 656 02ec 02       		.uleb128 0x2
+ 657 02ed 08       		.byte	0x8
+ 658 02ee 64       		.byte	0x64
+ 659 02ef 00       		.byte	0
+ 660 02f0 0A       		.uleb128 0xa
+ 661 02f1 EA000000 		.4byte	.LVL22
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 15
 
 
- 685      636B7761 
- 685      726400
- 686              	.LASF30:
- 687 0019 433A5C55 		.ascii	"C:\\Users\\Dieu Vu\\Desktop\\Zumo\\ZumoBot.cydsn\000"
- 687      73657273 
- 687      5C446965 
- 687      75205675 
- 687      5C446573 
- 688              	.LASF11:
- 689 0045 666C6F61 		.ascii	"float\000"
- 689      7400
- 690              	.LASF1:
- 691 004b 756E7369 		.ascii	"unsigned char\000"
- 691      676E6564 
- 691      20636861 
- 691      7200
- 692              	.LASF28:
- 693 0059 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 693      43313120 
- 693      352E342E 
- 693      31203230 
- 693      31363036 
- 694 008c 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 694      20726576 
- 694      6973696F 
- 694      6E203233 
- 694      37373135 
- 695 00bf 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 695      66756E63 
- 695      74696F6E 
- 695      2D736563 
- 695      74696F6E 
- 696              	.LASF5:
- 697 00e7 6C6F6E67 		.ascii	"long unsigned int\000"
- 697      20756E73 
- 697      69676E65 
- 697      6420696E 
- 697      7400
- 698              	.LASF3:
- 699 00f9 73686F72 		.ascii	"short unsigned int\000"
- 699      7420756E 
- 699      7369676E 
- 699      65642069 
- 699      6E7400
- 700              	.LASF32:
- 701 010c 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 701      52784275 
- 701      66666572 
- 701      00
- 702              	.LASF26:
- 703 0119 6D6F746F 		.ascii	"motor_tank_turn\000"
- 703      725F7461 
- 703      6E6B5F74 
- 703      75726E00 
- 704              	.LASF12:
- 705 0129 646F7562 		.ascii	"double\000"
- 705      6C6500
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 17
+ 662 02f5 CA030000 		.4byte	0x3ca
+ 663 02f9 08030000 		.4byte	0x308
+ 664 02fd 0B       		.uleb128 0xb
+ 665 02fe 01       		.uleb128 0x1
+ 666 02ff 50       		.byte	0x50
+ 667 0300 01       		.uleb128 0x1
+ 668 0301 4E       		.byte	0x4e
+ 669 0302 0B       		.uleb128 0xb
+ 670 0303 01       		.uleb128 0x1
+ 671 0304 51       		.byte	0x51
+ 672 0305 01       		.uleb128 0x1
+ 673 0306 30       		.byte	0x30
+ 674 0307 00       		.byte	0
+ 675 0308 0A       		.uleb128 0xa
+ 676 0309 06010000 		.4byte	.LVL23
+ 677 030d 0D040000 		.4byte	0x40d
+ 678 0311 27030000 		.4byte	0x327
+ 679 0315 0B       		.uleb128 0xb
+ 680 0316 01       		.uleb128 0x1
+ 681 0317 50       		.byte	0x50
+ 682 0318 02       		.uleb128 0x2
+ 683 0319 08       		.byte	0x8
+ 684 031a 7D       		.byte	0x7d
+ 685 031b 0B       		.uleb128 0xb
+ 686 031c 01       		.uleb128 0x1
+ 687 031d 51       		.byte	0x51
+ 688 031e 01       		.uleb128 0x1
+ 689 031f 3A       		.byte	0x3a
+ 690 0320 0B       		.uleb128 0xb
+ 691 0321 01       		.uleb128 0x1
+ 692 0322 52       		.byte	0x52
+ 693 0323 02       		.uleb128 0x2
+ 694 0324 08       		.byte	0x8
+ 695 0325 64       		.byte	0x64
+ 696 0326 00       		.byte	0
+ 697 0327 0A       		.uleb128 0xa
+ 698 0328 0E010000 		.4byte	.LVL24
+ 699 032c CA030000 		.4byte	0x3ca
+ 700 0330 3F030000 		.4byte	0x33f
+ 701 0334 0B       		.uleb128 0xb
+ 702 0335 01       		.uleb128 0x1
+ 703 0336 50       		.byte	0x50
+ 704 0337 01       		.uleb128 0x1
+ 705 0338 4E       		.byte	0x4e
+ 706 0339 0B       		.uleb128 0xb
+ 707 033a 01       		.uleb128 0x1
+ 708 033b 51       		.byte	0x51
+ 709 033c 01       		.uleb128 0x1
+ 710 033d 30       		.byte	0x30
+ 711 033e 00       		.byte	0
+ 712 033f 0A       		.uleb128 0xa
+ 713 0340 1A010000 		.4byte	.LVL25
+ 714 0344 18040000 		.4byte	0x418
+ 715 0348 5E030000 		.4byte	0x35e
+ 716 034c 0B       		.uleb128 0xb
+ 717 034d 01       		.uleb128 0x1
+ 718 034e 50       		.byte	0x50
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 16
 
 
- 706              	.LASF20:
- 707 0130 7372616E 		.ascii	"srand\000"
- 707      6400
- 708              	.LASF24:
- 709 0136 6D6F746F 		.ascii	"motor_stop\000"
- 709      725F7374 
- 709      6F7000
- 710              	.LASF16:
- 711 0141 556C7472 		.ascii	"Ultra_Start\000"
- 711      615F5374 
- 711      61727400 
- 712              	.LASF31:
- 713 014d 7A6D6169 		.ascii	"zmain\000"
- 713      6E00
- 714              	.LASF8:
- 715 0153 756E7369 		.ascii	"unsigned int\000"
- 715      676E6564 
- 715      20696E74 
- 715      00
- 716              	.LASF7:
- 717 0160 6C6F6E67 		.ascii	"long long unsigned int\000"
- 717      206C6F6E 
- 717      6720756E 
- 717      7369676E 
- 717      65642069 
- 718              	.LASF22:
- 719 0177 6D6F746F 		.ascii	"motor_start\000"
- 719      725F7374 
- 719      61727400 
- 720              	.LASF17:
- 721 0183 5357315F 		.ascii	"SW1_Read\000"
- 721      52656164 
- 721      00
- 722              	.LASF19:
- 723 018c 74696D65 		.ascii	"time\000"
- 723      00
- 724              	.LASF10:
- 725 0191 696E7433 		.ascii	"int32_t\000"
- 725      325F7400 
- 726              	.LASF15:
- 727 0199 73697A65 		.ascii	"sizetype\000"
- 727      74797065 
- 727      00
- 728              	.LASF6:
- 729 01a2 6C6F6E67 		.ascii	"long long int\000"
- 729      206C6F6E 
- 729      6720696E 
- 729      7400
- 730              	.LASF29:
- 731 01b0 6D61696E 		.ascii	"main.c\000"
- 731      2E6300
- 732              	.LASF13:
- 733 01b7 63686172 		.ascii	"char\000"
- 733      00
- 734              	.LASF23:
- 735 01bc 7072696E 		.ascii	"printf\000"
- 735      746600
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccbIm3lf.s 			page 18
+ 719 034f 02       		.uleb128 0x2
+ 720 0350 08       		.byte	0x8
+ 721 0351 52       		.byte	0x52
+ 722 0352 0B       		.uleb128 0xb
+ 723 0353 01       		.uleb128 0x1
+ 724 0354 51       		.byte	0x51
+ 725 0355 02       		.uleb128 0x2
+ 726 0356 08       		.byte	0x8
+ 727 0357 4B       		.byte	0x4b
+ 728 0358 0B       		.uleb128 0xb
+ 729 0359 01       		.uleb128 0x1
+ 730 035a 52       		.byte	0x52
+ 731 035b 01       		.uleb128 0x1
+ 732 035c 30       		.byte	0x30
+ 733 035d 00       		.byte	0
+ 734 035e 0C       		.uleb128 0xc
+ 735 035f 22010000 		.4byte	.LVL26
+ 736 0363 CA030000 		.4byte	0x3ca
+ 737 0367 0B       		.uleb128 0xb
+ 738 0368 01       		.uleb128 0x1
+ 739 0369 50       		.byte	0x50
+ 740 036a 01       		.uleb128 0x1
+ 741 036b 4E       		.byte	0x4e
+ 742 036c 0B       		.uleb128 0xb
+ 743 036d 01       		.uleb128 0x1
+ 744 036e 51       		.byte	0x51
+ 745 036f 01       		.uleb128 0x1
+ 746 0370 30       		.byte	0x30
+ 747 0371 00       		.byte	0
+ 748 0372 00       		.byte	0
+ 749 0373 0D       		.uleb128 0xd
+ 750 0374 6D010000 		.4byte	.LASF36
+ 751 0378 0B       		.byte	0xb
+ 752 0379 1207     		.2byte	0x712
+ 753 037b 7F030000 		.4byte	0x37f
+ 754 037f 0E       		.uleb128 0xe
+ 755 0380 8C000000 		.4byte	0x8c
+ 756 0384 0F       		.uleb128 0xf
+ 757 0385 1D000000 		.4byte	.LASF18
+ 758 0389 1D000000 		.4byte	.LASF18
+ 759 038d 04       		.byte	0x4
+ 760 038e 17       		.byte	0x17
+ 761 038f 0F       		.uleb128 0xf
+ 762 0390 87000000 		.4byte	.LASF19
+ 763 0394 87000000 		.4byte	.LASF19
+ 764 0398 04       		.byte	0x4
+ 765 0399 1A       		.byte	0x1a
+ 766 039a 0F       		.uleb128 0xf
+ 767 039b C1010000 		.4byte	.LASF20
+ 768 039f C1010000 		.4byte	.LASF20
+ 769 03a3 05       		.byte	0x5
+ 770 03a4 11       		.byte	0x11
+ 771 03a5 0F       		.uleb128 0xf
+ 772 03a6 52020000 		.4byte	.LASF21
+ 773 03aa 52020000 		.4byte	.LASF21
+ 774 03ae 05       		.byte	0x5
+ 775 03af 18       		.byte	0x18
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 17
 
 
- 736              	.LASF2:
- 737 01c3 73686F72 		.ascii	"short int\000"
- 737      7420696E 
- 737      7400
- 738              	.LASF4:
- 739 01cd 6C6F6E67 		.ascii	"long int\000"
- 739      20696E74 
- 739      00
- 740              	.LASF18:
- 741 01d6 76546173 		.ascii	"vTaskDelay\000"
- 741      6B44656C 
- 741      617900
- 742              	.LASF14:
- 743 01e1 6C6F6E67 		.ascii	"long double\000"
- 743      20646F75 
- 743      626C6500 
- 744              	.LASF0:
- 745 01ed 7369676E 		.ascii	"signed char\000"
- 745      65642063 
- 745      68617200 
- 746              	.LASF21:
- 747 01f9 556C7472 		.ascii	"Ultra_GetDistance\000"
- 747      615F4765 
- 747      74446973 
- 747      74616E63 
- 747      6500
- 748              	.LASF27:
- 749 020b 6D6F746F 		.ascii	"motor_forward\000"
- 749      725F666F 
- 749      72776172 
- 749      6400
- 750              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 776 03b0 10       		.uleb128 0x10
+ 777 03b1 5B020000 		.4byte	.LASF37
+ 778 03b5 6B020000 		.4byte	.LASF38
+ 779 03b9 0C       		.byte	0xc
+ 780 03ba 00       		.byte	0
+ 781 03bb 5B020000 		.4byte	.LASF37
+ 782 03bf 0F       		.uleb128 0xf
+ 783 03c0 E1010000 		.4byte	.LASF22
+ 784 03c4 E1010000 		.4byte	.LASF22
+ 785 03c8 06       		.byte	0x6
+ 786 03c9 0B       		.byte	0xb
+ 787 03ca 0F       		.uleb128 0xf
+ 788 03cb 7A010000 		.4byte	.LASF23
+ 789 03cf 7A010000 		.4byte	.LASF23
+ 790 03d3 06       		.byte	0x6
+ 791 03d4 0F       		.byte	0xf
+ 792 03d5 0F       		.uleb128 0xf
+ 793 03d6 ED010000 		.4byte	.LASF24
+ 794 03da ED010000 		.4byte	.LASF24
+ 795 03de 07       		.byte	0x7
+ 796 03df 29       		.byte	0x29
+ 797 03e0 0F       		.uleb128 0xf
+ 798 03e1 19020000 		.4byte	.LASF25
+ 799 03e5 19020000 		.4byte	.LASF25
+ 800 03e9 08       		.byte	0x8
+ 801 03ea 26       		.byte	0x26
+ 802 03eb 11       		.uleb128 0x11
+ 803 03ec 62010000 		.4byte	.LASF26
+ 804 03f0 62010000 		.4byte	.LASF26
+ 805 03f4 09       		.byte	0x9
+ 806 03f5 ED02     		.2byte	0x2ed
+ 807 03f7 0F       		.uleb128 0xf
+ 808 03f8 6B000000 		.4byte	.LASF27
+ 809 03fc 6B000000 		.4byte	.LASF27
+ 810 0400 04       		.byte	0x4
+ 811 0401 19       		.byte	0x19
+ 812 0402 0F       		.uleb128 0xf
+ 813 0403 00000000 		.4byte	.LASF28
+ 814 0407 00000000 		.4byte	.LASF28
+ 815 040b 05       		.byte	0x5
+ 816 040c 1B       		.byte	0x1b
+ 817 040d 0F       		.uleb128 0xf
+ 818 040e 60020000 		.4byte	.LASF29
+ 819 0412 60020000 		.4byte	.LASF29
+ 820 0416 06       		.byte	0x6
+ 821 0417 12       		.byte	0x12
+ 822 0418 0F       		.uleb128 0xf
+ 823 0419 9A010000 		.4byte	.LASF30
+ 824 041d 9A010000 		.4byte	.LASF30
+ 825 0421 0A       		.byte	0xa
+ 826 0422 28       		.byte	0x28
+ 827 0423 00       		.byte	0
+ 828              		.section	.debug_abbrev,"",%progbits
+ 829              	.Ldebug_abbrev0:
+ 830 0000 01       		.uleb128 0x1
+ 831 0001 11       		.uleb128 0x11
+ 832 0002 01       		.byte	0x1
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 18
+
+
+ 833 0003 25       		.uleb128 0x25
+ 834 0004 0E       		.uleb128 0xe
+ 835 0005 13       		.uleb128 0x13
+ 836 0006 0B       		.uleb128 0xb
+ 837 0007 03       		.uleb128 0x3
+ 838 0008 0E       		.uleb128 0xe
+ 839 0009 1B       		.uleb128 0x1b
+ 840 000a 0E       		.uleb128 0xe
+ 841 000b 55       		.uleb128 0x55
+ 842 000c 17       		.uleb128 0x17
+ 843 000d 11       		.uleb128 0x11
+ 844 000e 01       		.uleb128 0x1
+ 845 000f 10       		.uleb128 0x10
+ 846 0010 17       		.uleb128 0x17
+ 847 0011 00       		.byte	0
+ 848 0012 00       		.byte	0
+ 849 0013 02       		.uleb128 0x2
+ 850 0014 24       		.uleb128 0x24
+ 851 0015 00       		.byte	0
+ 852 0016 0B       		.uleb128 0xb
+ 853 0017 0B       		.uleb128 0xb
+ 854 0018 3E       		.uleb128 0x3e
+ 855 0019 0B       		.uleb128 0xb
+ 856 001a 03       		.uleb128 0x3
+ 857 001b 0E       		.uleb128 0xe
+ 858 001c 00       		.byte	0
+ 859 001d 00       		.byte	0
+ 860 001e 03       		.uleb128 0x3
+ 861 001f 16       		.uleb128 0x16
+ 862 0020 00       		.byte	0
+ 863 0021 03       		.uleb128 0x3
+ 864 0022 0E       		.uleb128 0xe
+ 865 0023 3A       		.uleb128 0x3a
+ 866 0024 0B       		.uleb128 0xb
+ 867 0025 3B       		.uleb128 0x3b
+ 868 0026 0B       		.uleb128 0xb
+ 869 0027 49       		.uleb128 0x49
+ 870 0028 13       		.uleb128 0x13
+ 871 0029 00       		.byte	0
+ 872 002a 00       		.byte	0
+ 873 002b 04       		.uleb128 0x4
+ 874 002c 24       		.uleb128 0x24
+ 875 002d 00       		.byte	0
+ 876 002e 0B       		.uleb128 0xb
+ 877 002f 0B       		.uleb128 0xb
+ 878 0030 3E       		.uleb128 0x3e
+ 879 0031 0B       		.uleb128 0xb
+ 880 0032 03       		.uleb128 0x3
+ 881 0033 08       		.uleb128 0x8
+ 882 0034 00       		.byte	0
+ 883 0035 00       		.byte	0
+ 884 0036 05       		.uleb128 0x5
+ 885 0037 13       		.uleb128 0x13
+ 886 0038 01       		.byte	0x1
+ 887 0039 03       		.uleb128 0x3
+ 888 003a 0E       		.uleb128 0xe
+ 889 003b 0B       		.uleb128 0xb
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 19
+
+
+ 890 003c 0B       		.uleb128 0xb
+ 891 003d 3A       		.uleb128 0x3a
+ 892 003e 0B       		.uleb128 0xb
+ 893 003f 3B       		.uleb128 0x3b
+ 894 0040 0B       		.uleb128 0xb
+ 895 0041 01       		.uleb128 0x1
+ 896 0042 13       		.uleb128 0x13
+ 897 0043 00       		.byte	0
+ 898 0044 00       		.byte	0
+ 899 0045 06       		.uleb128 0x6
+ 900 0046 0D       		.uleb128 0xd
+ 901 0047 00       		.byte	0
+ 902 0048 03       		.uleb128 0x3
+ 903 0049 08       		.uleb128 0x8
+ 904 004a 3A       		.uleb128 0x3a
+ 905 004b 0B       		.uleb128 0xb
+ 906 004c 3B       		.uleb128 0x3b
+ 907 004d 0B       		.uleb128 0xb
+ 908 004e 49       		.uleb128 0x49
+ 909 004f 13       		.uleb128 0x13
+ 910 0050 38       		.uleb128 0x38
+ 911 0051 0B       		.uleb128 0xb
+ 912 0052 00       		.byte	0
+ 913 0053 00       		.byte	0
+ 914 0054 07       		.uleb128 0x7
+ 915 0055 2E       		.uleb128 0x2e
+ 916 0056 01       		.byte	0x1
+ 917 0057 3F       		.uleb128 0x3f
+ 918 0058 19       		.uleb128 0x19
+ 919 0059 03       		.uleb128 0x3
+ 920 005a 0E       		.uleb128 0xe
+ 921 005b 3A       		.uleb128 0x3a
+ 922 005c 0B       		.uleb128 0xb
+ 923 005d 3B       		.uleb128 0x3b
+ 924 005e 0B       		.uleb128 0xb
+ 925 005f 27       		.uleb128 0x27
+ 926 0060 19       		.uleb128 0x19
+ 927 0061 8701     		.uleb128 0x87
+ 928 0063 19       		.uleb128 0x19
+ 929 0064 11       		.uleb128 0x11
+ 930 0065 01       		.uleb128 0x1
+ 931 0066 12       		.uleb128 0x12
+ 932 0067 06       		.uleb128 0x6
+ 933 0068 40       		.uleb128 0x40
+ 934 0069 18       		.uleb128 0x18
+ 935 006a 9742     		.uleb128 0x2117
+ 936 006c 19       		.uleb128 0x19
+ 937 006d 01       		.uleb128 0x1
+ 938 006e 13       		.uleb128 0x13
+ 939 006f 00       		.byte	0
+ 940 0070 00       		.byte	0
+ 941 0071 08       		.uleb128 0x8
+ 942 0072 34       		.uleb128 0x34
+ 943 0073 00       		.byte	0
+ 944 0074 03       		.uleb128 0x3
+ 945 0075 08       		.uleb128 0x8
+ 946 0076 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 20
+
+
+ 947 0077 0B       		.uleb128 0xb
+ 948 0078 3B       		.uleb128 0x3b
+ 949 0079 0B       		.uleb128 0xb
+ 950 007a 49       		.uleb128 0x49
+ 951 007b 13       		.uleb128 0x13
+ 952 007c 02       		.uleb128 0x2
+ 953 007d 18       		.uleb128 0x18
+ 954 007e 00       		.byte	0
+ 955 007f 00       		.byte	0
+ 956 0080 09       		.uleb128 0x9
+ 957 0081 898201   		.uleb128 0x4109
+ 958 0084 00       		.byte	0
+ 959 0085 11       		.uleb128 0x11
+ 960 0086 01       		.uleb128 0x1
+ 961 0087 31       		.uleb128 0x31
+ 962 0088 13       		.uleb128 0x13
+ 963 0089 00       		.byte	0
+ 964 008a 00       		.byte	0
+ 965 008b 0A       		.uleb128 0xa
+ 966 008c 898201   		.uleb128 0x4109
+ 967 008f 01       		.byte	0x1
+ 968 0090 11       		.uleb128 0x11
+ 969 0091 01       		.uleb128 0x1
+ 970 0092 31       		.uleb128 0x31
+ 971 0093 13       		.uleb128 0x13
+ 972 0094 01       		.uleb128 0x1
+ 973 0095 13       		.uleb128 0x13
+ 974 0096 00       		.byte	0
+ 975 0097 00       		.byte	0
+ 976 0098 0B       		.uleb128 0xb
+ 977 0099 8A8201   		.uleb128 0x410a
+ 978 009c 00       		.byte	0
+ 979 009d 02       		.uleb128 0x2
+ 980 009e 18       		.uleb128 0x18
+ 981 009f 9142     		.uleb128 0x2111
+ 982 00a1 18       		.uleb128 0x18
+ 983 00a2 00       		.byte	0
+ 984 00a3 00       		.byte	0
+ 985 00a4 0C       		.uleb128 0xc
+ 986 00a5 898201   		.uleb128 0x4109
+ 987 00a8 01       		.byte	0x1
+ 988 00a9 11       		.uleb128 0x11
+ 989 00aa 01       		.uleb128 0x1
+ 990 00ab 31       		.uleb128 0x31
+ 991 00ac 13       		.uleb128 0x13
+ 992 00ad 00       		.byte	0
+ 993 00ae 00       		.byte	0
+ 994 00af 0D       		.uleb128 0xd
+ 995 00b0 34       		.uleb128 0x34
+ 996 00b1 00       		.byte	0
+ 997 00b2 03       		.uleb128 0x3
+ 998 00b3 0E       		.uleb128 0xe
+ 999 00b4 3A       		.uleb128 0x3a
+ 1000 00b5 0B       		.uleb128 0xb
+ 1001 00b6 3B       		.uleb128 0x3b
+ 1002 00b7 05       		.uleb128 0x5
+ 1003 00b8 49       		.uleb128 0x49
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 21
+
+
+ 1004 00b9 13       		.uleb128 0x13
+ 1005 00ba 3F       		.uleb128 0x3f
+ 1006 00bb 19       		.uleb128 0x19
+ 1007 00bc 3C       		.uleb128 0x3c
+ 1008 00bd 19       		.uleb128 0x19
+ 1009 00be 00       		.byte	0
+ 1010 00bf 00       		.byte	0
+ 1011 00c0 0E       		.uleb128 0xe
+ 1012 00c1 35       		.uleb128 0x35
+ 1013 00c2 00       		.byte	0
+ 1014 00c3 49       		.uleb128 0x49
+ 1015 00c4 13       		.uleb128 0x13
+ 1016 00c5 00       		.byte	0
+ 1017 00c6 00       		.byte	0
+ 1018 00c7 0F       		.uleb128 0xf
+ 1019 00c8 2E       		.uleb128 0x2e
+ 1020 00c9 00       		.byte	0
+ 1021 00ca 3F       		.uleb128 0x3f
+ 1022 00cb 19       		.uleb128 0x19
+ 1023 00cc 3C       		.uleb128 0x3c
+ 1024 00cd 19       		.uleb128 0x19
+ 1025 00ce 6E       		.uleb128 0x6e
+ 1026 00cf 0E       		.uleb128 0xe
+ 1027 00d0 03       		.uleb128 0x3
+ 1028 00d1 0E       		.uleb128 0xe
+ 1029 00d2 3A       		.uleb128 0x3a
+ 1030 00d3 0B       		.uleb128 0xb
+ 1031 00d4 3B       		.uleb128 0x3b
+ 1032 00d5 0B       		.uleb128 0xb
+ 1033 00d6 00       		.byte	0
+ 1034 00d7 00       		.byte	0
+ 1035 00d8 10       		.uleb128 0x10
+ 1036 00d9 2E       		.uleb128 0x2e
+ 1037 00da 00       		.byte	0
+ 1038 00db 3F       		.uleb128 0x3f
+ 1039 00dc 19       		.uleb128 0x19
+ 1040 00dd 3C       		.uleb128 0x3c
+ 1041 00de 19       		.uleb128 0x19
+ 1042 00df 6E       		.uleb128 0x6e
+ 1043 00e0 0E       		.uleb128 0xe
+ 1044 00e1 03       		.uleb128 0x3
+ 1045 00e2 0E       		.uleb128 0xe
+ 1046 00e3 3A       		.uleb128 0x3a
+ 1047 00e4 0B       		.uleb128 0xb
+ 1048 00e5 3B       		.uleb128 0x3b
+ 1049 00e6 0B       		.uleb128 0xb
+ 1050 00e7 6E       		.uleb128 0x6e
+ 1051 00e8 0E       		.uleb128 0xe
+ 1052 00e9 00       		.byte	0
+ 1053 00ea 00       		.byte	0
+ 1054 00eb 11       		.uleb128 0x11
+ 1055 00ec 2E       		.uleb128 0x2e
+ 1056 00ed 00       		.byte	0
+ 1057 00ee 3F       		.uleb128 0x3f
+ 1058 00ef 19       		.uleb128 0x19
+ 1059 00f0 3C       		.uleb128 0x3c
+ 1060 00f1 19       		.uleb128 0x19
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 22
+
+
+ 1061 00f2 6E       		.uleb128 0x6e
+ 1062 00f3 0E       		.uleb128 0xe
+ 1063 00f4 03       		.uleb128 0x3
+ 1064 00f5 0E       		.uleb128 0xe
+ 1065 00f6 3A       		.uleb128 0x3a
+ 1066 00f7 0B       		.uleb128 0xb
+ 1067 00f8 3B       		.uleb128 0x3b
+ 1068 00f9 05       		.uleb128 0x5
+ 1069 00fa 00       		.byte	0
+ 1070 00fb 00       		.byte	0
+ 1071 00fc 00       		.byte	0
+ 1072              		.section	.debug_aranges,"",%progbits
+ 1073 0000 1C000000 		.4byte	0x1c
+ 1074 0004 0200     		.2byte	0x2
+ 1075 0006 00000000 		.4byte	.Ldebug_info0
+ 1076 000a 04       		.byte	0x4
+ 1077 000b 00       		.byte	0
+ 1078 000c 0000     		.2byte	0
+ 1079 000e 0000     		.2byte	0
+ 1080 0010 00000000 		.4byte	.LFB85
+ 1081 0014 30010000 		.4byte	.LFE85-.LFB85
+ 1082 0018 00000000 		.4byte	0
+ 1083 001c 00000000 		.4byte	0
+ 1084              		.section	.debug_ranges,"",%progbits
+ 1085              	.Ldebug_ranges0:
+ 1086 0000 00000000 		.4byte	.LFB85
+ 1087 0004 30010000 		.4byte	.LFE85
+ 1088 0008 00000000 		.4byte	0
+ 1089 000c 00000000 		.4byte	0
+ 1090              		.section	.debug_line,"",%progbits
+ 1091              	.Ldebug_line0:
+ 1092 0000 2A020000 		.section	.debug_str,"MS",%progbits,1
+ 1092      0200CA01 
+ 1092      00000201 
+ 1092      FB0E0D00 
+ 1092      01010101 
+ 1093              	.LASF28:
+ 1094 0000 49525F77 		.ascii	"IR_wait\000"
+ 1094      61697400 
+ 1095              	.LASF0:
+ 1096 0008 7369676E 		.ascii	"signed char\000"
+ 1096      65642063 
+ 1096      68617200 
+ 1097              	.LASF34:
+ 1098 0014 73656E73 		.ascii	"sensors_\000"
+ 1098      6F72735F 
+ 1098      00
+ 1099              	.LASF18:
+ 1100 001d 7265666C 		.ascii	"reflectance_start\000"
+ 1100      65637461 
+ 1100      6E63655F 
+ 1100      73746172 
+ 1100      7400
+ 1101              	.LASF13:
+ 1102 002f 666C6F61 		.ascii	"float\000"
+ 1102      7400
+ 1103              	.LASF5:
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 23
+
+
+ 1104 0035 5F5F696E 		.ascii	"__int32_t\000"
+ 1104      7433325F 
+ 1104      7400
+ 1105              	.LASF33:
+ 1106 003f 433A5C55 		.ascii	"C:\\Users\\Dieu Vu\\Desktop\\Zumo\\ZumoBot.cydsn\000"
+ 1106      73657273 
+ 1106      5C446965 
+ 1106      75205675 
+ 1106      5C446573 
+ 1107              	.LASF27:
+ 1108 006b 7265666C 		.ascii	"reflectance_digital\000"
+ 1108      65637461 
+ 1108      6E63655F 
+ 1108      64696769 
+ 1108      74616C00 
+ 1109              	.LASF12:
+ 1110 007f 696E7433 		.ascii	"int32_t\000"
+ 1110      325F7400 
+ 1111              	.LASF19:
+ 1112 0087 7265666C 		.ascii	"reflectance_set_threshold\000"
+ 1112      65637461 
+ 1112      6E63655F 
+ 1112      7365745F 
+ 1112      74687265 
+ 1113              	.LASF1:
+ 1114 00a1 756E7369 		.ascii	"unsigned char\000"
+ 1114      676E6564 
+ 1114      20636861 
+ 1114      7200
+ 1115              	.LASF31:
+ 1116 00af 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1116      43313120 
+ 1116      352E342E 
+ 1116      31203230 
+ 1116      31363036 
+ 1117 00e2 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1117      20726576 
+ 1117      6973696F 
+ 1117      6E203233 
+ 1117      37373135 
+ 1118 0115 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1118      66756E63 
+ 1118      74696F6E 
+ 1118      2D736563 
+ 1118      74696F6E 
+ 1119              	.LASF7:
+ 1120 013d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1120      20756E73 
+ 1120      69676E65 
+ 1120      6420696E 
+ 1120      7400
+ 1121              	.LASF3:
+ 1122 014f 73686F72 		.ascii	"short unsigned int\000"
+ 1122      7420756E 
+ 1122      7369676E 
+ 1122      65642069 
+ 1122      6E7400
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 24
+
+
+ 1123              	.LASF26:
+ 1124 0162 76546173 		.ascii	"vTaskDelay\000"
+ 1124      6B44656C 
+ 1124      617900
+ 1125              	.LASF36:
+ 1126 016d 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1126      52784275 
+ 1126      66666572 
+ 1126      00
+ 1127              	.LASF23:
+ 1128 017a 6D6F746F 		.ascii	"motor_forward\000"
+ 1128      725F666F 
+ 1128      72776172 
+ 1128      6400
+ 1129              	.LASF4:
+ 1130 0188 5F5F7569 		.ascii	"__uint16_t\000"
+ 1130      6E743136 
+ 1130      5F7400
+ 1131              	.LASF14:
+ 1132 0193 646F7562 		.ascii	"double\000"
+ 1132      6C6500
+ 1133              	.LASF30:
+ 1134 019a 74616E6B 		.ascii	"tank_turn_direction\000"
+ 1134      5F747572 
+ 1134      6E5F6469 
+ 1134      72656374 
+ 1134      696F6E00 
+ 1135              	.LASF35:
+ 1136 01ae 7A6D6169 		.ascii	"zmain\000"
+ 1136      6E00
+ 1137              	.LASF10:
+ 1138 01b4 756E7369 		.ascii	"unsigned int\000"
+ 1138      676E6564 
+ 1138      20696E74 
+ 1138      00
+ 1139              	.LASF20:
+ 1140 01c1 49525F53 		.ascii	"IR_Start\000"
+ 1140      74617274 
+ 1140      00
+ 1141              	.LASF9:
+ 1142 01ca 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1142      206C6F6E 
+ 1142      6720756E 
+ 1142      7369676E 
+ 1142      65642069 
+ 1143              	.LASF22:
+ 1144 01e1 6D6F746F 		.ascii	"motor_start\000"
+ 1144      725F7374 
+ 1144      61727400 
+ 1145              	.LASF24:
+ 1146 01ed 5357315F 		.ascii	"SW1_Read\000"
+ 1146      52656164 
+ 1146      00
+ 1147              	.LASF16:
+ 1148 01f6 6C6F6E67 		.ascii	"long double\000"
+ 1148      20646F75 
+ 1148      626C6500 
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\ccmaxdG9.s 			page 25
+
+
+ 1149              	.LASF17:
+ 1150 0202 73697A65 		.ascii	"sizetype\000"
+ 1150      74797065 
+ 1150      00
+ 1151              	.LASF8:
+ 1152 020b 6C6F6E67 		.ascii	"long long int\000"
+ 1152      206C6F6E 
+ 1152      6720696E 
+ 1152      7400
+ 1153              	.LASF25:
+ 1154 0219 42617474 		.ascii	"BatteryLed_Write\000"
+ 1154      6572794C 
+ 1154      65645F57 
+ 1154      72697465 
+ 1154      00
+ 1155              	.LASF32:
+ 1156 022a 6D61696E 		.ascii	"main.c\000"
+ 1156      2E6300
+ 1157              	.LASF15:
+ 1158 0231 63686172 		.ascii	"char\000"
+ 1158      00
+ 1159              	.LASF2:
+ 1160 0236 73686F72 		.ascii	"short int\000"
+ 1160      7420696E 
+ 1160      7400
+ 1161              	.LASF11:
+ 1162 0240 75696E74 		.ascii	"uint16_t\000"
+ 1162      31365F74 
+ 1162      00
+ 1163              	.LASF6:
+ 1164 0249 6C6F6E67 		.ascii	"long int\000"
+ 1164      20696E74 
+ 1164      00
+ 1165              	.LASF21:
+ 1166 0252 49525F66 		.ascii	"IR_flush\000"
+ 1166      6C757368 
+ 1166      00
+ 1167              	.LASF37:
+ 1168 025b 70757473 		.ascii	"puts\000"
+ 1168      00
+ 1169              	.LASF29:
+ 1170 0260 6D6F746F 		.ascii	"motor_turn\000"
+ 1170      725F7475 
+ 1170      726E00
+ 1171              	.LASF38:
+ 1172 026b 5F5F6275 		.ascii	"__builtin_puts\000"
+ 1172      696C7469 
+ 1172      6E5F7075 
+ 1172      747300
+ 1173              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

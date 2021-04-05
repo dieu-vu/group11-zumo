@@ -36,6 +36,8 @@
 
 
 void motor_tank_turn();
+void progEnd(uint32_t delay);
+void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
 
 #endif
 /* [] END OF FILE */

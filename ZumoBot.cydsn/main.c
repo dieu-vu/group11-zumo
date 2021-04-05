@@ -56,6 +56,78 @@
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
 
+/****WEEK 4 EX.2*****/
+
+#if 0
+//motor
+void zmain(void)
+{
+    
+    struct sensors_ dig;
+    
+    reflectance_start();
+    
+    reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swith digi value between 0 and 1
+    IR_Start();
+    
+    IR_flush(); // clear IR receive buffer
+    printf("Buffer cleared\n");
+    
+    motor_start();              // enable motor controller
+    motor_forward(0,0);         // set speed to zero to stop motors
+    
+    while(SW1_Read());
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    reflectance_digital(&dig);
+    
+    printf("Starting sensor \n");
+    //printf("%5d %5d %5d %5d %5d %5d \r\n", dig.L3, dig.L2, dig.L1, dig.R1, dig.R2, dig.R3); 
+    motor_forward(75,0);     // moving forward
+         
+    //Stop and wait for the command when the sensor detect the line:
+    while(!(dig.L3==1 && dig.L2==1 && dig.R2==1 && dig.R3==1)){
+        reflectance_digital(&dig);
+    }
+    motor_forward(0,0);         // stop motors
+    printf("Reached the line, motor is waiting. Please send IR signal\n");
+    //printf("%5d %5d %5d %5d %5d %5d \r\n", dig.L3, dig.L2, dig.L1, dig.R1, dig.R2, dig.R3); 
+    IR_wait();
+    
+    motor_forward(30,0);
+    
+    //follow the curve line
+    while(true){
+        reflectance_digital(&dig);
+        if (dig.L1 == 1 || dig.R1 == 1){
+            //move forward if L1 and R1 have sensoring signal
+            motor_forward(30,0);
+        }    
+        else if (dig.L3 ==1 || dig.L2 == 1){
+            //turn left when there is signal on the left
+            motor_turn(10,125,100);
+            motor_forward(30,0);       
+        } 
+        else if (dig.R3 ==1 || dig.R2 ==1){
+            //turn right when there is signal on the right
+            motor_turn(125,10,100);
+            motor_forward(30,0);
+        }
+        else {
+            //if no signal found, turn clockwise until robot can find the way again
+            tank_turn_direction('R',75,0);
+            motor_forward(30,0);
+            continue;
+        }
+    }
+    
+    motor_stop();               // disable motor controller
+    
+    progEnd(100);
+}
+#endif
+
 /*****WEEK 3 EX.1*****/
 #if 0
 //motor
