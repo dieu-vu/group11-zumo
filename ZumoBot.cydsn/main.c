@@ -56,6 +56,59 @@
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
 
+/*****WEEK 4 EX.1*****/
+
+#if 1
+//motor
+void zmain(void)
+{
+    struct sensors_ dig;
+    int count = 0;
+    reflectance_start();
+    
+    reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
+    IR_Start();
+    IR_flush(); //Clear IR receive buffer
+    
+    motor_start();
+    motor_forward(0,0);  //set speed to zero
+    
+    while(SW1_Read());      //press user button
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    
+   //Enter to loop of 5 lines
+    while (count < 5) {
+        reflectance_digital(&dig);
+        
+        //Go thruogh the line
+        while(dig.L3==1 && dig.L2 ==1 && dig.L1 ==1 && dig.R3==1 && dig.R2==1 && dig.R1==1) {
+            motor_forward(100, 10);
+            reflectance_digital(&dig);
+        }
+        
+        while(!(dig.L3==1 && dig.L2 ==1 && dig.L1 ==1 && dig.R3==1 && dig.R2==1 && dig.R1==1)) { 
+            motor_forward(150,10);
+            reflectance_digital(&dig);
+        }
+        motor_forward(0,0);   
+        
+        count++;
+        printf("We on line %d\n", count);
+        
+        //Witing for the IR-signal
+        if(count==1)
+        {
+            IR_flush();
+            IR_wait();
+        }
+    }
+    //motor_stop();
+    progEnd(100);
+}
+#endif
+
 /****WEEK 4 EX.2*****/
 
 #if 0
@@ -135,8 +188,10 @@ void zmain(void)
 {
     motor_start();              // enable motor controller
     motor_forward(0,0);         // set speed to zero to stop motors
-
+    while(SW1_Read());
+    BatteryLed_Write(true);
     vTaskDelay(1000);
+    BatteryLed_Write(false);
     
     motor_forward(100,3000);           //moving forward
     motor_turn(210,105,500);
