@@ -35,7 +35,18 @@
 #include <time.h>
 
 
+// turn with random angle between 90 and 270 degrees
 void motor_tank_turn();
+
+// go forward with number lines
+void motor_forward_line (uint8 number);
+
+// turn left
+void motor_turn_left();
+
+// turn right
+void motor_turn_right();
+
 void progEnd(uint32_t delay);
 void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
 

@@ -181,6 +181,39 @@ void zmain(void)
 }
 #endif
 
+/*****WEEK 4 EX.3*****/
+#if 0
+//reflectance
+void zmain(void)
+{
+    reflectance_start();    // start reflectance
+    reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
+    
+    IR_Start(); // start IR
+    IR_flush(); // clear IR receive buffer
+    motor_start(); // start motor
+    
+    while(SW1_Read());  // wait SW1
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    
+    IR_wait();      // wait IR
+    
+    
+    motor_forward_line(1);  // go forward to first intersection
+    motor_turn_left();      // turn left
+    motor_forward_line(1);  // go forward to second intersection
+    motor_turn_right();     // turn right
+    motor_forward_line(1);  // go forward to third intersection
+    motor_turn_right();     // turn right
+    motor_forward_line(1);  // go forward to fourth intersection
+    motor_stop();           // stop motor
+    
+}   
+#endif
+
+
 /*****WEEK 3 EX.1*****/
 #if 0
 //motor
