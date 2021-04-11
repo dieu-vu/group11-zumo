@@ -47,6 +47,10 @@ void motor_turn_left();
 // turn right
 void motor_turn_right();
 
+//Motor stops and wait for IR signal
+void detect_horizontal_line();
+void follow_curve(uint8 line_number);
+
 void progEnd(uint32_t delay);
 void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
 
