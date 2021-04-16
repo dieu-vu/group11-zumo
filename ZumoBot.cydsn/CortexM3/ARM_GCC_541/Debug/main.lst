@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 1
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 1
   28:main.c        ****     I2C, UART, Serial<br>
   29:main.c        ****     </p>
   30:main.c        **** */
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 2
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 2
 
 
   31:main.c        **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 1
   85:main.c        ****         //Go thruogh the line
   86:main.c        ****         while(dig.L3==1 && dig.L2 ==1 && dig.L1 ==1 && dig.R3==1 && dig.R2==1 && dig.R1==1) {
   87:main.c        ****             motor_forward(100, 10);
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 3
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 3
 
 
   88:main.c        ****             reflectance_digital(&dig);
@@ -147,1073 +147,884 @@ ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 1
  111:main.c        **** 
  112:main.c        **** /****WEEK 4 EX.2*****/
  113:main.c        **** 
- 114:main.c        **** #if 1
+ 114:main.c        **** #if 0
  115:main.c        **** //motor
  116:main.c        **** void zmain(void)
  117:main.c        **** {
-  28              		.loc 1 117 0
-  29              		.cfi_startproc
-  30              		@ args = 0, pretend = 0, frame = 16
-  31              		@ frame_needed = 0, uses_anonymous_args = 0
-  32 0000 00B5     		push	{lr}
-  33              		.cfi_def_cfa_offset 4
-  34              		.cfi_offset 14, -4
-  35 0002 87B0     		sub	sp, sp, #28
-  36              		.cfi_def_cfa_offset 32
  118:main.c        ****     
  119:main.c        ****     struct sensors_ dig;
  120:main.c        ****     
  121:main.c        ****     reflectance_start();
-  37              		.loc 1 121 0
-  38 0004 FFF7FEFF 		bl	reflectance_start
-  39              	.LVL0:
  122:main.c        ****     
  123:main.c        ****     reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swi
-  40              		.loc 1 123 0
-  41 0008 42F6F820 		movw	r0, #11000
+ 124:main.c        ****     IR_Start();
+ 125:main.c        ****     
+ 126:main.c        ****     IR_flush(); // clear IR receive buffer
+ 127:main.c        ****     printf("Buffer cleared\n");
+ 128:main.c        ****     
+ 129:main.c        ****     motor_start();              // enable motor controller
+ 130:main.c        ****     motor_forward(0,0);         // set speed to zero to stop motors
+ 131:main.c        ****     
+ 132:main.c        ****     while(SW1_Read());
+ 133:main.c        ****     BatteryLed_Write(true);
+ 134:main.c        ****     vTaskDelay(500);
+ 135:main.c        ****     BatteryLed_Write(false);
+ 136:main.c        ****     reflectance_digital(&dig);
+ 137:main.c        ****     
+ 138:main.c        ****     printf("Starting sensor \n");
+ 139:main.c        ****     
+ 140:main.c        ****     motor_forward(30,0);     // moving forward
+ 141:main.c        ****   
+ 142:main.c        ****    // follow the curve line and turn around to find the way when out of the track
+ 143:main.c        ****     follow_curve(1); //if passing param line_number>1, the robot turns around line_number times and
+ 144:main.c        ****     
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 4
+
+
+ 145:main.c        ****     motor_stop();               // disable motor controller
+ 146:main.c        ****     
+ 147:main.c        ****     progEnd(100);
+ 148:main.c        **** }
+ 149:main.c        **** #endif
+ 150:main.c        **** 
+ 151:main.c        **** /*****WEEK 4 EX.3*****/
+ 152:main.c        **** #if 1
+ 153:main.c        **** //reflectance
+ 154:main.c        **** void zmain(void)
+ 155:main.c        **** {
+  28              		.loc 1 155 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 00B5     		push	{lr}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 14, -4
+  35 0002 83B0     		sub	sp, sp, #12
+  36              		.cfi_def_cfa_offset 16
+ 156:main.c        ****     reflectance_start();    // start reflectance
+  37              		.loc 1 156 0
+  38 0004 FFF7FEFF 		bl	reflectance_start
+  39              	.LVL0:
+ 157:main.c        ****     reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold
+  40              		.loc 1 157 0
+  41 0008 42F22830 		movw	r0, #9000
   42 000c 0190     		str	r0, [sp, #4]
   43 000e 0090     		str	r0, [sp]
-  44 0010 42F22833 		movw	r3, #9000
+  44 0010 42F6F823 		movw	r3, #11000
   45 0014 1A46     		mov	r2, r3
   46 0016 0146     		mov	r1, r0
   47 0018 FFF7FEFF 		bl	reflectance_set_threshold
   48              	.LVL1:
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 4
-
-
- 124:main.c        ****     IR_Start();
-  49              		.loc 1 124 0
+ 158:main.c        ****     
+ 159:main.c        ****     IR_Start(); // start IR
+  49              		.loc 1 159 0
   50 001c FFF7FEFF 		bl	IR_Start
   51              	.LVL2:
- 125:main.c        ****     
- 126:main.c        ****     IR_flush(); // clear IR receive buffer
-  52              		.loc 1 126 0
+ 160:main.c        ****     IR_flush(); // clear IR receive buffer
+  52              		.loc 1 160 0
   53 0020 FFF7FEFF 		bl	IR_flush
   54              	.LVL3:
- 127:main.c        ****     printf("Buffer cleared\n");
-  55              		.loc 1 127 0
-  56 0024 1548     		ldr	r0, .L4
-  57 0026 FFF7FEFF 		bl	puts
-  58              	.LVL4:
- 128:main.c        ****     
- 129:main.c        ****     motor_start();              // enable motor controller
-  59              		.loc 1 129 0
-  60 002a FFF7FEFF 		bl	motor_start
+ 161:main.c        ****     motor_start(); // start motor
+  55              		.loc 1 161 0
+  56 0024 FFF7FEFF 		bl	motor_start
+  57              	.LVL4:
+  58              	.L2:
+ 162:main.c        ****     
+ 163:main.c        ****     while(SW1_Read());  // wait SW1
+  59              		.loc 1 163 0 discriminator 1
+  60 0028 FFF7FEFF 		bl	SW1_Read
   61              	.LVL5:
- 130:main.c        ****     motor_forward(0,0);         // set speed to zero to stop motors
-  62              		.loc 1 130 0
-  63 002e 0021     		movs	r1, #0
-  64 0030 0846     		mov	r0, r1
-  65 0032 FFF7FEFF 		bl	motor_forward
-  66              	.LVL6:
-  67              	.L2:
- 131:main.c        ****     
- 132:main.c        ****     while(SW1_Read());
-  68              		.loc 1 132 0 discriminator 1
-  69 0036 FFF7FEFF 		bl	SW1_Read
-  70              	.LVL7:
-  71 003a 0028     		cmp	r0, #0
-  72 003c FBD1     		bne	.L2
- 133:main.c        ****     BatteryLed_Write(true);
-  73              		.loc 1 133 0
-  74 003e 0120     		movs	r0, #1
-  75 0040 FFF7FEFF 		bl	BatteryLed_Write
-  76              	.LVL8:
- 134:main.c        ****     vTaskDelay(500);
-  77              		.loc 1 134 0
-  78 0044 4FF4FA70 		mov	r0, #500
-  79 0048 FFF7FEFF 		bl	vTaskDelay
-  80              	.LVL9:
- 135:main.c        ****     BatteryLed_Write(false);
-  81              		.loc 1 135 0
-  82 004c 0020     		movs	r0, #0
-  83 004e FFF7FEFF 		bl	BatteryLed_Write
-  84              	.LVL10:
- 136:main.c        ****     reflectance_digital(&dig);
-  85              		.loc 1 136 0
-  86 0052 03A8     		add	r0, sp, #12
-  87 0054 FFF7FEFF 		bl	reflectance_digital
-  88              	.LVL11:
- 137:main.c        ****     
- 138:main.c        ****     printf("Starting sensor \n");
-  89              		.loc 1 138 0
-  90 0058 0948     		ldr	r0, .L4+4
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 5
+  62 002c 0028     		cmp	r0, #0
+  63 002e FBD1     		bne	.L2
+ 164:main.c        ****     BatteryLed_Write(true);
+  64              		.loc 1 164 0
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 5
 
 
-  91 005a FFF7FEFF 		bl	puts
-  92              	.LVL12:
- 139:main.c        ****     
- 140:main.c        ****     motor_forward(30,0);     // moving forward
-  93              		.loc 1 140 0
-  94 005e 0021     		movs	r1, #0
-  95 0060 1E20     		movs	r0, #30
-  96 0062 FFF7FEFF 		bl	motor_forward
-  97              	.LVL13:
- 141:main.c        ****   
- 142:main.c        ****    // follow the curve line and turn around to find the way when out of the track
- 143:main.c        ****     follow_curve(1); //if passing param >1, the robot turns around and continue until it meets the 
-  98              		.loc 1 143 0
-  99 0066 0120     		movs	r0, #1
- 100 0068 FFF7FEFF 		bl	follow_curve
- 101              	.LVL14:
- 144:main.c        ****     
- 145:main.c        ****     motor_stop();               // disable motor controller
- 102              		.loc 1 145 0
- 103 006c FFF7FEFF 		bl	motor_stop
- 104              	.LVL15:
- 146:main.c        ****     
- 147:main.c        ****     progEnd(100);
- 105              		.loc 1 147 0
- 106 0070 6420     		movs	r0, #100
- 107 0072 FFF7FEFF 		bl	progEnd
- 108              	.LVL16:
- 148:main.c        **** }
- 109              		.loc 1 148 0
- 110 0076 07B0     		add	sp, sp, #28
- 111              		.cfi_def_cfa_offset 4
- 112              		@ sp needed
- 113 0078 5DF804FB 		ldr	pc, [sp], #4
- 114              	.L5:
- 115              		.align	2
- 116              	.L4:
- 117 007c 00000000 		.word	.LC0
- 118 0080 10000000 		.word	.LC1
- 119              		.cfi_endproc
- 120              	.LFE85:
- 121              		.size	zmain, .-zmain
- 122              		.section	.rodata.str1.4,"aMS",%progbits,1
- 123              		.align	2
- 124              	.LC0:
- 125 0000 42756666 		.ascii	"Buffer cleared\000"
- 125      65722063 
- 125      6C656172 
- 125      656400
- 126 000f 00       		.space	1
- 127              	.LC1:
- 128 0010 53746172 		.ascii	"Starting sensor \000"
- 128      74696E67 
- 128      2073656E 
- 128      736F7220 
- 128      00
- 129              		.text
- 130              	.Letext0:
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 6
+  65 0030 0120     		movs	r0, #1
+  66 0032 FFF7FEFF 		bl	BatteryLed_Write
+  67              	.LVL6:
+ 165:main.c        ****     vTaskDelay(500);
+  68              		.loc 1 165 0
+  69 0036 4FF4FA70 		mov	r0, #500
+  70 003a FFF7FEFF 		bl	vTaskDelay
+  71              	.LVL7:
+ 166:main.c        ****     BatteryLed_Write(false);
+  72              		.loc 1 166 0
+  73 003e 0020     		movs	r0, #0
+  74 0040 FFF7FEFF 		bl	BatteryLed_Write
+  75              	.LVL8:
+ 167:main.c        ****     
+ 168:main.c        ****     IR_wait();      // wait IR
+  76              		.loc 1 168 0
+  77 0044 FFF7FEFF 		bl	IR_wait
+  78              	.LVL9:
+ 169:main.c        ****     
+ 170:main.c        ****     
+ 171:main.c        ****     motor_forward_line(1);  // go forward to first intersection
+  79              		.loc 1 171 0
+  80 0048 0120     		movs	r0, #1
+  81 004a FFF7FEFF 		bl	motor_forward_line
+  82              	.LVL10:
+ 172:main.c        ****     motor_turn_left();      // turn left
+  83              		.loc 1 172 0
+  84 004e FFF7FEFF 		bl	motor_turn_left
+  85              	.LVL11:
+ 173:main.c        ****     motor_forward_line(1);  // go forward to second intersection
+  86              		.loc 1 173 0
+  87 0052 0120     		movs	r0, #1
+  88 0054 FFF7FEFF 		bl	motor_forward_line
+  89              	.LVL12:
+ 174:main.c        ****     motor_turn_right();     // turn right
+  90              		.loc 1 174 0
+  91 0058 FFF7FEFF 		bl	motor_turn_right
+  92              	.LVL13:
+ 175:main.c        ****     motor_forward_line(1);  // go forward to third intersection
+  93              		.loc 1 175 0
+  94 005c 0120     		movs	r0, #1
+  95 005e FFF7FEFF 		bl	motor_forward_line
+  96              	.LVL14:
+ 176:main.c        ****     motor_turn_right();     // turn right
+  97              		.loc 1 176 0
+  98 0062 FFF7FEFF 		bl	motor_turn_right
+  99              	.LVL15:
+ 177:main.c        ****     motor_forward_line(1);  // go forward to fourth intersection
+ 100              		.loc 1 177 0
+ 101 0066 0120     		movs	r0, #1
+ 102 0068 FFF7FEFF 		bl	motor_forward_line
+ 103              	.LVL16:
+ 178:main.c        ****     motor_stop();           // stop motor
+ 104              		.loc 1 178 0
+ 105 006c FFF7FEFF 		bl	motor_stop
+ 106              	.LVL17:
+ 179:main.c        ****     
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 6
 
 
- 131              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 132              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 133              		.file 4 ".\\ZumoLibrary/Reflectance.h"
- 134              		.file 5 ".\\ZumoLibrary/IR.h"
- 135              		.file 6 ".\\ZumoLibrary/Motor.h"
- 136              		.file 7 "Generated_Source\\PSoC5/SW1.h"
- 137              		.file 8 "Generated_Source\\PSoC5/BatteryLed.h"
- 138              		.file 9 "..\\FreeRTOS\\Source\\include/task.h"
- 139              		.file 10 ".\\ZumoLibrary/library.h"
- 140              		.file 11 "Generated_Source\\PSoC5/core_cm3.h"
- 141              		.file 12 "<built-in>"
- 142              		.section	.debug_info,"",%progbits
- 143              	.Ldebug_info0:
- 144 0000 1A030000 		.4byte	0x31a
- 145 0004 0400     		.2byte	0x4
- 146 0006 00000000 		.4byte	.Ldebug_abbrev0
- 147 000a 04       		.byte	0x4
- 148 000b 01       		.uleb128 0x1
- 149 000c B6000000 		.4byte	.LASF31
- 150 0010 0C       		.byte	0xc
- 151 0011 22020000 		.4byte	.LASF32
- 152 0015 46000000 		.4byte	.LASF33
- 153 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 154 001d 00000000 		.4byte	0
- 155 0021 00000000 		.4byte	.Ldebug_line0
- 156 0025 02       		.uleb128 0x2
- 157 0026 01       		.byte	0x1
- 158 0027 06       		.byte	0x6
- 159 0028 58020000 		.4byte	.LASF0
- 160 002c 02       		.uleb128 0x2
- 161 002d 01       		.byte	0x1
- 162 002e 08       		.byte	0x8
- 163 002f A8000000 		.4byte	.LASF1
- 164 0033 02       		.uleb128 0x2
- 165 0034 02       		.byte	0x2
- 166 0035 05       		.byte	0x5
- 167 0036 2E020000 		.4byte	.LASF2
- 168 003a 03       		.uleb128 0x3
- 169 003b 8F010000 		.4byte	.LASF4
- 170 003f 02       		.byte	0x2
- 171 0040 2B       		.byte	0x2b
- 172 0041 45000000 		.4byte	0x45
- 173 0045 02       		.uleb128 0x2
- 174 0046 02       		.byte	0x2
- 175 0047 07       		.byte	0x7
- 176 0048 56010000 		.4byte	.LASF3
- 177 004c 03       		.uleb128 0x3
- 178 004d 2F000000 		.4byte	.LASF5
- 179 0051 02       		.byte	0x2
- 180 0052 3F       		.byte	0x3f
- 181 0053 57000000 		.4byte	0x57
- 182 0057 02       		.uleb128 0x2
- 183 0058 04       		.byte	0x4
- 184 0059 05       		.byte	0x5
- 185 005a 41020000 		.4byte	.LASF6
- 186 005e 02       		.uleb128 0x2
- 187 005f 04       		.byte	0x4
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 7
+ 180:main.c        **** }   
+ 107              		.loc 1 180 0
+ 108 0070 03B0     		add	sp, sp, #12
+ 109              		.cfi_def_cfa_offset 4
+ 110              		@ sp needed
+ 111 0072 5DF804FB 		ldr	pc, [sp], #4
+ 112              		.cfi_endproc
+ 113              	.LFE85:
+ 114              		.size	zmain, .-zmain
+ 115 0076 00BF     		.text
+ 116              	.Letext0:
+ 117              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 118              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 119              		.file 4 ".\\ZumoLibrary/Reflectance.h"
+ 120              		.file 5 ".\\ZumoLibrary/IR.h"
+ 121              		.file 6 ".\\ZumoLibrary/Motor.h"
+ 122              		.file 7 "Generated_Source\\PSoC5/SW1.h"
+ 123              		.file 8 "Generated_Source\\PSoC5/BatteryLed.h"
+ 124              		.file 9 "..\\FreeRTOS\\Source\\include/task.h"
+ 125              		.file 10 ".\\ZumoLibrary/library.h"
+ 126              		.file 11 "Generated_Source\\PSoC5/core_cm3.h"
+ 127              		.section	.debug_info,"",%progbits
+ 128              	.Ldebug_info0:
+ 129 0000 73020000 		.4byte	0x273
+ 130 0004 0400     		.2byte	0x4
+ 131 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 132 000a 04       		.byte	0x4
+ 133 000b 01       		.uleb128 0x1
+ 134 000c 91000000 		.4byte	.LASF29
+ 135 0010 0C       		.byte	0xc
+ 136 0011 07020000 		.4byte	.LASF30
+ 137 0015 24000000 		.4byte	.LASF31
+ 138 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 139 001d 00000000 		.4byte	0
+ 140 0021 00000000 		.4byte	.Ldebug_line0
+ 141 0025 02       		.uleb128 0x2
+ 142 0026 01       		.byte	0x1
+ 143 0027 06       		.byte	0x6
+ 144 0028 3B020000 		.4byte	.LASF0
+ 145 002c 02       		.uleb128 0x2
+ 146 002d 01       		.byte	0x1
+ 147 002e 08       		.byte	0x8
+ 148 002f 83000000 		.4byte	.LASF1
+ 149 0033 02       		.uleb128 0x2
+ 150 0034 02       		.byte	0x2
+ 151 0035 05       		.byte	0x5
+ 152 0036 13020000 		.4byte	.LASF2
+ 153 003a 02       		.uleb128 0x2
+ 154 003b 02       		.byte	0x2
+ 155 003c 07       		.byte	0x7
+ 156 003d 31010000 		.4byte	.LASF3
+ 157 0041 03       		.uleb128 0x3
+ 158 0042 1A000000 		.4byte	.LASF9
+ 159 0046 02       		.byte	0x2
+ 160 0047 3F       		.byte	0x3f
+ 161 0048 4C000000 		.4byte	0x4c
+ 162 004c 02       		.uleb128 0x2
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 7
 
 
- 188 0060 07       		.byte	0x7
- 189 0061 44010000 		.4byte	.LASF7
- 190 0065 02       		.uleb128 0x2
- 191 0066 08       		.byte	0x8
- 192 0067 05       		.byte	0x5
- 193 0068 00000000 		.4byte	.LASF8
- 194 006c 02       		.uleb128 0x2
- 195 006d 08       		.byte	0x8
- 196 006e 07       		.byte	0x7
- 197 006f C8010000 		.4byte	.LASF9
- 198 0073 04       		.uleb128 0x4
- 199 0074 04       		.byte	0x4
- 200 0075 05       		.byte	0x5
- 201 0076 696E7400 		.ascii	"int\000"
- 202 007a 02       		.uleb128 0x2
- 203 007b 04       		.byte	0x4
- 204 007c 07       		.byte	0x7
- 205 007d B2010000 		.4byte	.LASF10
- 206 0081 03       		.uleb128 0x3
- 207 0082 38020000 		.4byte	.LASF11
- 208 0086 03       		.byte	0x3
- 209 0087 24       		.byte	0x24
- 210 0088 3A000000 		.4byte	0x3a
- 211 008c 03       		.uleb128 0x3
- 212 008d 86000000 		.4byte	.LASF12
- 213 0091 03       		.byte	0x3
- 214 0092 2C       		.byte	0x2c
- 215 0093 4C000000 		.4byte	0x4c
- 216 0097 02       		.uleb128 0x2
- 217 0098 04       		.byte	0x4
- 218 0099 04       		.byte	0x4
- 219 009a 29000000 		.4byte	.LASF13
- 220 009e 02       		.uleb128 0x2
- 221 009f 08       		.byte	0x8
- 222 00a0 04       		.byte	0x4
- 223 00a1 9A010000 		.4byte	.LASF14
- 224 00a5 02       		.uleb128 0x2
- 225 00a6 01       		.byte	0x1
- 226 00a7 08       		.byte	0x8
- 227 00a8 29020000 		.4byte	.LASF15
- 228 00ac 02       		.uleb128 0x2
- 229 00ad 08       		.byte	0x8
- 230 00ae 04       		.byte	0x4
- 231 00af F4010000 		.4byte	.LASF16
- 232 00b3 02       		.uleb128 0x2
- 233 00b4 04       		.byte	0x4
- 234 00b5 07       		.byte	0x7
- 235 00b6 00020000 		.4byte	.LASF17
- 236 00ba 05       		.uleb128 0x5
- 237 00bb 0E000000 		.4byte	.LASF34
- 238 00bf 0C       		.byte	0xc
- 239 00c0 04       		.byte	0x4
- 240 00c1 0E       		.byte	0xe
- 241 00c2 09010000 		.4byte	0x109
- 242 00c6 06       		.uleb128 0x6
- 243 00c7 4C3300   		.ascii	"L3\000"
- 244 00ca 04       		.byte	0x4
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 8
+ 163 004d 04       		.byte	0x4
+ 164 004e 05       		.byte	0x5
+ 165 004f 1D020000 		.4byte	.LASF4
+ 166 0053 02       		.uleb128 0x2
+ 167 0054 04       		.byte	0x4
+ 168 0055 07       		.byte	0x7
+ 169 0056 1F010000 		.4byte	.LASF5
+ 170 005a 02       		.uleb128 0x2
+ 171 005b 08       		.byte	0x8
+ 172 005c 05       		.byte	0x5
+ 173 005d E8010000 		.4byte	.LASF6
+ 174 0061 02       		.uleb128 0x2
+ 175 0062 08       		.byte	0x8
+ 176 0063 07       		.byte	0x7
+ 177 0064 9A010000 		.4byte	.LASF7
+ 178 0068 04       		.uleb128 0x4
+ 179 0069 04       		.byte	0x4
+ 180 006a 05       		.byte	0x5
+ 181 006b 696E7400 		.ascii	"int\000"
+ 182 006f 02       		.uleb128 0x2
+ 183 0070 04       		.byte	0x4
+ 184 0071 07       		.byte	0x7
+ 185 0072 84010000 		.4byte	.LASF8
+ 186 0076 03       		.uleb128 0x3
+ 187 0077 D7010000 		.4byte	.LASF10
+ 188 007b 03       		.byte	0x3
+ 189 007c 2C       		.byte	0x2c
+ 190 007d 41000000 		.4byte	0x41
+ 191 0081 02       		.uleb128 0x2
+ 192 0082 04       		.byte	0x4
+ 193 0083 04       		.byte	0x4
+ 194 0084 50000000 		.4byte	.LASF11
+ 195 0088 02       		.uleb128 0x2
+ 196 0089 08       		.byte	0x8
+ 197 008a 04       		.byte	0x4
+ 198 008b 5C010000 		.4byte	.LASF12
+ 199 008f 02       		.uleb128 0x2
+ 200 0090 01       		.byte	0x1
+ 201 0091 08       		.byte	0x8
+ 202 0092 0E020000 		.4byte	.LASF13
+ 203 0096 02       		.uleb128 0x2
+ 204 0097 08       		.byte	0x8
+ 205 0098 04       		.byte	0x4
+ 206 0099 2F020000 		.4byte	.LASF14
+ 207 009d 02       		.uleb128 0x2
+ 208 009e 04       		.byte	0x4
+ 209 009f 07       		.byte	0x7
+ 210 00a0 DF010000 		.4byte	.LASF15
+ 211 00a4 05       		.uleb128 0x5
+ 212 00a5 7E010000 		.4byte	.LASF32
+ 213 00a9 01       		.byte	0x1
+ 214 00aa 9A       		.byte	0x9a
+ 215 00ab 00000000 		.4byte	.LFB85
+ 216 00af 76000000 		.4byte	.LFE85-.LFB85
+ 217 00b3 01       		.uleb128 0x1
+ 218 00b4 9C       		.byte	0x9c
+ 219 00b5 D5010000 		.4byte	0x1d5
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 8
 
 
- 245 00cb 0F       		.byte	0xf
- 246 00cc 81000000 		.4byte	0x81
- 247 00d0 00       		.byte	0
- 248 00d1 06       		.uleb128 0x6
- 249 00d2 4C3200   		.ascii	"L2\000"
- 250 00d5 04       		.byte	0x4
- 251 00d6 10       		.byte	0x10
- 252 00d7 81000000 		.4byte	0x81
- 253 00db 02       		.byte	0x2
- 254 00dc 06       		.uleb128 0x6
- 255 00dd 4C3100   		.ascii	"L1\000"
- 256 00e0 04       		.byte	0x4
- 257 00e1 11       		.byte	0x11
- 258 00e2 81000000 		.4byte	0x81
- 259 00e6 04       		.byte	0x4
- 260 00e7 06       		.uleb128 0x6
- 261 00e8 523100   		.ascii	"R1\000"
- 262 00eb 04       		.byte	0x4
- 263 00ec 12       		.byte	0x12
- 264 00ed 81000000 		.4byte	0x81
- 265 00f1 06       		.byte	0x6
- 266 00f2 06       		.uleb128 0x6
- 267 00f3 523200   		.ascii	"R2\000"
- 268 00f6 04       		.byte	0x4
- 269 00f7 13       		.byte	0x13
- 270 00f8 81000000 		.4byte	0x81
- 271 00fc 08       		.byte	0x8
- 272 00fd 06       		.uleb128 0x6
- 273 00fe 523300   		.ascii	"R3\000"
- 274 0101 04       		.byte	0x4
- 275 0102 14       		.byte	0x14
- 276 0103 81000000 		.4byte	0x81
- 277 0107 0A       		.byte	0xa
- 278 0108 00       		.byte	0
- 279 0109 07       		.uleb128 0x7
- 280 010a AC010000 		.4byte	.LASF35
- 281 010e 01       		.byte	0x1
- 282 010f 74       		.byte	0x74
- 283 0110 00000000 		.4byte	.LFB85
- 284 0114 84000000 		.4byte	.LFE85-.LFB85
- 285 0118 01       		.uleb128 0x1
- 286 0119 9C       		.byte	0x9c
- 287 011a 6D020000 		.4byte	0x26d
- 288 011e 08       		.uleb128 0x8
- 289 011f 64696700 		.ascii	"dig\000"
- 290 0123 01       		.byte	0x1
- 291 0124 77       		.byte	0x77
- 292 0125 BA000000 		.4byte	0xba
- 293 0129 02       		.uleb128 0x2
- 294 012a 91       		.byte	0x91
- 295 012b 6C       		.sleb128 -20
- 296 012c 09       		.uleb128 0x9
- 297 012d 08000000 		.4byte	.LVL0
- 298 0131 7E020000 		.4byte	0x27e
- 299 0135 0A       		.uleb128 0xa
- 300 0136 1C000000 		.4byte	.LVL1
- 301 013a 89020000 		.4byte	0x289
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 9
+ 220 00b9 06       		.uleb128 0x6
+ 221 00ba 08000000 		.4byte	.LVL0
+ 222 00be E6010000 		.4byte	0x1e6
+ 223 00c2 07       		.uleb128 0x7
+ 224 00c3 1C000000 		.4byte	.LVL1
+ 225 00c7 F1010000 		.4byte	0x1f1
+ 226 00cb FC000000 		.4byte	0xfc
+ 227 00cf 08       		.uleb128 0x8
+ 228 00d0 01       		.uleb128 0x1
+ 229 00d1 50       		.byte	0x50
+ 230 00d2 03       		.uleb128 0x3
+ 231 00d3 0A       		.byte	0xa
+ 232 00d4 2823     		.2byte	0x2328
+ 233 00d6 08       		.uleb128 0x8
+ 234 00d7 01       		.uleb128 0x1
+ 235 00d8 51       		.byte	0x51
+ 236 00d9 03       		.uleb128 0x3
+ 237 00da 0A       		.byte	0xa
+ 238 00db 2823     		.2byte	0x2328
+ 239 00dd 08       		.uleb128 0x8
+ 240 00de 01       		.uleb128 0x1
+ 241 00df 52       		.byte	0x52
+ 242 00e0 03       		.uleb128 0x3
+ 243 00e1 0A       		.byte	0xa
+ 244 00e2 F82A     		.2byte	0x2af8
+ 245 00e4 08       		.uleb128 0x8
+ 246 00e5 01       		.uleb128 0x1
+ 247 00e6 53       		.byte	0x53
+ 248 00e7 03       		.uleb128 0x3
+ 249 00e8 0A       		.byte	0xa
+ 250 00e9 F82A     		.2byte	0x2af8
+ 251 00eb 08       		.uleb128 0x8
+ 252 00ec 02       		.uleb128 0x2
+ 253 00ed 7D       		.byte	0x7d
+ 254 00ee 00       		.sleb128 0
+ 255 00ef 03       		.uleb128 0x3
+ 256 00f0 0A       		.byte	0xa
+ 257 00f1 2823     		.2byte	0x2328
+ 258 00f3 08       		.uleb128 0x8
+ 259 00f4 02       		.uleb128 0x2
+ 260 00f5 7D       		.byte	0x7d
+ 261 00f6 04       		.sleb128 4
+ 262 00f7 03       		.uleb128 0x3
+ 263 00f8 0A       		.byte	0xa
+ 264 00f9 2823     		.2byte	0x2328
+ 265 00fb 00       		.byte	0
+ 266 00fc 06       		.uleb128 0x6
+ 267 00fd 20000000 		.4byte	.LVL2
+ 268 0101 FC010000 		.4byte	0x1fc
+ 269 0105 06       		.uleb128 0x6
+ 270 0106 24000000 		.4byte	.LVL3
+ 271 010a 07020000 		.4byte	0x207
+ 272 010e 06       		.uleb128 0x6
+ 273 010f 28000000 		.4byte	.LVL4
+ 274 0113 12020000 		.4byte	0x212
+ 275 0117 06       		.uleb128 0x6
+ 276 0118 2C000000 		.4byte	.LVL5
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 9
 
 
- 302 013e 6F010000 		.4byte	0x16f
- 303 0142 0B       		.uleb128 0xb
- 304 0143 01       		.uleb128 0x1
- 305 0144 50       		.byte	0x50
- 306 0145 03       		.uleb128 0x3
- 307 0146 0A       		.byte	0xa
- 308 0147 F82A     		.2byte	0x2af8
- 309 0149 0B       		.uleb128 0xb
- 310 014a 01       		.uleb128 0x1
- 311 014b 51       		.byte	0x51
- 312 014c 03       		.uleb128 0x3
- 313 014d 0A       		.byte	0xa
- 314 014e F82A     		.2byte	0x2af8
- 315 0150 0B       		.uleb128 0xb
- 316 0151 01       		.uleb128 0x1
- 317 0152 52       		.byte	0x52
- 318 0153 03       		.uleb128 0x3
- 319 0154 0A       		.byte	0xa
- 320 0155 2823     		.2byte	0x2328
- 321 0157 0B       		.uleb128 0xb
- 322 0158 01       		.uleb128 0x1
- 323 0159 53       		.byte	0x53
- 324 015a 03       		.uleb128 0x3
- 325 015b 0A       		.byte	0xa
- 326 015c 2823     		.2byte	0x2328
- 327 015e 0B       		.uleb128 0xb
- 328 015f 02       		.uleb128 0x2
- 329 0160 7D       		.byte	0x7d
- 330 0161 00       		.sleb128 0
- 331 0162 03       		.uleb128 0x3
- 332 0163 0A       		.byte	0xa
- 333 0164 F82A     		.2byte	0x2af8
- 334 0166 0B       		.uleb128 0xb
- 335 0167 02       		.uleb128 0x2
- 336 0168 7D       		.byte	0x7d
- 337 0169 04       		.sleb128 4
- 338 016a 03       		.uleb128 0x3
- 339 016b 0A       		.byte	0xa
- 340 016c F82A     		.2byte	0x2af8
- 341 016e 00       		.byte	0
- 342 016f 09       		.uleb128 0x9
- 343 0170 20000000 		.4byte	.LVL2
- 344 0174 94020000 		.4byte	0x294
- 345 0178 09       		.uleb128 0x9
- 346 0179 24000000 		.4byte	.LVL3
- 347 017d 9F020000 		.4byte	0x29f
- 348 0181 0A       		.uleb128 0xa
- 349 0182 2A000000 		.4byte	.LVL4
- 350 0186 AA020000 		.4byte	0x2aa
- 351 018a 98010000 		.4byte	0x198
- 352 018e 0B       		.uleb128 0xb
- 353 018f 01       		.uleb128 0x1
- 354 0190 50       		.byte	0x50
- 355 0191 05       		.uleb128 0x5
- 356 0192 03       		.byte	0x3
- 357 0193 00000000 		.4byte	.LC0
- 358 0197 00       		.byte	0
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 10
+ 277 011c 1D020000 		.4byte	0x21d
+ 278 0120 07       		.uleb128 0x7
+ 279 0121 36000000 		.4byte	.LVL6
+ 280 0125 28020000 		.4byte	0x228
+ 281 0129 33010000 		.4byte	0x133
+ 282 012d 08       		.uleb128 0x8
+ 283 012e 01       		.uleb128 0x1
+ 284 012f 50       		.byte	0x50
+ 285 0130 01       		.uleb128 0x1
+ 286 0131 31       		.byte	0x31
+ 287 0132 00       		.byte	0
+ 288 0133 07       		.uleb128 0x7
+ 289 0134 3E000000 		.4byte	.LVL7
+ 290 0138 33020000 		.4byte	0x233
+ 291 013c 48010000 		.4byte	0x148
+ 292 0140 08       		.uleb128 0x8
+ 293 0141 01       		.uleb128 0x1
+ 294 0142 50       		.byte	0x50
+ 295 0143 03       		.uleb128 0x3
+ 296 0144 0A       		.byte	0xa
+ 297 0145 F401     		.2byte	0x1f4
+ 298 0147 00       		.byte	0
+ 299 0148 07       		.uleb128 0x7
+ 300 0149 44000000 		.4byte	.LVL8
+ 301 014d 28020000 		.4byte	0x228
+ 302 0151 5B010000 		.4byte	0x15b
+ 303 0155 08       		.uleb128 0x8
+ 304 0156 01       		.uleb128 0x1
+ 305 0157 50       		.byte	0x50
+ 306 0158 01       		.uleb128 0x1
+ 307 0159 30       		.byte	0x30
+ 308 015a 00       		.byte	0
+ 309 015b 06       		.uleb128 0x6
+ 310 015c 48000000 		.4byte	.LVL9
+ 311 0160 3F020000 		.4byte	0x23f
+ 312 0164 07       		.uleb128 0x7
+ 313 0165 4E000000 		.4byte	.LVL10
+ 314 0169 4A020000 		.4byte	0x24a
+ 315 016d 77010000 		.4byte	0x177
+ 316 0171 08       		.uleb128 0x8
+ 317 0172 01       		.uleb128 0x1
+ 318 0173 50       		.byte	0x50
+ 319 0174 01       		.uleb128 0x1
+ 320 0175 31       		.byte	0x31
+ 321 0176 00       		.byte	0
+ 322 0177 06       		.uleb128 0x6
+ 323 0178 52000000 		.4byte	.LVL11
+ 324 017c 55020000 		.4byte	0x255
+ 325 0180 07       		.uleb128 0x7
+ 326 0181 58000000 		.4byte	.LVL12
+ 327 0185 4A020000 		.4byte	0x24a
+ 328 0189 93010000 		.4byte	0x193
+ 329 018d 08       		.uleb128 0x8
+ 330 018e 01       		.uleb128 0x1
+ 331 018f 50       		.byte	0x50
+ 332 0190 01       		.uleb128 0x1
+ 333 0191 31       		.byte	0x31
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 10
 
 
- 359 0198 09       		.uleb128 0x9
- 360 0199 2E000000 		.4byte	.LVL5
- 361 019d B9020000 		.4byte	0x2b9
- 362 01a1 0A       		.uleb128 0xa
- 363 01a2 36000000 		.4byte	.LVL6
- 364 01a6 C4020000 		.4byte	0x2c4
- 365 01aa B9010000 		.4byte	0x1b9
- 366 01ae 0B       		.uleb128 0xb
- 367 01af 01       		.uleb128 0x1
- 368 01b0 50       		.byte	0x50
- 369 01b1 01       		.uleb128 0x1
- 370 01b2 30       		.byte	0x30
- 371 01b3 0B       		.uleb128 0xb
- 372 01b4 01       		.uleb128 0x1
- 373 01b5 51       		.byte	0x51
- 374 01b6 01       		.uleb128 0x1
- 375 01b7 30       		.byte	0x30
- 376 01b8 00       		.byte	0
- 377 01b9 09       		.uleb128 0x9
- 378 01ba 3A000000 		.4byte	.LVL7
- 379 01be CF020000 		.4byte	0x2cf
- 380 01c2 0A       		.uleb128 0xa
- 381 01c3 44000000 		.4byte	.LVL8
- 382 01c7 DA020000 		.4byte	0x2da
- 383 01cb D5010000 		.4byte	0x1d5
- 384 01cf 0B       		.uleb128 0xb
- 385 01d0 01       		.uleb128 0x1
- 386 01d1 50       		.byte	0x50
- 387 01d2 01       		.uleb128 0x1
- 388 01d3 31       		.byte	0x31
- 389 01d4 00       		.byte	0
- 390 01d5 0A       		.uleb128 0xa
- 391 01d6 4C000000 		.4byte	.LVL9
- 392 01da E5020000 		.4byte	0x2e5
- 393 01de EA010000 		.4byte	0x1ea
- 394 01e2 0B       		.uleb128 0xb
- 395 01e3 01       		.uleb128 0x1
- 396 01e4 50       		.byte	0x50
- 397 01e5 03       		.uleb128 0x3
- 398 01e6 0A       		.byte	0xa
- 399 01e7 F401     		.2byte	0x1f4
- 400 01e9 00       		.byte	0
- 401 01ea 0A       		.uleb128 0xa
- 402 01eb 52000000 		.4byte	.LVL10
- 403 01ef DA020000 		.4byte	0x2da
- 404 01f3 FD010000 		.4byte	0x1fd
- 405 01f7 0B       		.uleb128 0xb
- 406 01f8 01       		.uleb128 0x1
- 407 01f9 50       		.byte	0x50
- 408 01fa 01       		.uleb128 0x1
- 409 01fb 30       		.byte	0x30
- 410 01fc 00       		.byte	0
- 411 01fd 0A       		.uleb128 0xa
- 412 01fe 58000000 		.4byte	.LVL11
- 413 0202 F1020000 		.4byte	0x2f1
- 414 0206 11020000 		.4byte	0x211
- 415 020a 0B       		.uleb128 0xb
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 11
+ 334 0192 00       		.byte	0
+ 335 0193 06       		.uleb128 0x6
+ 336 0194 5C000000 		.4byte	.LVL13
+ 337 0198 60020000 		.4byte	0x260
+ 338 019c 07       		.uleb128 0x7
+ 339 019d 62000000 		.4byte	.LVL14
+ 340 01a1 4A020000 		.4byte	0x24a
+ 341 01a5 AF010000 		.4byte	0x1af
+ 342 01a9 08       		.uleb128 0x8
+ 343 01aa 01       		.uleb128 0x1
+ 344 01ab 50       		.byte	0x50
+ 345 01ac 01       		.uleb128 0x1
+ 346 01ad 31       		.byte	0x31
+ 347 01ae 00       		.byte	0
+ 348 01af 06       		.uleb128 0x6
+ 349 01b0 66000000 		.4byte	.LVL15
+ 350 01b4 60020000 		.4byte	0x260
+ 351 01b8 07       		.uleb128 0x7
+ 352 01b9 6C000000 		.4byte	.LVL16
+ 353 01bd 4A020000 		.4byte	0x24a
+ 354 01c1 CB010000 		.4byte	0x1cb
+ 355 01c5 08       		.uleb128 0x8
+ 356 01c6 01       		.uleb128 0x1
+ 357 01c7 50       		.byte	0x50
+ 358 01c8 01       		.uleb128 0x1
+ 359 01c9 31       		.byte	0x31
+ 360 01ca 00       		.byte	0
+ 361 01cb 06       		.uleb128 0x6
+ 362 01cc 70000000 		.4byte	.LVL17
+ 363 01d0 6B020000 		.4byte	0x26b
+ 364 01d4 00       		.byte	0
+ 365 01d5 09       		.uleb128 0x9
+ 366 01d6 4F010000 		.4byte	.LASF33
+ 367 01da 0B       		.byte	0xb
+ 368 01db 1207     		.2byte	0x712
+ 369 01dd E1010000 		.4byte	0x1e1
+ 370 01e1 0A       		.uleb128 0xa
+ 371 01e2 76000000 		.4byte	0x76
+ 372 01e6 0B       		.uleb128 0xb
+ 373 01e7 08000000 		.4byte	.LASF16
+ 374 01eb 08000000 		.4byte	.LASF16
+ 375 01ef 04       		.byte	0x4
+ 376 01f0 17       		.byte	0x17
+ 377 01f1 0B       		.uleb128 0xb
+ 378 01f2 69000000 		.4byte	.LASF17
+ 379 01f6 69000000 		.4byte	.LASF17
+ 380 01fa 04       		.byte	0x4
+ 381 01fb 1A       		.byte	0x1a
+ 382 01fc 0B       		.uleb128 0xb
+ 383 01fd 91010000 		.4byte	.LASF18
+ 384 0201 91010000 		.4byte	.LASF18
+ 385 0205 05       		.byte	0x5
+ 386 0206 11       		.byte	0x11
+ 387 0207 0B       		.uleb128 0xb
+ 388 0208 26020000 		.4byte	.LASF19
+ 389 020c 26020000 		.4byte	.LASF19
+ 390 0210 05       		.byte	0x5
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 11
 
 
- 416 020b 01       		.uleb128 0x1
- 417 020c 50       		.byte	0x50
- 418 020d 02       		.uleb128 0x2
- 419 020e 91       		.byte	0x91
- 420 020f 6C       		.sleb128 -20
- 421 0210 00       		.byte	0
- 422 0211 0A       		.uleb128 0xa
- 423 0212 5E000000 		.4byte	.LVL12
- 424 0216 AA020000 		.4byte	0x2aa
- 425 021a 28020000 		.4byte	0x228
- 426 021e 0B       		.uleb128 0xb
- 427 021f 01       		.uleb128 0x1
- 428 0220 50       		.byte	0x50
- 429 0221 05       		.uleb128 0x5
- 430 0222 03       		.byte	0x3
- 431 0223 10000000 		.4byte	.LC1
- 432 0227 00       		.byte	0
- 433 0228 0A       		.uleb128 0xa
- 434 0229 66000000 		.4byte	.LVL13
- 435 022d C4020000 		.4byte	0x2c4
- 436 0231 40020000 		.4byte	0x240
- 437 0235 0B       		.uleb128 0xb
- 438 0236 01       		.uleb128 0x1
- 439 0237 50       		.byte	0x50
- 440 0238 01       		.uleb128 0x1
- 441 0239 4E       		.byte	0x4e
- 442 023a 0B       		.uleb128 0xb
- 443 023b 01       		.uleb128 0x1
- 444 023c 51       		.byte	0x51
- 445 023d 01       		.uleb128 0x1
- 446 023e 30       		.byte	0x30
- 447 023f 00       		.byte	0
- 448 0240 0A       		.uleb128 0xa
- 449 0241 6C000000 		.4byte	.LVL14
- 450 0245 FC020000 		.4byte	0x2fc
- 451 0249 53020000 		.4byte	0x253
- 452 024d 0B       		.uleb128 0xb
- 453 024e 01       		.uleb128 0x1
- 454 024f 50       		.byte	0x50
- 455 0250 01       		.uleb128 0x1
- 456 0251 31       		.byte	0x31
- 457 0252 00       		.byte	0
- 458 0253 09       		.uleb128 0x9
- 459 0254 70000000 		.4byte	.LVL15
- 460 0258 07030000 		.4byte	0x307
- 461 025c 0C       		.uleb128 0xc
- 462 025d 76000000 		.4byte	.LVL16
- 463 0261 12030000 		.4byte	0x312
- 464 0265 0B       		.uleb128 0xb
- 465 0266 01       		.uleb128 0x1
- 466 0267 50       		.byte	0x50
- 467 0268 02       		.uleb128 0x2
- 468 0269 08       		.byte	0x8
- 469 026a 64       		.byte	0x64
- 470 026b 00       		.byte	0
- 471 026c 00       		.byte	0
- 472 026d 0D       		.uleb128 0xd
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 12
+ 391 0211 18       		.byte	0x18
+ 392 0212 0B       		.uleb128 0xb
+ 393 0213 B1010000 		.4byte	.LASF20
+ 394 0217 B1010000 		.4byte	.LASF20
+ 395 021b 06       		.byte	0x6
+ 396 021c 0B       		.byte	0xb
+ 397 021d 0B       		.uleb128 0xb
+ 398 021e BD010000 		.4byte	.LASF21
+ 399 0222 BD010000 		.4byte	.LASF21
+ 400 0226 07       		.byte	0x7
+ 401 0227 29       		.byte	0x29
+ 402 0228 0B       		.uleb128 0xb
+ 403 0229 F6010000 		.4byte	.LASF22
+ 404 022d F6010000 		.4byte	.LASF22
+ 405 0231 08       		.byte	0x8
+ 406 0232 26       		.byte	0x26
+ 407 0233 0C       		.uleb128 0xc
+ 408 0234 44010000 		.4byte	.LASF23
+ 409 0238 44010000 		.4byte	.LASF23
+ 410 023c 09       		.byte	0x9
+ 411 023d ED02     		.2byte	0x2ed
+ 412 023f 0B       		.uleb128 0xb
+ 413 0240 00000000 		.4byte	.LASF24
+ 414 0244 00000000 		.4byte	.LASF24
+ 415 0248 05       		.byte	0x5
+ 416 0249 1B       		.byte	0x1b
+ 417 024a 0B       		.uleb128 0xb
+ 418 024b 56000000 		.4byte	.LASF25
+ 419 024f 56000000 		.4byte	.LASF25
+ 420 0253 0A       		.byte	0xa
+ 421 0254 2A       		.byte	0x2a
+ 422 0255 0B       		.uleb128 0xb
+ 423 0256 6E010000 		.4byte	.LASF26
+ 424 025a 6E010000 		.4byte	.LASF26
+ 425 025e 0A       		.byte	0xa
+ 426 025f 2D       		.byte	0x2d
+ 427 0260 0B       		.uleb128 0xb
+ 428 0261 C6010000 		.4byte	.LASF27
+ 429 0265 C6010000 		.4byte	.LASF27
+ 430 0269 0A       		.byte	0xa
+ 431 026a 30       		.byte	0x30
+ 432 026b 0B       		.uleb128 0xb
+ 433 026c 63010000 		.4byte	.LASF28
+ 434 0270 63010000 		.4byte	.LASF28
+ 435 0274 06       		.byte	0x6
+ 436 0275 0C       		.byte	0xc
+ 437 0276 00       		.byte	0
+ 438              		.section	.debug_abbrev,"",%progbits
+ 439              	.Ldebug_abbrev0:
+ 440 0000 01       		.uleb128 0x1
+ 441 0001 11       		.uleb128 0x11
+ 442 0002 01       		.byte	0x1
+ 443 0003 25       		.uleb128 0x25
+ 444 0004 0E       		.uleb128 0xe
+ 445 0005 13       		.uleb128 0x13
+ 446 0006 0B       		.uleb128 0xb
+ 447 0007 03       		.uleb128 0x3
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 12
 
 
- 473 026e 74010000 		.4byte	.LASF36
- 474 0272 0B       		.byte	0xb
- 475 0273 1207     		.2byte	0x712
- 476 0275 79020000 		.4byte	0x279
- 477 0279 0E       		.uleb128 0xe
- 478 027a 8C000000 		.4byte	0x8c
- 479 027e 0F       		.uleb128 0xf
- 480 027f 17000000 		.4byte	.LASF18
- 481 0283 17000000 		.4byte	.LASF18
- 482 0287 04       		.byte	0x4
- 483 0288 17       		.byte	0x17
- 484 0289 0F       		.uleb128 0xf
- 485 028a 8E000000 		.4byte	.LASF19
- 486 028e 8E000000 		.4byte	.LASF19
- 487 0292 04       		.byte	0x4
- 488 0293 1A       		.byte	0x1a
- 489 0294 0F       		.uleb128 0xf
- 490 0295 BF010000 		.4byte	.LASF20
- 491 0299 BF010000 		.4byte	.LASF20
- 492 029d 05       		.byte	0x5
- 493 029e 11       		.byte	0x11
- 494 029f 0F       		.uleb128 0xf
- 495 02a0 4A020000 		.4byte	.LASF21
- 496 02a4 4A020000 		.4byte	.LASF21
- 497 02a8 05       		.byte	0x5
- 498 02a9 18       		.byte	0x18
- 499 02aa 10       		.uleb128 0x10
- 500 02ab 53020000 		.4byte	.LASF37
- 501 02af 64020000 		.4byte	.LASF38
- 502 02b3 0C       		.byte	0xc
- 503 02b4 00       		.byte	0
- 504 02b5 53020000 		.4byte	.LASF37
- 505 02b9 0F       		.uleb128 0xf
- 506 02ba DF010000 		.4byte	.LASF22
- 507 02be DF010000 		.4byte	.LASF22
- 508 02c2 06       		.byte	0x6
- 509 02c3 0B       		.byte	0xb
- 510 02c4 0F       		.uleb128 0xf
- 511 02c5 81010000 		.4byte	.LASF23
- 512 02c9 81010000 		.4byte	.LASF23
- 513 02cd 06       		.byte	0x6
- 514 02ce 0F       		.byte	0xf
- 515 02cf 0F       		.uleb128 0xf
- 516 02d0 EB010000 		.4byte	.LASF24
- 517 02d4 EB010000 		.4byte	.LASF24
- 518 02d8 07       		.byte	0x7
- 519 02d9 29       		.byte	0x29
- 520 02da 0F       		.uleb128 0xf
- 521 02db 11020000 		.4byte	.LASF25
- 522 02df 11020000 		.4byte	.LASF25
- 523 02e3 08       		.byte	0x8
- 524 02e4 26       		.byte	0x26
- 525 02e5 11       		.uleb128 0x11
- 526 02e6 69010000 		.4byte	.LASF26
- 527 02ea 69010000 		.4byte	.LASF26
- 528 02ee 09       		.byte	0x9
- 529 02ef ED02     		.2byte	0x2ed
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 13
+ 448 0008 0E       		.uleb128 0xe
+ 449 0009 1B       		.uleb128 0x1b
+ 450 000a 0E       		.uleb128 0xe
+ 451 000b 55       		.uleb128 0x55
+ 452 000c 17       		.uleb128 0x17
+ 453 000d 11       		.uleb128 0x11
+ 454 000e 01       		.uleb128 0x1
+ 455 000f 10       		.uleb128 0x10
+ 456 0010 17       		.uleb128 0x17
+ 457 0011 00       		.byte	0
+ 458 0012 00       		.byte	0
+ 459 0013 02       		.uleb128 0x2
+ 460 0014 24       		.uleb128 0x24
+ 461 0015 00       		.byte	0
+ 462 0016 0B       		.uleb128 0xb
+ 463 0017 0B       		.uleb128 0xb
+ 464 0018 3E       		.uleb128 0x3e
+ 465 0019 0B       		.uleb128 0xb
+ 466 001a 03       		.uleb128 0x3
+ 467 001b 0E       		.uleb128 0xe
+ 468 001c 00       		.byte	0
+ 469 001d 00       		.byte	0
+ 470 001e 03       		.uleb128 0x3
+ 471 001f 16       		.uleb128 0x16
+ 472 0020 00       		.byte	0
+ 473 0021 03       		.uleb128 0x3
+ 474 0022 0E       		.uleb128 0xe
+ 475 0023 3A       		.uleb128 0x3a
+ 476 0024 0B       		.uleb128 0xb
+ 477 0025 3B       		.uleb128 0x3b
+ 478 0026 0B       		.uleb128 0xb
+ 479 0027 49       		.uleb128 0x49
+ 480 0028 13       		.uleb128 0x13
+ 481 0029 00       		.byte	0
+ 482 002a 00       		.byte	0
+ 483 002b 04       		.uleb128 0x4
+ 484 002c 24       		.uleb128 0x24
+ 485 002d 00       		.byte	0
+ 486 002e 0B       		.uleb128 0xb
+ 487 002f 0B       		.uleb128 0xb
+ 488 0030 3E       		.uleb128 0x3e
+ 489 0031 0B       		.uleb128 0xb
+ 490 0032 03       		.uleb128 0x3
+ 491 0033 08       		.uleb128 0x8
+ 492 0034 00       		.byte	0
+ 493 0035 00       		.byte	0
+ 494 0036 05       		.uleb128 0x5
+ 495 0037 2E       		.uleb128 0x2e
+ 496 0038 01       		.byte	0x1
+ 497 0039 3F       		.uleb128 0x3f
+ 498 003a 19       		.uleb128 0x19
+ 499 003b 03       		.uleb128 0x3
+ 500 003c 0E       		.uleb128 0xe
+ 501 003d 3A       		.uleb128 0x3a
+ 502 003e 0B       		.uleb128 0xb
+ 503 003f 3B       		.uleb128 0x3b
+ 504 0040 0B       		.uleb128 0xb
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 13
 
 
- 530 02f1 0F       		.uleb128 0xf
- 531 02f2 72000000 		.4byte	.LASF27
- 532 02f6 72000000 		.4byte	.LASF27
- 533 02fa 04       		.byte	0x4
- 534 02fb 19       		.byte	0x19
- 535 02fc 0F       		.uleb128 0xf
- 536 02fd 39000000 		.4byte	.LASF28
- 537 0301 39000000 		.4byte	.LASF28
- 538 0305 0A       		.byte	0xa
- 539 0306 34       		.byte	0x34
- 540 0307 0F       		.uleb128 0xf
- 541 0308 A1010000 		.4byte	.LASF29
- 542 030c A1010000 		.4byte	.LASF29
- 543 0310 06       		.byte	0x6
- 544 0311 0C       		.byte	0xc
- 545 0312 0F       		.uleb128 0xf
- 546 0313 09020000 		.4byte	.LASF30
- 547 0317 09020000 		.4byte	.LASF30
- 548 031b 0A       		.byte	0xa
- 549 031c 36       		.byte	0x36
- 550 031d 00       		.byte	0
- 551              		.section	.debug_abbrev,"",%progbits
- 552              	.Ldebug_abbrev0:
- 553 0000 01       		.uleb128 0x1
- 554 0001 11       		.uleb128 0x11
- 555 0002 01       		.byte	0x1
- 556 0003 25       		.uleb128 0x25
- 557 0004 0E       		.uleb128 0xe
- 558 0005 13       		.uleb128 0x13
- 559 0006 0B       		.uleb128 0xb
- 560 0007 03       		.uleb128 0x3
- 561 0008 0E       		.uleb128 0xe
- 562 0009 1B       		.uleb128 0x1b
- 563 000a 0E       		.uleb128 0xe
- 564 000b 55       		.uleb128 0x55
- 565 000c 17       		.uleb128 0x17
- 566 000d 11       		.uleb128 0x11
- 567 000e 01       		.uleb128 0x1
- 568 000f 10       		.uleb128 0x10
- 569 0010 17       		.uleb128 0x17
- 570 0011 00       		.byte	0
- 571 0012 00       		.byte	0
- 572 0013 02       		.uleb128 0x2
- 573 0014 24       		.uleb128 0x24
- 574 0015 00       		.byte	0
- 575 0016 0B       		.uleb128 0xb
- 576 0017 0B       		.uleb128 0xb
- 577 0018 3E       		.uleb128 0x3e
- 578 0019 0B       		.uleb128 0xb
- 579 001a 03       		.uleb128 0x3
- 580 001b 0E       		.uleb128 0xe
- 581 001c 00       		.byte	0
- 582 001d 00       		.byte	0
- 583 001e 03       		.uleb128 0x3
- 584 001f 16       		.uleb128 0x16
- 585 0020 00       		.byte	0
- 586 0021 03       		.uleb128 0x3
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 14
+ 505 0041 27       		.uleb128 0x27
+ 506 0042 19       		.uleb128 0x19
+ 507 0043 11       		.uleb128 0x11
+ 508 0044 01       		.uleb128 0x1
+ 509 0045 12       		.uleb128 0x12
+ 510 0046 06       		.uleb128 0x6
+ 511 0047 40       		.uleb128 0x40
+ 512 0048 18       		.uleb128 0x18
+ 513 0049 9742     		.uleb128 0x2117
+ 514 004b 19       		.uleb128 0x19
+ 515 004c 01       		.uleb128 0x1
+ 516 004d 13       		.uleb128 0x13
+ 517 004e 00       		.byte	0
+ 518 004f 00       		.byte	0
+ 519 0050 06       		.uleb128 0x6
+ 520 0051 898201   		.uleb128 0x4109
+ 521 0054 00       		.byte	0
+ 522 0055 11       		.uleb128 0x11
+ 523 0056 01       		.uleb128 0x1
+ 524 0057 31       		.uleb128 0x31
+ 525 0058 13       		.uleb128 0x13
+ 526 0059 00       		.byte	0
+ 527 005a 00       		.byte	0
+ 528 005b 07       		.uleb128 0x7
+ 529 005c 898201   		.uleb128 0x4109
+ 530 005f 01       		.byte	0x1
+ 531 0060 11       		.uleb128 0x11
+ 532 0061 01       		.uleb128 0x1
+ 533 0062 31       		.uleb128 0x31
+ 534 0063 13       		.uleb128 0x13
+ 535 0064 01       		.uleb128 0x1
+ 536 0065 13       		.uleb128 0x13
+ 537 0066 00       		.byte	0
+ 538 0067 00       		.byte	0
+ 539 0068 08       		.uleb128 0x8
+ 540 0069 8A8201   		.uleb128 0x410a
+ 541 006c 00       		.byte	0
+ 542 006d 02       		.uleb128 0x2
+ 543 006e 18       		.uleb128 0x18
+ 544 006f 9142     		.uleb128 0x2111
+ 545 0071 18       		.uleb128 0x18
+ 546 0072 00       		.byte	0
+ 547 0073 00       		.byte	0
+ 548 0074 09       		.uleb128 0x9
+ 549 0075 34       		.uleb128 0x34
+ 550 0076 00       		.byte	0
+ 551 0077 03       		.uleb128 0x3
+ 552 0078 0E       		.uleb128 0xe
+ 553 0079 3A       		.uleb128 0x3a
+ 554 007a 0B       		.uleb128 0xb
+ 555 007b 3B       		.uleb128 0x3b
+ 556 007c 05       		.uleb128 0x5
+ 557 007d 49       		.uleb128 0x49
+ 558 007e 13       		.uleb128 0x13
+ 559 007f 3F       		.uleb128 0x3f
+ 560 0080 19       		.uleb128 0x19
+ 561 0081 3C       		.uleb128 0x3c
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 14
 
 
- 587 0022 0E       		.uleb128 0xe
- 588 0023 3A       		.uleb128 0x3a
- 589 0024 0B       		.uleb128 0xb
- 590 0025 3B       		.uleb128 0x3b
- 591 0026 0B       		.uleb128 0xb
- 592 0027 49       		.uleb128 0x49
- 593 0028 13       		.uleb128 0x13
- 594 0029 00       		.byte	0
- 595 002a 00       		.byte	0
- 596 002b 04       		.uleb128 0x4
- 597 002c 24       		.uleb128 0x24
- 598 002d 00       		.byte	0
- 599 002e 0B       		.uleb128 0xb
- 600 002f 0B       		.uleb128 0xb
- 601 0030 3E       		.uleb128 0x3e
- 602 0031 0B       		.uleb128 0xb
- 603 0032 03       		.uleb128 0x3
- 604 0033 08       		.uleb128 0x8
- 605 0034 00       		.byte	0
- 606 0035 00       		.byte	0
- 607 0036 05       		.uleb128 0x5
- 608 0037 13       		.uleb128 0x13
- 609 0038 01       		.byte	0x1
- 610 0039 03       		.uleb128 0x3
- 611 003a 0E       		.uleb128 0xe
- 612 003b 0B       		.uleb128 0xb
- 613 003c 0B       		.uleb128 0xb
- 614 003d 3A       		.uleb128 0x3a
- 615 003e 0B       		.uleb128 0xb
- 616 003f 3B       		.uleb128 0x3b
- 617 0040 0B       		.uleb128 0xb
- 618 0041 01       		.uleb128 0x1
- 619 0042 13       		.uleb128 0x13
- 620 0043 00       		.byte	0
- 621 0044 00       		.byte	0
- 622 0045 06       		.uleb128 0x6
- 623 0046 0D       		.uleb128 0xd
- 624 0047 00       		.byte	0
- 625 0048 03       		.uleb128 0x3
- 626 0049 08       		.uleb128 0x8
- 627 004a 3A       		.uleb128 0x3a
- 628 004b 0B       		.uleb128 0xb
- 629 004c 3B       		.uleb128 0x3b
- 630 004d 0B       		.uleb128 0xb
- 631 004e 49       		.uleb128 0x49
- 632 004f 13       		.uleb128 0x13
- 633 0050 38       		.uleb128 0x38
- 634 0051 0B       		.uleb128 0xb
- 635 0052 00       		.byte	0
- 636 0053 00       		.byte	0
- 637 0054 07       		.uleb128 0x7
- 638 0055 2E       		.uleb128 0x2e
- 639 0056 01       		.byte	0x1
- 640 0057 3F       		.uleb128 0x3f
- 641 0058 19       		.uleb128 0x19
- 642 0059 03       		.uleb128 0x3
- 643 005a 0E       		.uleb128 0xe
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 15
+ 562 0082 19       		.uleb128 0x19
+ 563 0083 00       		.byte	0
+ 564 0084 00       		.byte	0
+ 565 0085 0A       		.uleb128 0xa
+ 566 0086 35       		.uleb128 0x35
+ 567 0087 00       		.byte	0
+ 568 0088 49       		.uleb128 0x49
+ 569 0089 13       		.uleb128 0x13
+ 570 008a 00       		.byte	0
+ 571 008b 00       		.byte	0
+ 572 008c 0B       		.uleb128 0xb
+ 573 008d 2E       		.uleb128 0x2e
+ 574 008e 00       		.byte	0
+ 575 008f 3F       		.uleb128 0x3f
+ 576 0090 19       		.uleb128 0x19
+ 577 0091 3C       		.uleb128 0x3c
+ 578 0092 19       		.uleb128 0x19
+ 579 0093 6E       		.uleb128 0x6e
+ 580 0094 0E       		.uleb128 0xe
+ 581 0095 03       		.uleb128 0x3
+ 582 0096 0E       		.uleb128 0xe
+ 583 0097 3A       		.uleb128 0x3a
+ 584 0098 0B       		.uleb128 0xb
+ 585 0099 3B       		.uleb128 0x3b
+ 586 009a 0B       		.uleb128 0xb
+ 587 009b 00       		.byte	0
+ 588 009c 00       		.byte	0
+ 589 009d 0C       		.uleb128 0xc
+ 590 009e 2E       		.uleb128 0x2e
+ 591 009f 00       		.byte	0
+ 592 00a0 3F       		.uleb128 0x3f
+ 593 00a1 19       		.uleb128 0x19
+ 594 00a2 3C       		.uleb128 0x3c
+ 595 00a3 19       		.uleb128 0x19
+ 596 00a4 6E       		.uleb128 0x6e
+ 597 00a5 0E       		.uleb128 0xe
+ 598 00a6 03       		.uleb128 0x3
+ 599 00a7 0E       		.uleb128 0xe
+ 600 00a8 3A       		.uleb128 0x3a
+ 601 00a9 0B       		.uleb128 0xb
+ 602 00aa 3B       		.uleb128 0x3b
+ 603 00ab 05       		.uleb128 0x5
+ 604 00ac 00       		.byte	0
+ 605 00ad 00       		.byte	0
+ 606 00ae 00       		.byte	0
+ 607              		.section	.debug_aranges,"",%progbits
+ 608 0000 1C000000 		.4byte	0x1c
+ 609 0004 0200     		.2byte	0x2
+ 610 0006 00000000 		.4byte	.Ldebug_info0
+ 611 000a 04       		.byte	0x4
+ 612 000b 00       		.byte	0
+ 613 000c 0000     		.2byte	0
+ 614 000e 0000     		.2byte	0
+ 615 0010 00000000 		.4byte	.LFB85
+ 616 0014 76000000 		.4byte	.LFE85-.LFB85
+ 617 0018 00000000 		.4byte	0
+ 618 001c 00000000 		.4byte	0
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 15
 
 
- 644 005b 3A       		.uleb128 0x3a
- 645 005c 0B       		.uleb128 0xb
- 646 005d 3B       		.uleb128 0x3b
- 647 005e 0B       		.uleb128 0xb
- 648 005f 27       		.uleb128 0x27
- 649 0060 19       		.uleb128 0x19
- 650 0061 11       		.uleb128 0x11
- 651 0062 01       		.uleb128 0x1
- 652 0063 12       		.uleb128 0x12
- 653 0064 06       		.uleb128 0x6
- 654 0065 40       		.uleb128 0x40
- 655 0066 18       		.uleb128 0x18
- 656 0067 9742     		.uleb128 0x2117
- 657 0069 19       		.uleb128 0x19
- 658 006a 01       		.uleb128 0x1
- 659 006b 13       		.uleb128 0x13
- 660 006c 00       		.byte	0
- 661 006d 00       		.byte	0
- 662 006e 08       		.uleb128 0x8
- 663 006f 34       		.uleb128 0x34
- 664 0070 00       		.byte	0
- 665 0071 03       		.uleb128 0x3
- 666 0072 08       		.uleb128 0x8
- 667 0073 3A       		.uleb128 0x3a
- 668 0074 0B       		.uleb128 0xb
- 669 0075 3B       		.uleb128 0x3b
- 670 0076 0B       		.uleb128 0xb
- 671 0077 49       		.uleb128 0x49
- 672 0078 13       		.uleb128 0x13
- 673 0079 02       		.uleb128 0x2
- 674 007a 18       		.uleb128 0x18
- 675 007b 00       		.byte	0
- 676 007c 00       		.byte	0
- 677 007d 09       		.uleb128 0x9
- 678 007e 898201   		.uleb128 0x4109
- 679 0081 00       		.byte	0
- 680 0082 11       		.uleb128 0x11
- 681 0083 01       		.uleb128 0x1
- 682 0084 31       		.uleb128 0x31
- 683 0085 13       		.uleb128 0x13
- 684 0086 00       		.byte	0
- 685 0087 00       		.byte	0
- 686 0088 0A       		.uleb128 0xa
- 687 0089 898201   		.uleb128 0x4109
- 688 008c 01       		.byte	0x1
- 689 008d 11       		.uleb128 0x11
- 690 008e 01       		.uleb128 0x1
- 691 008f 31       		.uleb128 0x31
- 692 0090 13       		.uleb128 0x13
- 693 0091 01       		.uleb128 0x1
- 694 0092 13       		.uleb128 0x13
- 695 0093 00       		.byte	0
- 696 0094 00       		.byte	0
- 697 0095 0B       		.uleb128 0xb
- 698 0096 8A8201   		.uleb128 0x410a
- 699 0099 00       		.byte	0
- 700 009a 02       		.uleb128 0x2
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 16
+ 619              		.section	.debug_ranges,"",%progbits
+ 620              	.Ldebug_ranges0:
+ 621 0000 00000000 		.4byte	.LFB85
+ 622 0004 76000000 		.4byte	.LFE85
+ 623 0008 00000000 		.4byte	0
+ 624 000c 00000000 		.4byte	0
+ 625              		.section	.debug_line,"",%progbits
+ 626              	.Ldebug_line0:
+ 627 0000 E9010000 		.section	.debug_str,"MS",%progbits,1
+ 627      0200BC01 
+ 627      00000201 
+ 627      FB0E0D00 
+ 627      01010101 
+ 628              	.LASF24:
+ 629 0000 49525F77 		.ascii	"IR_wait\000"
+ 629      61697400 
+ 630              	.LASF16:
+ 631 0008 7265666C 		.ascii	"reflectance_start\000"
+ 631      65637461 
+ 631      6E63655F 
+ 631      73746172 
+ 631      7400
+ 632              	.LASF9:
+ 633 001a 5F5F696E 		.ascii	"__int32_t\000"
+ 633      7433325F 
+ 633      7400
+ 634              	.LASF31:
+ 635 0024 433A5C55 		.ascii	"C:\\Users\\Dieu Vu\\Desktop\\Zumo\\ZumoBot.cydsn\000"
+ 635      73657273 
+ 635      5C446965 
+ 635      75205675 
+ 635      5C446573 
+ 636              	.LASF11:
+ 637 0050 666C6F61 		.ascii	"float\000"
+ 637      7400
+ 638              	.LASF25:
+ 639 0056 6D6F746F 		.ascii	"motor_forward_line\000"
+ 639      725F666F 
+ 639      72776172 
+ 639      645F6C69 
+ 639      6E6500
+ 640              	.LASF17:
+ 641 0069 7265666C 		.ascii	"reflectance_set_threshold\000"
+ 641      65637461 
+ 641      6E63655F 
+ 641      7365745F 
+ 641      74687265 
+ 642              	.LASF1:
+ 643 0083 756E7369 		.ascii	"unsigned char\000"
+ 643      676E6564 
+ 643      20636861 
+ 643      7200
+ 644              	.LASF29:
+ 645 0091 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 645      43313120 
+ 645      352E342E 
+ 645      31203230 
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 16
 
 
- 701 009b 18       		.uleb128 0x18
- 702 009c 9142     		.uleb128 0x2111
- 703 009e 18       		.uleb128 0x18
- 704 009f 00       		.byte	0
- 705 00a0 00       		.byte	0
- 706 00a1 0C       		.uleb128 0xc
- 707 00a2 898201   		.uleb128 0x4109
- 708 00a5 01       		.byte	0x1
- 709 00a6 11       		.uleb128 0x11
- 710 00a7 01       		.uleb128 0x1
- 711 00a8 31       		.uleb128 0x31
- 712 00a9 13       		.uleb128 0x13
- 713 00aa 00       		.byte	0
- 714 00ab 00       		.byte	0
- 715 00ac 0D       		.uleb128 0xd
- 716 00ad 34       		.uleb128 0x34
- 717 00ae 00       		.byte	0
- 718 00af 03       		.uleb128 0x3
- 719 00b0 0E       		.uleb128 0xe
- 720 00b1 3A       		.uleb128 0x3a
- 721 00b2 0B       		.uleb128 0xb
- 722 00b3 3B       		.uleb128 0x3b
- 723 00b4 05       		.uleb128 0x5
- 724 00b5 49       		.uleb128 0x49
- 725 00b6 13       		.uleb128 0x13
- 726 00b7 3F       		.uleb128 0x3f
- 727 00b8 19       		.uleb128 0x19
- 728 00b9 3C       		.uleb128 0x3c
- 729 00ba 19       		.uleb128 0x19
- 730 00bb 00       		.byte	0
- 731 00bc 00       		.byte	0
- 732 00bd 0E       		.uleb128 0xe
- 733 00be 35       		.uleb128 0x35
- 734 00bf 00       		.byte	0
- 735 00c0 49       		.uleb128 0x49
- 736 00c1 13       		.uleb128 0x13
- 737 00c2 00       		.byte	0
- 738 00c3 00       		.byte	0
- 739 00c4 0F       		.uleb128 0xf
- 740 00c5 2E       		.uleb128 0x2e
- 741 00c6 00       		.byte	0
- 742 00c7 3F       		.uleb128 0x3f
- 743 00c8 19       		.uleb128 0x19
- 744 00c9 3C       		.uleb128 0x3c
- 745 00ca 19       		.uleb128 0x19
- 746 00cb 6E       		.uleb128 0x6e
- 747 00cc 0E       		.uleb128 0xe
- 748 00cd 03       		.uleb128 0x3
- 749 00ce 0E       		.uleb128 0xe
- 750 00cf 3A       		.uleb128 0x3a
- 751 00d0 0B       		.uleb128 0xb
- 752 00d1 3B       		.uleb128 0x3b
- 753 00d2 0B       		.uleb128 0xb
- 754 00d3 00       		.byte	0
- 755 00d4 00       		.byte	0
- 756 00d5 10       		.uleb128 0x10
- 757 00d6 2E       		.uleb128 0x2e
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 17
+ 645      31363036 
+ 646 00c4 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 646      20726576 
+ 646      6973696F 
+ 646      6E203233 
+ 646      37373135 
+ 647 00f7 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 647      66756E63 
+ 647      74696F6E 
+ 647      2D736563 
+ 647      74696F6E 
+ 648              	.LASF5:
+ 649 011f 6C6F6E67 		.ascii	"long unsigned int\000"
+ 649      20756E73 
+ 649      69676E65 
+ 649      6420696E 
+ 649      7400
+ 650              	.LASF3:
+ 651 0131 73686F72 		.ascii	"short unsigned int\000"
+ 651      7420756E 
+ 651      7369676E 
+ 651      65642069 
+ 651      6E7400
+ 652              	.LASF23:
+ 653 0144 76546173 		.ascii	"vTaskDelay\000"
+ 653      6B44656C 
+ 653      617900
+ 654              	.LASF33:
+ 655 014f 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 655      52784275 
+ 655      66666572 
+ 655      00
+ 656              	.LASF12:
+ 657 015c 646F7562 		.ascii	"double\000"
+ 657      6C6500
+ 658              	.LASF28:
+ 659 0163 6D6F746F 		.ascii	"motor_stop\000"
+ 659      725F7374 
+ 659      6F7000
+ 660              	.LASF26:
+ 661 016e 6D6F746F 		.ascii	"motor_turn_left\000"
+ 661      725F7475 
+ 661      726E5F6C 
+ 661      65667400 
+ 662              	.LASF32:
+ 663 017e 7A6D6169 		.ascii	"zmain\000"
+ 663      6E00
+ 664              	.LASF8:
+ 665 0184 756E7369 		.ascii	"unsigned int\000"
+ 665      676E6564 
+ 665      20696E74 
+ 665      00
+ 666              	.LASF18:
+ 667 0191 49525F53 		.ascii	"IR_Start\000"
+ 667      74617274 
+ 667      00
+ 668              	.LASF7:
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 17
 
 
- 758 00d7 00       		.byte	0
- 759 00d8 3F       		.uleb128 0x3f
- 760 00d9 19       		.uleb128 0x19
- 761 00da 3C       		.uleb128 0x3c
- 762 00db 19       		.uleb128 0x19
- 763 00dc 6E       		.uleb128 0x6e
- 764 00dd 0E       		.uleb128 0xe
- 765 00de 03       		.uleb128 0x3
- 766 00df 0E       		.uleb128 0xe
- 767 00e0 3A       		.uleb128 0x3a
- 768 00e1 0B       		.uleb128 0xb
- 769 00e2 3B       		.uleb128 0x3b
- 770 00e3 0B       		.uleb128 0xb
- 771 00e4 6E       		.uleb128 0x6e
- 772 00e5 0E       		.uleb128 0xe
- 773 00e6 00       		.byte	0
- 774 00e7 00       		.byte	0
- 775 00e8 11       		.uleb128 0x11
- 776 00e9 2E       		.uleb128 0x2e
- 777 00ea 00       		.byte	0
- 778 00eb 3F       		.uleb128 0x3f
- 779 00ec 19       		.uleb128 0x19
- 780 00ed 3C       		.uleb128 0x3c
- 781 00ee 19       		.uleb128 0x19
- 782 00ef 6E       		.uleb128 0x6e
- 783 00f0 0E       		.uleb128 0xe
- 784 00f1 03       		.uleb128 0x3
- 785 00f2 0E       		.uleb128 0xe
- 786 00f3 3A       		.uleb128 0x3a
- 787 00f4 0B       		.uleb128 0xb
- 788 00f5 3B       		.uleb128 0x3b
- 789 00f6 05       		.uleb128 0x5
- 790 00f7 00       		.byte	0
- 791 00f8 00       		.byte	0
- 792 00f9 00       		.byte	0
- 793              		.section	.debug_aranges,"",%progbits
- 794 0000 1C000000 		.4byte	0x1c
- 795 0004 0200     		.2byte	0x2
- 796 0006 00000000 		.4byte	.Ldebug_info0
- 797 000a 04       		.byte	0x4
- 798 000b 00       		.byte	0
- 799 000c 0000     		.2byte	0
- 800 000e 0000     		.2byte	0
- 801 0010 00000000 		.4byte	.LFB85
- 802 0014 84000000 		.4byte	.LFE85-.LFB85
- 803 0018 00000000 		.4byte	0
- 804 001c 00000000 		.4byte	0
- 805              		.section	.debug_ranges,"",%progbits
- 806              	.Ldebug_ranges0:
- 807 0000 00000000 		.4byte	.LFB85
- 808 0004 84000000 		.4byte	.LFE85
- 809 0008 00000000 		.4byte	0
- 810 000c 00000000 		.4byte	0
- 811              		.section	.debug_line,"",%progbits
- 812              	.Ldebug_line0:
- 813 0000 F6010000 		.section	.debug_str,"MS",%progbits,1
- 813      0200CA01 
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 18
+ 669 019a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 669      206C6F6E 
+ 669      6720756E 
+ 669      7369676E 
+ 669      65642069 
+ 670              	.LASF20:
+ 671 01b1 6D6F746F 		.ascii	"motor_start\000"
+ 671      725F7374 
+ 671      61727400 
+ 672              	.LASF21:
+ 673 01bd 5357315F 		.ascii	"SW1_Read\000"
+ 673      52656164 
+ 673      00
+ 674              	.LASF27:
+ 675 01c6 6D6F746F 		.ascii	"motor_turn_right\000"
+ 675      725F7475 
+ 675      726E5F72 
+ 675      69676874 
+ 675      00
+ 676              	.LASF10:
+ 677 01d7 696E7433 		.ascii	"int32_t\000"
+ 677      325F7400 
+ 678              	.LASF15:
+ 679 01df 73697A65 		.ascii	"sizetype\000"
+ 679      74797065 
+ 679      00
+ 680              	.LASF6:
+ 681 01e8 6C6F6E67 		.ascii	"long long int\000"
+ 681      206C6F6E 
+ 681      6720696E 
+ 681      7400
+ 682              	.LASF22:
+ 683 01f6 42617474 		.ascii	"BatteryLed_Write\000"
+ 683      6572794C 
+ 683      65645F57 
+ 683      72697465 
+ 683      00
+ 684              	.LASF30:
+ 685 0207 6D61696E 		.ascii	"main.c\000"
+ 685      2E6300
+ 686              	.LASF13:
+ 687 020e 63686172 		.ascii	"char\000"
+ 687      00
+ 688              	.LASF2:
+ 689 0213 73686F72 		.ascii	"short int\000"
+ 689      7420696E 
+ 689      7400
+ 690              	.LASF4:
+ 691 021d 6C6F6E67 		.ascii	"long int\000"
+ 691      20696E74 
+ 691      00
+ 692              	.LASF19:
+ 693 0226 49525F66 		.ascii	"IR_flush\000"
+ 693      6C757368 
+ 693      00
+ 694              	.LASF14:
+ 695 022f 6C6F6E67 		.ascii	"long double\000"
+ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cczS6WHg.s 			page 18
 
 
- 813      00000201 
- 813      FB0E0D00 
- 813      01010101 
- 814              	.LASF8:
- 815 0000 6C6F6E67 		.ascii	"long long int\000"
- 815      206C6F6E 
- 815      6720696E 
- 815      7400
- 816              	.LASF34:
- 817 000e 73656E73 		.ascii	"sensors_\000"
- 817      6F72735F 
- 817      00
- 818              	.LASF18:
- 819 0017 7265666C 		.ascii	"reflectance_start\000"
- 819      65637461 
- 819      6E63655F 
- 819      73746172 
- 819      7400
- 820              	.LASF13:
- 821 0029 666C6F61 		.ascii	"float\000"
- 821      7400
- 822              	.LASF5:
- 823 002f 5F5F696E 		.ascii	"__int32_t\000"
- 823      7433325F 
- 823      7400
- 824              	.LASF28:
- 825 0039 666F6C6C 		.ascii	"follow_curve\000"
- 825      6F775F63 
- 825      75727665 
- 825      00
- 826              	.LASF33:
- 827 0046 433A5C55 		.ascii	"C:\\Users\\Dieu Vu\\Desktop\\Zumo\\ZumoBot.cydsn\000"
- 827      73657273 
- 827      5C446965 
- 827      75205675 
- 827      5C446573 
- 828              	.LASF27:
- 829 0072 7265666C 		.ascii	"reflectance_digital\000"
- 829      65637461 
- 829      6E63655F 
- 829      64696769 
- 829      74616C00 
- 830              	.LASF12:
- 831 0086 696E7433 		.ascii	"int32_t\000"
- 831      325F7400 
- 832              	.LASF19:
- 833 008e 7265666C 		.ascii	"reflectance_set_threshold\000"
- 833      65637461 
- 833      6E63655F 
- 833      7365745F 
- 833      74687265 
- 834              	.LASF1:
- 835 00a8 756E7369 		.ascii	"unsigned char\000"
- 835      676E6564 
- 835      20636861 
- 835      7200
- 836              	.LASF31:
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 19
-
-
- 837 00b6 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 837      43313120 
- 837      352E342E 
- 837      31203230 
- 837      31363036 
- 838 00e9 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 838      20726576 
- 838      6973696F 
- 838      6E203233 
- 838      37373135 
- 839 011c 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 839      66756E63 
- 839      74696F6E 
- 839      2D736563 
- 839      74696F6E 
- 840              	.LASF7:
- 841 0144 6C6F6E67 		.ascii	"long unsigned int\000"
- 841      20756E73 
- 841      69676E65 
- 841      6420696E 
- 841      7400
- 842              	.LASF3:
- 843 0156 73686F72 		.ascii	"short unsigned int\000"
- 843      7420756E 
- 843      7369676E 
- 843      65642069 
- 843      6E7400
- 844              	.LASF26:
- 845 0169 76546173 		.ascii	"vTaskDelay\000"
- 845      6B44656C 
- 845      617900
- 846              	.LASF36:
- 847 0174 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 847      52784275 
- 847      66666572 
- 847      00
- 848              	.LASF23:
- 849 0181 6D6F746F 		.ascii	"motor_forward\000"
- 849      725F666F 
- 849      72776172 
- 849      6400
- 850              	.LASF4:
- 851 018f 5F5F7569 		.ascii	"__uint16_t\000"
- 851      6E743136 
- 851      5F7400
- 852              	.LASF14:
- 853 019a 646F7562 		.ascii	"double\000"
- 853      6C6500
- 854              	.LASF29:
- 855 01a1 6D6F746F 		.ascii	"motor_stop\000"
- 855      725F7374 
- 855      6F7000
- 856              	.LASF35:
- 857 01ac 7A6D6169 		.ascii	"zmain\000"
- 857      6E00
- 858              	.LASF10:
- 859 01b2 756E7369 		.ascii	"unsigned int\000"
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 20
-
-
- 859      676E6564 
- 859      20696E74 
- 859      00
- 860              	.LASF20:
- 861 01bf 49525F53 		.ascii	"IR_Start\000"
- 861      74617274 
- 861      00
- 862              	.LASF9:
- 863 01c8 6C6F6E67 		.ascii	"long long unsigned int\000"
- 863      206C6F6E 
- 863      6720756E 
- 863      7369676E 
- 863      65642069 
- 864              	.LASF22:
- 865 01df 6D6F746F 		.ascii	"motor_start\000"
- 865      725F7374 
- 865      61727400 
- 866              	.LASF24:
- 867 01eb 5357315F 		.ascii	"SW1_Read\000"
- 867      52656164 
- 867      00
- 868              	.LASF16:
- 869 01f4 6C6F6E67 		.ascii	"long double\000"
- 869      20646F75 
- 869      626C6500 
- 870              	.LASF17:
- 871 0200 73697A65 		.ascii	"sizetype\000"
- 871      74797065 
- 871      00
- 872              	.LASF30:
- 873 0209 70726F67 		.ascii	"progEnd\000"
- 873      456E6400 
- 874              	.LASF25:
- 875 0211 42617474 		.ascii	"BatteryLed_Write\000"
- 875      6572794C 
- 875      65645F57 
- 875      72697465 
- 875      00
- 876              	.LASF32:
- 877 0222 6D61696E 		.ascii	"main.c\000"
- 877      2E6300
- 878              	.LASF15:
- 879 0229 63686172 		.ascii	"char\000"
- 879      00
- 880              	.LASF2:
- 881 022e 73686F72 		.ascii	"short int\000"
- 881      7420696E 
- 881      7400
- 882              	.LASF11:
- 883 0238 75696E74 		.ascii	"uint16_t\000"
- 883      31365F74 
- 883      00
- 884              	.LASF6:
- 885 0241 6C6F6E67 		.ascii	"long int\000"
- 885      20696E74 
- 885      00
- 886              	.LASF21:
-ARM GAS  C:\Users\DIEUVU~1\AppData\Local\Temp\cc667sdH.s 			page 21
-
-
- 887 024a 49525F66 		.ascii	"IR_flush\000"
- 887      6C757368 
- 887      00
- 888              	.LASF37:
- 889 0253 70757473 		.ascii	"puts\000"
- 889      00
- 890              	.LASF0:
- 891 0258 7369676E 		.ascii	"signed char\000"
- 891      65642063 
- 891      68617200 
- 892              	.LASF38:
- 893 0264 5F5F6275 		.ascii	"__builtin_puts\000"
- 893      696C7469 
- 893      6E5F7075 
- 893      747300
- 894              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 695      20646F75 
+ 695      626C6500 
+ 696              	.LASF0:
+ 697 023b 7369676E 		.ascii	"signed char\000"
+ 697      65642063 
+ 697      68617200 
+ 698              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
