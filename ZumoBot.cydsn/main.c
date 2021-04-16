@@ -55,6 +55,37 @@
  * @brief   
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
+#define TIME_TOPIC "Zumo11/button"
+#define PRESSED 1
+#define RELEASE 0
+
+/****WEEK 5 EX.1 ****/
+#if 0
+//motor
+void zmain(void) {
+    
+    int press_1 = 0;
+    int press_2 = 0;
+    
+   //button is pressed on the first time
+    while(SW1_Read() == PRESSED);
+    press_1 = xTaskGetTickCount();
+    
+    while(true) {
+        while(SW1_Read() == PRESSED);
+        press_2 = xTaskGetTickCount();
+        int interval = (int)press_2 - (int)press_1;
+        printf("\npress_1: %ds, press_2: %ds\n", press_1, press_2);
+        printf("\nTime interval between two buttons pressed %ds\n", interval);
+        print_mqtt(TIME_TOPIC,"%ds", interval);
+        //button is released
+        while(SW1_Read() == RELEASE);
+        //set the first prssed value to the next one
+        press_1 = press_2;
+    }
+    progEnd(100);
+}
+#endif
 
 /*****WEEK 4 EX.1*****/
 
