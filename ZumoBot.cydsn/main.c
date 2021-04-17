@@ -134,10 +134,7 @@ void zmain(void)
             motor_forward(30,0);  
             
         }
-        
-        motor_forward(60,0);
-        
-        
+        motor_forward(60,0); 
     }
     
     progEnd(500);
@@ -145,7 +142,76 @@ void zmain(void)
 }   
 #endif
 
+/****WEEK 5 EX.3 ****/
 
+#if 0
+//motor
+void zmain(void)
+{
+    struct sensors_ dig;
+    int count = 0;
+    reflectance_start();
+    bool in_line = false;
+    uint16_t ir_command_time=0;
+    uint16_t stop_time=0;
+    
+    reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
+    IR_Start();
+    IR_flush(); //Clear IR receive buffer
+    
+    motor_start();
+    motor_forward(0,0);  //set speed to zero
+    
+    while(SW1_Read());      //press user button
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    
+    motor_forward(30,0);
+    
+   
+    while (true) {
+        reflectance_digital(&dig);
+        
+        //Go through the line
+        if (dig.L3==1 && dig.L2 ==1 && dig.L1 ==1 && dig.R3==1 && dig.R2==1 && dig.R1==1) {
+            motor_forward(0,0);
+            stop_time=xTaskGetTickCount();
+            printf("Stopping at line number %d\n", count+1);
+
+            print_mqtt(LAP_TOPIC, "Elapsed time: %d ms", stop_time - ir_command_time);
+            
+            printf("Reached the line, motor is waiting. Please send IR signal\n");
+            IR_wait();                  //wait for signal
+            ir_command_time = xTaskGetTickCount(); //get time after IR command
+            printf("IR command received\n");
+            
+            if (!in_line) {
+                count++;
+                in_line=true;   
+            }
+            while (dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
+                motor_forward(30,0);
+                reflectance_digital(&dig);     
+            }
+            motor_forward(0,0);
+            vTaskDelay(100);
+            in_line= false;
+            printf("\nGot out of line number %d and moving on \n********\n",count);
+            motor_forward(30,0);
+            reflectance_digital(&dig);
+            
+        }
+        else{
+            in_line=false;
+            motor_forward(30,0);
+        }    
+
+    }
+    //motor_stop();
+    progEnd(100);
+}
+#endif
 
 /*****WEEK 4 EX.1*****/
 
