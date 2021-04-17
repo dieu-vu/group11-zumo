@@ -56,6 +56,9 @@
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
 #define TIME_TOPIC "Zumo11/button"
+#define TURN_TOPIC "Zumo11/turn"
+#define LAP_TOPIC "Zumo11/lap"
+
 #define PRESSED 1
 #define RELEASE 0
 
@@ -75,9 +78,9 @@ void zmain(void) {
         while(SW1_Read() == PRESSED);
         press_2 = xTaskGetTickCount();
         int interval = (int)press_2 - (int)press_1;
-        printf("\npress_1: %ds, press_2: %ds\n", press_1, press_2);
-        printf("\nTime interval between two buttons pressed %ds\n", interval);
-        print_mqtt(TIME_TOPIC,"%ds", interval);
+        printf("\npress_1: %ds, press_2: %dms\n", press_1, press_2);
+        printf("\nTime interval between two buttons pressed %dms\n", interval);
+        print_mqtt(TIME_TOPIC,"%dms", interval);
         //button is released
         while(SW1_Read() == RELEASE);
         //set the first prssed value to the next one
@@ -86,6 +89,63 @@ void zmain(void) {
     progEnd(100);
 }
 #endif
+
+
+/****WEEK 5 EX.2 ****/
+#if 0
+//ultrasonic sensor - detect obstacles -random turn and record direction//
+void zmain(void)
+{
+    Ultra_Start();                          // Ultra Sonic Start function
+    while(SW1_Read());
+    vTaskDelay(500);
+    int d = Ultra_GetDistance();
+    motor_start();
+    
+    int random_val;
+    
+    while(true) {
+        
+        d = Ultra_GetDistance();
+        
+        if (d <= 10){ // Detect obstacle from the distance < 10 cm
+            motor_forward(0,0); //stop
+            vTaskDelay(200);
+            printf("Obstacle detected, stopped\n");
+            
+            motor_turn(0,100,1050);     //reverse 
+            printf("Reversed\n");
+            motor_forward(0,0);
+            vTaskDelay(2000);
+            
+            random_val = rand() %2;
+            
+            //turn 90 degrees on random direction
+            if (random_val == 1){
+                print_mqtt(TURN_TOPIC, "LEFT"); // send the turn direction to topic Zumo11/turn
+                tank_turn_direction('L',100,260);
+                
+            } else {
+                print_mqtt(TURN_TOPIC, "RIGHT");
+                tank_turn_direction('R',100,260);
+            }    
+            motor_forward(0,0);
+            vTaskDelay(2000);
+            motor_forward(30,0);  
+            
+        }
+        
+        motor_forward(60,0);
+        
+        
+    }
+    
+    progEnd(500);
+    
+}   
+#endif
+
+
 
 /*****WEEK 4 EX.1*****/
 
