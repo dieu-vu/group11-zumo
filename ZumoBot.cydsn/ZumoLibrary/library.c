@@ -12,9 +12,13 @@
 #include <library.h>
 #include <stdlib.h>
 #include <time.h>
-#define MAIN_TOPIC "Zumo11/"
+#define MAIN_TOPIC "Zumo011/"
 #define READY_SUBTOPIC "ready"
 #define START_SUBTOPIC "start"
+#define STOP_SUBTOPIC "stop"
+#define RUNTIME_SUBTOPIC "time"
+#define MISS_SUBTOPIC "miss"
+#define LINE_SUBTOPIC "miss"
 
 void motor_tank_turn() {
     int number = (rand() % (78 - 27 + 1)) + 27; // 27 equal 90 degree and 78 equal 270 degree
@@ -127,6 +131,8 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     vTaskDelay(100);
     uint8 count = 0;
     uint16 start_time = 0;
+    uint16 stop_time = 0;
+    uint16 miss_time=0;
     bool in_line = true;
     
     //Start moving until meeting the first line:
@@ -137,22 +143,27 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
         /*Allow IR signal sent to continue follow the curve after seeing a full line, 
         if the number of lines robot has met is smaller than line_number given.*/
         reflectance_digital(&dig);
+           
         //if detecting a full line:
         if(dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
             if (!in_line) {
                 count++;
                 in_line=true;
-                printf("count: %d\n", count);
             }
-            if (count == 0 || count == line_number){  //Only stop to receive the IR signal at the first and the last line number
+            if (count == 0){  //Only stop to receive the IR signal at the first and the last line number
                 motor_forward(0,0);
-                if (count ==0){
-                    print_mqtt(MAIN_TOPIC,"%s line", READY_SUBTOPIC);
-                }
+                print_mqtt(MAIN_TOPIC,"%s line", READY_SUBTOPIC);
                 IR_wait();                  //wait for signal
                 start_time = xTaskGetTickCount(); // get start time
                 print_mqtt(MAIN_TOPIC,"%s %d", START_SUBTOPIC, start_time); // print out start time MQTT message                
-            }    
+            }   
+            if (count == line_number){
+                motor_forward(0,0);
+                stop_time = xTaskGetTickCount(); // get start time
+                print_mqtt(MAIN_TOPIC,"%s %d", STOP_SUBTOPIC, stop_time);
+                print_mqtt(MAIN_TOPIC,"%s %d", RUNTIME_SUBTOPIC, stop_time - start_time);
+                IR_wait();                  //wait for signal
+            }
             while (dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
                 motor_forward(50,0);
                 reflectance_digital(&dig);     
@@ -176,6 +187,8 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
             }
             else if (!(dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)){ 
                 //if no signal found, turn clockwise until robot can find the way again 
+                miss_time = xTaskGetTickCount();
+                print_mqtt(MAIN_TOPIC,"%s %d", MISS_SUBTOPIC, miss_time);
                 tank_turn_direction('R',75,0);
                 motor_forward(100,0);    
             } 

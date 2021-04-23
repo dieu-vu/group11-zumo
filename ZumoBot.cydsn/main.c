@@ -55,8 +55,8 @@
  * @brief   
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
-#define MAIN_TOPIC "Zumo11/"
-#define READY_SUBTOPIC "ready"
+#define MAIN_TOPIC "Zumo011/"
+
 
 //#define TIME_TOPIC "button" //remove this in the main project code to submit
 //#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
