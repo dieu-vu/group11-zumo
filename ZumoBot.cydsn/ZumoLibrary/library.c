@@ -78,6 +78,66 @@ void motor_forward_line(uint8 number) {
     }
 }
 
+void solve_maze() {
+    int lines = 0;
+    bool in_line = true;
+    bool out_of_maze;
+    
+    uint16 start_time=0;
+    uint16 stop_time = 0;
+    struct sensors_ dig; 
+    reflectance_digital(&dig);
+    vTaskDelay(100);
+    
+    detect_horizontal_line();
+    IR_wait();
+    print_mqtt(MAIN_TOPIC, "%s maze", READY_SUBTOPIC);
+    start_time = xTaskGetTickCount();
+    
+    print_mqtt(MAIN_TOPIC, "%s %d", START_SUBTOPIC, start_time);
+    
+    out_of_maze = !(dig.L3 == 1 || dig.L2 == 1 || dig.L1 == 1 || dig.R1 == 1 || dig.R2 == 1 || dig.R3 == 1);
+    
+    while(true) {         // move if lines < number of lines
+        reflectance_digital(&dig);  // read sensors
+        out_of_maze = !(dig.L3 == 1 || dig.L2 == 1 || dig.L1 == 1 || dig.R1 == 1 || dig.R2 == 1 || dig.R3 == 1);
+        if(!out_of_maze){
+            if( dig.L1 == 1 && dig.R1 == 1){
+                motor_forward(100,0);
+            }
+            // if all of sensors in line robot is in line and count the number of lines if in_line variable change from false
+            if (dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1) {
+                if (!in_line) {
+                    lines++;
+                    in_line = true;
+                }
+                motor_forward(100, 10);
+            } else {
+                in_line = false;    // robot isnot in line
+                if (dig.L3 == 1) {  // turn left if sensor L3 in black
+                    motor_turn(100, 200, 10);
+                } else if (dig.L2 == 1) {   // turn left if sensor L3 in black
+                    motor_turn(100, 150, 10);   
+                } else if (dig.R3 == 1) {       // turn right if sensor L3 in black
+                    motor_turn(200, 100, 10);
+                } else if (dig.R2 == 1) {       // turn right if sensor L3 in black
+                    motor_turn(150, 100, 10);
+                } else {
+                    motor_forward(100, 10);     // go forward
+                }
+            }
+        }
+        else {
+            motor_forward(0,0);
+            stop_time=xTaskGetTickCount();
+            print_mqtt(MAIN_TOPIC,"%s %d",STOP_SUBTOPIC, stop_time);
+            print_mqtt(MAIN_TOPIC, "%s %d", RUNTIME_SUBTOPIC, stop_time-start_time);
+            break;
+        }    
+    }
+    progEnd(200);
+}
+
 void motor_turn_left() {
     struct sensors_ dig;
     

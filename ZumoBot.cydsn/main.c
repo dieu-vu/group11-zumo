@@ -71,7 +71,7 @@
 
 
 /*****LINE FOLLOWER*****/
-#if 1
+#if 0
 //motor
 void zmain(void)
 {
@@ -103,6 +103,40 @@ void zmain(void)
     progEnd(100);
 }
 #endif
+
+/*****MAZE SOLVING*****/
+
+#if 1
+//reflectance
+void zmain(void)
+{
+    reflectance_start();    // start reflectance
+    reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
+    
+    IR_Start(); // start IR
+    IR_flush(); // clear IR receive buffer
+    motor_start(); // start motor
+    
+    while(SW1_Read());  // wait SW1
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    
+    solve_maze();
+    
+//    motor_forward_line(1);  // go forward to first intersection
+//    motor_turn_left();      // turn left
+//    motor_forward_line(1);  // go forward to second intersection
+//    motor_turn_right();     // turn right
+//    motor_forward_line(1);  // go forward to third intersection
+//    motor_turn_right();     // turn right
+//    motor_forward_line(1);  // go forward to fourth intersection
+//    motor_stop();           // stop motor
+    
+}   
+#endif
+
+
 
 
 /***********************************/
@@ -344,7 +378,7 @@ void zmain(void)
     motor_forward(30,0);     // moving forward
   
    // follow the curve line and turn around to find the way when out of the track
-    follow_curve(2); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
+    follow_line(2); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
     
     motor_stop();               // disable motor controller
     

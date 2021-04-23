@@ -51,6 +51,8 @@ void motor_turn_right();
 void detect_horizontal_line();
 void follow_line(uint8 line_number);
 
+void solve_maze();
+
 void progEnd(uint32_t delay);
 void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
 
