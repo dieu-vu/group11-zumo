@@ -65,11 +65,11 @@ void motor_forward_line(uint8 number) {
             in_line = false;    // robot isnot in line
             if (dig.L3 == 1) {  // turn left if sensor L3 in black
                 motor_turn(100, 200, 10);
-            } else if (dig.L2 == 1) {   // turn left if sensor L3 in black
+            } else if (dig.L2 == 1) {   // turn left if sensor L2 in black
                 motor_turn(100, 150, 10);   
-            } else if (dig.R3 == 1) {       // turn right if sensor L3 in black
+            } else if (dig.R3 == 1) {       // turn right if sensor R3 in black
                 motor_turn(200, 100, 10);
-            } else if (dig.R2 == 1) {       // turn right if sensor L3 in black
+            } else if (dig.R2 == 1) {       // turn right if sensor R2 in black
                 motor_turn(150, 100, 10);
             } else {
                 motor_forward(100, 10);     // go forward
@@ -116,11 +116,11 @@ void solve_maze() {
                 in_line = false;    // robot isnot in line
                 if (dig.L3 == 1) {  // turn left if sensor L3 in black
                     motor_turn(100, 200, 10);
-                } else if (dig.L2 == 1) {   // turn left if sensor L3 in black
+                } else if (dig.L2 == 1) {   // turn left if sensor L2 in black
                     motor_turn(100, 150, 10);   
-                } else if (dig.R3 == 1) {       // turn right if sensor L3 in black
+                } else if (dig.R3 == 1) {       // turn right if sensor R3 in black
                     motor_turn(200, 100, 10);
-                } else if (dig.R2 == 1) {       // turn right if sensor L3 in black
+                } else if (dig.R2 == 1) {       // turn right if sensor R2 in black
                     motor_turn(150, 100, 10);
                 } else {
                     motor_forward(100, 10);     // go forward
