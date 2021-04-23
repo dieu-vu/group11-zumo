@@ -18,7 +18,7 @@
 #define STOP_SUBTOPIC "stop"
 #define RUNTIME_SUBTOPIC "time"
 #define MISS_SUBTOPIC "miss"
-#define LINE_SUBTOPIC "miss"
+#define LINE_SUBTOPIC "line"
 
 void motor_tank_turn() {
     int number = (rand() % (78 - 27 + 1)) + 27; // 27 equal 90 degree and 78 equal 270 degree
@@ -138,7 +138,6 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     //Start moving until meeting the first line:
     detect_horizontal_line();
 
-    
     while (count<line_number){ 
         /*Allow IR signal sent to continue follow the curve after seeing a full line, 
         if the number of lines robot has met is smaller than line_number given.*/
