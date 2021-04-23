@@ -162,7 +162,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
             in_line = false;
             if (dig.L1 == 1 || dig.R1 == 1){
                 //move forward if L1 and R1 have sensoring signal
-                motor_forward(100,0);
+                motor_forward(200,0);
             }    
             else if (dig.L3 ==1 || dig.L2 == 1){
                 //turn left when there is signal on the left

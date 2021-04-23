@@ -84,7 +84,7 @@ void zmain(void)
     IR_Start();
     
     IR_flush(); // clear IR receive buffer
-    printf("Buffer cleared\n");
+    //printf("Buffer cleared\n");
     
     motor_start();              // enable motor controller
     motor_forward(0,0);         // set speed to zero to stop motors
@@ -95,10 +95,6 @@ void zmain(void)
     BatteryLed_Write(false);
     reflectance_digital(&dig);
     
-    printf("Starting sensor \n");
-    
-    motor_forward(30,0);     // moving forward
-  
    // follow the curve line and turn around to find the way when out of the track
     follow_line(2); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
     
