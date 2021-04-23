@@ -12,7 +12,9 @@
 #include <library.h>
 #include <stdlib.h>
 #include <time.h>
-
+#define MAIN_TOPIC "Zumo11/"
+#define READY_SUBTOPIC "ready"
+#define START_SUBTOPIC "start"
 
 void motor_tank_turn() {
     int number = (rand() % (78 - 27 + 1)) + 27; // 27 equal 90 degree and 78 equal 270 degree
@@ -109,24 +111,22 @@ void detect_horizontal_line(){ //Check if seeing a line, Motor stops
     reflectance_digital(&dig);
 
     vTaskDelay(100);
-    motor_forward(30,0);    
+    motor_forward(100,0);    
     
     while(!(dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1)){
         reflectance_digital(&dig);
     }
-    
     motor_forward(0,0);         // stop motors
-    
-    printf("Meet a bar! Stop and wait \n"); 
 
 }    
 
-void follow_curve(uint8 line_number){ // follow the curve line and turn around to find the way when out of the track
+void follow_line(uint8 line_number){ // follow the curve line and turn around to find the way when out of the track
     
     struct sensors_ dig; 
     reflectance_digital(&dig);
     vTaskDelay(100);
     uint8 count = 0;
+    uint16 start_time = 0;
     bool in_line = true;
     
     //Start moving until meeting the first line:
@@ -139,15 +139,22 @@ void follow_curve(uint8 line_number){ // follow the curve line and turn around t
         reflectance_digital(&dig);
         //if detecting a full line:
         if(dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
-            motor_forward(0,0);
-            IR_wait();                  //wait for signal
-            printf("Reached the line, motor is waiting. Please send IR signal\n");
             if (!in_line) {
                 count++;
-                in_line=true;   
+                in_line=true;
+                printf("count: %d\n", count);
             }
+            if (count == 0 || count == line_number){  //Only stop to receive the IR signal at the first and the last line number
+                motor_forward(0,0);
+                if (count ==0){
+                    print_mqtt(MAIN_TOPIC,"%s line", READY_SUBTOPIC);
+                }
+                IR_wait();                  //wait for signal
+                start_time = xTaskGetTickCount(); // get start time
+                print_mqtt(MAIN_TOPIC,"%s %d", START_SUBTOPIC, start_time); // print out start time MQTT message                
+            }    
             while (dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
-                motor_forward(30,0);
+                motor_forward(50,0);
                 reflectance_digital(&dig);     
             }       
         }
@@ -155,25 +162,25 @@ void follow_curve(uint8 line_number){ // follow the curve line and turn around t
             in_line = false;
             if (dig.L1 == 1 || dig.R1 == 1){
                 //move forward if L1 and R1 have sensoring signal
-                motor_forward(30,0);
+                motor_forward(100,0);
             }    
             else if (dig.L3 ==1 || dig.L2 == 1){
                 //turn left when there is signal on the left
-                motor_turn(10,125,100);
-                motor_forward(30,0);     
+                motor_turn(10,120,100);
+                motor_forward(100,0);     
             } 
             else if (dig.R3 ==1 || dig.R2 ==1){
                 //turn right when there is signal on the right
-                motor_turn(125,10,100);
-                motor_forward(30,0);               
+                motor_turn(120,10,100);
+                motor_forward(100,0);               
             }
             else if (!(dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)){ 
                 //if no signal found, turn clockwise until robot can find the way again 
                 tank_turn_direction('R',75,0);
-                motor_forward(30,0);    
+                motor_forward(100,0);    
             } 
             else {
-                motor_forward(30,0);
+                motor_forward(100,0);
             } 
         } 
     }

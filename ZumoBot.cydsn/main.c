@@ -55,12 +55,63 @@
  * @brief   
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
-#define TIME_TOPIC "Zumo11/button"
-#define TURN_TOPIC "Zumo11/turn"
-#define LAP_TOPIC "Zumo11/lap"
+#define MAIN_TOPIC "Zumo11/"
+#define READY_SUBTOPIC "ready"
+
+//#define TIME_TOPIC "button" //remove this in the main project code to submit
+//#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
+//#define LAP_TOPIC "Zumo11/lap" //remove this in the main project code to submit
 
 #define PRESSED 1
 #define RELEASE 0
+
+
+
+/******* PROJECT CODE FOLLOW *******/
+
+
+/*****LINE FOLLOWER*****/
+#if 1
+//motor
+void zmain(void)
+{
+    
+    struct sensors_ dig;
+    
+    reflectance_start();
+    
+    reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swith digi value between 0 and 1
+    IR_Start();
+    
+    IR_flush(); // clear IR receive buffer
+    printf("Buffer cleared\n");
+    
+    motor_start();              // enable motor controller
+    motor_forward(0,0);         // set speed to zero to stop motors
+    
+    while(SW1_Read());
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    reflectance_digital(&dig);
+    
+    printf("Starting sensor \n");
+    
+    motor_forward(30,0);     // moving forward
+  
+   // follow the curve line and turn around to find the way when out of the track
+    follow_line(2); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
+    
+    motor_stop();               // disable motor controller
+    
+    progEnd(100);
+}
+#endif
+
+
+/***********************************/
+
+
 
 /****WEEK 5 EX.1 ****/
 #if 0
@@ -297,7 +348,7 @@ void zmain(void)
     motor_forward(30,0);     // moving forward
   
    // follow the curve line and turn around to find the way when out of the track
-    follow_curve(1); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
+    follow_curve(2); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
     
     motor_stop();               // disable motor controller
     
