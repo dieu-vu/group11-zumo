@@ -58,9 +58,9 @@
 #define MAIN_TOPIC "Zumo011/"
 
 
-#define TIME_TOPIC "button" //remove this in the main project code to submit
-#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
-#define LAP_TOPIC "Zumo11/lap" //remove this in the main project code to submit
+//#define TIME_TOPIC "button" //remove this in the main project code to submit
+//#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
+//#define LAP_TOPIC "Zumo11/lap" //remove this in the main project code to submit
 
 #define PRESSED 1
 #define RELEASE 0
@@ -102,12 +102,12 @@ void zmain(void){
     IR_wait();
     //Enter the ring
     while(dig.R3==1 && dig.R2==1 && dig.R1==1 && dig.L3==1 && dig.L2==1 && dig.L1==1) {
-        motor_forward(250,80);
+        motor_forward(200,50);
         reflectance_digital(&dig);   
     }
-    motor_forward(0,0);
+    motor_forward(50,0);
       
-    while(true) {
+    while(SW1_Read() == 1) {
         d = Ultra_GetDistance();
         reflectance_digital(&dig);
     
@@ -130,13 +130,12 @@ void zmain(void){
             }    
         }
         //When detect the black edge
-        if(dig.L3 == 1){
+        if(dig.L3 == 1 && dig.R3 == 0){
             motor_forward(0,0);
             tank_turn_direction('R',100,260);
             reflectance_digital(&dig);
-        }
-        
-        if(dig.R3 == 1){
+
+        }else if(dig.R3 == 1 && dig.L3 == 0){
             motor_forward(0,0);
             tank_turn_direction('L',100,260);
             reflectance_digital(&dig);
@@ -144,7 +143,9 @@ void zmain(void){
         motor_forward(100,50);
         reflectance_digital(&dig);
     }
-       
+    //After entering the ring, robot stop when user button is pressed
+    while(SW1_Read() == 1);
+    motor_stop();
     progEnd(100);
 }
 #endif
