@@ -58,9 +58,9 @@
 #define MAIN_TOPIC "Zumo011/"
 
 
-//#define TIME_TOPIC "button" //remove this in the main project code to submit
-//#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
-//#define LAP_TOPIC "Zumo11/lap" //remove this in the main project code to submit
+#define TIME_TOPIC "button" //remove this in the main project code to submit
+#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
+#define LAP_TOPIC "Zumo11/lap" //remove this in the main project code to submit
 
 #define PRESSED 1
 #define RELEASE 0
@@ -69,6 +69,85 @@
 
 /******* PROJECT CODE FOLLOW *******/
 
+/*****SUMO WRESTLING*****/
+#if 1
+//motor
+void zmain(void){
+    
+    struct sensors_ dig;
+    int d = Ultra_GetDistance();
+    int random_val;
+    
+    reflectance_start();
+    reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swith digi value between 0 and 1
+    
+    IR_Start();
+    IR_flush(); // clear IR receive buffer
+  
+    motor_start();              // enable motor controller
+    motor_forward(0,0);         // set speed to zero to stop motors
+    
+    Ultra_Start();
+    while(SW1_Read());
+    BatteryLed_Write(true);
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    reflectance_digital(&dig);
+    
+    motor_turn(0,100,260);
+    motor_forward(50,0);
+    //Stop when seeing the line
+    detect_horizontal_line();
+    //Wait for IR signal
+    IR_wait();
+    //Enter the ring
+    while(dig.R3==1 && dig.R2==1 && dig.R1==1 && dig.L3==1 && dig.L2==1 && dig.L1==1) {
+        motor_forward(250,80);
+        reflectance_digital(&dig);   
+    }
+    motor_forward(0,0);
+      
+    while(true) {
+        d = Ultra_GetDistance();
+        reflectance_digital(&dig);
+    
+        // Detect obstacle from the distance < 10 cm
+        if (d < 10 ){ 
+            motor_forward(0,0); 
+            vTaskDelay(200);
+            printf("Obstacle detected, stopped\n");
+            
+            random_val = rand() %2;
+            //turn 90 degrees on random direction
+            if (random_val == 1){
+                tank_turn_direction('L',100,260);
+                motor_forward(50,0);
+                reflectance_digital(&dig);
+            } else {
+                tank_turn_direction('R',100,260);
+                motor_forward(50,0);
+                reflectance_digital(&dig);
+            }    
+        }
+        //When detect the black edge
+        if(dig.L3 == 1){
+            motor_forward(0,0);
+            tank_turn_direction('R',100,260);
+            reflectance_digital(&dig);
+        }
+        
+        if(dig.R3 == 1){
+            motor_forward(0,0);
+            tank_turn_direction('L',100,260);
+            reflectance_digital(&dig);
+        }
+        motor_forward(100,50);
+        reflectance_digital(&dig);
+    }
+       
+    progEnd(100);
+}
+#endif
 
 /*****LINE FOLLOWER*****/
 #if 0
@@ -349,7 +428,7 @@ void zmain(void)
 
 /****WEEK 4 EX.2*****/
 
-#if 1
+#if 0
 //motor
 void zmain(void)
 {
