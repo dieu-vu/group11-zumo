@@ -70,7 +70,7 @@
 /******* PROJECT CODE FOLLOW *******/
 
 /*****SUMO WRESTLING*****/
-#if 1
+#if 0
 //motor
 void zmain(void){
     
@@ -151,16 +151,15 @@ void zmain(void){
 #endif
 
 /*****LINE FOLLOWER*****/
-#if 0
+#if 1
 //motor
-void zmain(void)
-{
+void zmain(void){
     
     struct sensors_ dig;
     
     reflectance_start();
     
-    reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swith digi value between 0 and 1
+    reflectance_set_threshold(10000,10000,9000,9000,10000,10000); // set threshhold value to swith digi value between 0 and 1
     IR_Start();
     
     IR_flush(); // clear IR receive buffer
@@ -188,8 +187,7 @@ void zmain(void)
 
 #if 0
 //reflectance
-void zmain(void)
-{
+void zmain(void){
     reflectance_start();    // start reflectance
     reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
     

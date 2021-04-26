@@ -190,12 +190,15 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     reflectance_digital(&dig);
     vTaskDelay(100);
     uint8 count = 0;
-    uint16 start_time = 0;
-    uint16 stop_time = 0;
-    uint16 miss_time=0;
+    uint8 count_miss = 0;
+    
+    uint32_t start_time = 0;
+    uint32_t stop_time = 0;
+    uint32_t miss_time = 0;
+    uint32_t line_time = 0;
     bool in_line = true;
     
-    //Start moving until meeting the first line:
+    /*Start moving until meeting the first line:*/
     detect_horizontal_line();
 
     while (count<line_number){ 
@@ -203,7 +206,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
         if the number of lines robot has met is smaller than line_number given.*/
         reflectance_digital(&dig);
            
-        //if detecting a full line:
+        /*if detecting a full line:*/
         if(dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
             if (!in_line) {
                 count++;
@@ -232,29 +235,40 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
             in_line = false;
             if (dig.L1 == 1 || dig.R1 == 1){
                 //move forward if L1 and R1 have sensoring signal
+                if (count_miss != 0){
+                    line_time = xTaskGetTickCount();
+                    print_mqtt(MAIN_TOPIC,"%s %d", LINE_SUBTOPIC, line_time);
+                    count_miss = 0;
+                }
                 motor_forward(200,0);
-            }    
+            }
             else if (dig.L3 ==1 || dig.L2 == 1){
                 //turn left when there is signal on the left
-                motor_turn(10,120,100);
+                motor_turn(10,150,100);
                 motor_forward(100,0);     
             } 
             else if (dig.R3 ==1 || dig.R2 ==1){
                 //turn right when there is signal on the right
-                motor_turn(120,10,100);
+                motor_turn(150,10,100);
                 motor_forward(100,0);               
-            }
+            } 
             else if (!(dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)){ 
                 //if no signal found, turn clockwise until robot can find the way again 
+                tank_turn_direction('R',75,0);
+                motor_forward(75,0);    
+            }  
+            else {
+                motor_forward(200,0);
+            }    
+        }
+        reflectance_digital(&dig);
+        if (!(dig.L1 == 1 || dig.R1 == 1)){
+            while (count_miss <1){
                 miss_time = xTaskGetTickCount();
                 print_mqtt(MAIN_TOPIC,"%s %d", MISS_SUBTOPIC, miss_time);
-                tank_turn_direction('R',75,0);
-                motor_forward(100,0);    
-            } 
-            else {
-                motor_forward(100,0);
-            } 
-        } 
+                count_miss++;
+            }
+        }
     }
     
 }
