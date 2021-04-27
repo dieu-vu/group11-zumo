@@ -240,25 +240,25 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
                     print_mqtt(MAIN_TOPIC,"%s %d", LINE_SUBTOPIC, line_time);
                     count_miss = 0;
                 }
-                motor_forward(200,0);
+                motor_forward(250,0);
             }
             else if (dig.L3 ==1 || dig.L2 == 1){
                 //turn left when there is signal on the left
-                motor_turn(10,150,100);
+                motor_turn(10,250,40);
                 motor_forward(100,0);     
             } 
             else if (dig.R3 ==1 || dig.R2 ==1){
                 //turn right when there is signal on the right
-                motor_turn(150,10,100);
+                motor_turn(250,10,40);
                 motor_forward(100,0);               
             } 
             else if (!(dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)){ 
                 //if no signal found, turn clockwise until robot can find the way again 
-                tank_turn_direction('R',75,0);
-                motor_forward(75,0);    
+                tank_turn_direction('R',75,50);
+                motor_forward(75,50);    
             }  
             else {
-                motor_forward(200,0);
+                motor_forward(250,0);
             }    
         }
         reflectance_digital(&dig);
