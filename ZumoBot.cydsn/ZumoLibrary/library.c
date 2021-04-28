@@ -191,7 +191,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     vTaskDelay(100);
     uint8 count = 0;
     uint8 count_miss = 0;
-    
+    uint16 missed = 0;
     uint32_t start_time = 0;
     uint32_t stop_time = 0;
     uint32_t miss_time = 0;
@@ -224,6 +224,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
                 stop_time = xTaskGetTickCount(); // get start time
                 print_mqtt(MAIN_TOPIC,"%s %d", STOP_SUBTOPIC, stop_time);
                 print_mqtt(MAIN_TOPIC,"%s %d", RUNTIME_SUBTOPIC, stop_time - start_time);
+                print_mqtt(MAIN_TOPIC,"missed: %d times", missed);
                 IR_wait();                  //wait for signal
             }
             while (dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
@@ -267,6 +268,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
                 miss_time = xTaskGetTickCount();
                 print_mqtt(MAIN_TOPIC,"%s %d", MISS_SUBTOPIC, miss_time);
                 count_miss++;
+                missed++;
             }
         }
     }
