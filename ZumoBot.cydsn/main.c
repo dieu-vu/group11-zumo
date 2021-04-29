@@ -151,7 +151,7 @@ void zmain(void){
 #endif
 
 /*****LINE FOLLOWER*****/
-#if 1
+#if 0
 //motor
 void zmain(void){
     
@@ -185,32 +185,54 @@ void zmain(void){
 
 /*****MAZE SOLVING*****/
 
-#if 0
+#if 1
 //reflectance
 void zmain(void){
+    struct sensors_ dig;
+    
     reflectance_start();    // start reflectance
-    reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
+    reflectance_set_threshold(9000, 9000, 9000, 9000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
     
     IR_Start(); // start IR
     IR_flush(); // clear IR receive buffer
     motor_start(); // start motor
+    motor_forward(0,0);   
     
     while(SW1_Read());  // wait SW1
     BatteryLed_Write(true);
     vTaskDelay(500);
     BatteryLed_Write(false);
+    reflectance_digital(&dig);
     
+//    uint16 time_start = 0;
+//    uint16 time_intersect = 0;
+  
     solve_maze();
     
+//    IR_wait();      // wait IR
+//    
+    
+//    time_start= xTaskGetTickCount();
 //    motor_forward_line(1);  // go forward to first intersection
-//    motor_turn_left();      // turn left
-//    motor_forward_line(1);  // go forward to second intersection
+////    motor_turn_left();      // turn left
+////    motor_forward_line(1);  // go forward to second intersection
+//    motor_forward(0,0);
+//    time_intersect = xTaskGetTickCount();
+//    print_mqtt(MAIN_TOPIC,"time pass intersection: %d", time_intersect-time_start);
+//    IR_wait();
+//    time_start=xTaskGetTickCount();
+//    motor_forward_line(1);  
+//    motor_forward(0,0);
+//    time_intersect = xTaskGetTickCount();
+//    print_mqtt(MAIN_TOPIC,"time pass intersection: %d", time_intersect-time_start);
+    
 //    motor_turn_right();     // turn right
 //    motor_forward_line(1);  // go forward to third intersection
 //    motor_turn_right();     // turn right
 //    motor_forward_line(1);  // go forward to fourth intersection
 //    motor_stop();           // stop motor
-    
+//    
+    progEnd(200);
 }   
 #endif
 

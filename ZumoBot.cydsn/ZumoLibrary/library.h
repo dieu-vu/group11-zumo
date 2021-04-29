@@ -51,6 +51,8 @@ void motor_turn_right();
 void detect_horizontal_line();
 void follow_line(uint8 line_number);
 
+void pass_intersection(uint16 time_interval);
+void avoid_obstacles();
 void solve_maze();
 
 void progEnd(uint32_t delay);

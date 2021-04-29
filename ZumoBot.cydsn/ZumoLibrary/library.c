@@ -78,74 +78,54 @@ void motor_forward_line(uint8 number) {
     }
 }
 
-void solve_maze() {
-    int lines = 0;
-    bool in_line = true;
-    bool out_of_maze;
-    
-    uint16 start_time=0;
-    uint16 stop_time = 0;
+void pass_intersection(uint16 time_limit) {
+    int intersection = 0;
+    uint16 current_time = 0;
+    uint16 start_time = xTaskGetTickCount();
+    bool pass_intersection = false;
     struct sensors_ dig; 
     reflectance_digital(&dig);
     vTaskDelay(100);
     
-    detect_horizontal_line();
-    IR_wait();
-    print_mqtt(MAIN_TOPIC, "%s maze", READY_SUBTOPIC);
-    start_time = xTaskGetTickCount();
-    
-    print_mqtt(MAIN_TOPIC, "%s %d", START_SUBTOPIC, start_time);
-    
-    out_of_maze = !(dig.L3 == 1 || dig.L2 == 1 || dig.L1 == 1 || dig.R1 == 1 || dig.R2 == 1 || dig.R3 == 1);
-    
-    while(true) {         // move if lines < number of lines
-        reflectance_digital(&dig);  // read sensors
-        out_of_maze = !(dig.L3 == 1 || dig.L2 == 1 || dig.L1 == 1 || dig.R1 == 1 || dig.R2 == 1 || dig.R3 == 1);
-        if(!out_of_maze){
-            if( dig.L1 == 1 && dig.R1 == 1){
-                motor_forward(100,0);
-            }
-            // if all of sensors in line robot is in line and count the number of lines if in_line variable change from false
-            if (dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1) {
-                if (!in_line) {
-                    lines++;
-                    in_line = true;
-                }
-                motor_forward(100, 10);
-            } else {
-                in_line = false;    // robot isnot in line
-                if (dig.L3 == 1) {  // turn left if sensor L3 in black
-                    motor_turn(100, 200, 10);
-                } else if (dig.L2 == 1) {   // turn left if sensor L2 in black
-                    motor_turn(100, 150, 10);   
-                } else if (dig.R3 == 1) {       // turn right if sensor R3 in black
-                    motor_turn(200, 100, 10);
-                } else if (dig.R2 == 1) {       // turn right if sensor R2 in black
-                    motor_turn(150, 100, 10);
-                } else {
-                    motor_forward(100, 10);     // go forward
-                }
-            }
-        }
-        else {
-            motor_forward(0,0);
-            stop_time=xTaskGetTickCount();
-            print_mqtt(MAIN_TOPIC,"%s %d",STOP_SUBTOPIC, stop_time);
-            print_mqtt(MAIN_TOPIC, "%s %d", RUNTIME_SUBTOPIC, stop_time-start_time);
+    while(true) {         
+        //Check if the time since starting until current time is over time in
+        current_time = xTaskGetTickCount();
+        
+        if (current_time - start_time > time_limit){
             break;
-        }    
+        }
+        reflectance_digital(&dig);  // read sensors
+        // if all of sensors in line robot is in line and count the number of lines if in_line variable change from false
+        while (dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1) { //See an intersection
+            motor_forward(100,0);
+            reflectance_digital(&dig);
+            pass_intersection = true;
+        }
+        if (pass_intersection) {
+            start_time = xTaskGetTickCount();
+            pass_intersection = false;
+        }
+        if (dig.L3 == 1) {  // turn left if sensor L3 in black
+            motor_turn(100, 200, 10);
+        } else if (dig.L2 == 1) {   // turn left if sensor L2 in black
+            motor_turn(100, 150, 10);   
+        } else if (dig.R3 == 1) {       // turn right if sensor R3 in black
+            motor_turn(200, 100, 10);
+        } else if (dig.R2 == 1) {       // turn right if sensor R2 in black
+            motor_turn(150, 100, 10);
+        } else {
+            motor_forward(100, 10);     // go forward if R1 or L1 sensor =1
+        }
     }
-    progEnd(200);
 }
+
+
 
 void motor_turn_left() {
     struct sensors_ dig;
-    
     motor_forward(100, 30); 
-    
     while (true) {      // turn left until sensor has value 001100
         reflectance_digital(&dig);
-        
         motor_turn(0, 200, 1);
         if (dig.L3 == 0 && dig.L2 == 0 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 0 && dig.R3 == 0) {
             break;
@@ -155,12 +135,9 @@ void motor_turn_left() {
 
 void motor_turn_right() {
     struct sensors_ dig;
-    
     motor_forward(100, 30);
-    
     while (true) {      // turn right until sensor has value 001100
         reflectance_digital(&dig);
-        
         motor_turn(200, 0, 1);
         if (dig.L3 == 0 && dig.L2 == 0 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 0 && dig.R3 == 0) {
             break;
@@ -171,9 +148,7 @@ void motor_turn_right() {
 
 void detect_horizontal_line(){ //Check if seeing a line, Motor stops 
     struct sensors_ dig; 
-    
     reflectance_digital(&dig);
-
     vTaskDelay(100);
     motor_forward(100,0);    
     
@@ -181,7 +156,6 @@ void detect_horizontal_line(){ //Check if seeing a line, Motor stops
         reflectance_digital(&dig);
     }
     motor_forward(0,0);         // stop motors
-
 }    
 
 void follow_line(uint8 line_number){ // follow the curve line and turn around to find the way when out of the track
@@ -275,4 +249,69 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     
 }
 
+void avoid_obstacles(){
+    Ultra_Start();                          // Ultra Sonic Start function
+    while(SW1_Read());
+    vTaskDelay(500);
+    int d = Ultra_GetDistance();
+    motor_start();
+    int random_val;
+    d = Ultra_GetDistance();
+    
+    if (d <= 1){ // Detect obstacle from the distance < 1 cm
+        motor_forward(0,0); //stop
+        vTaskDelay(200);
+        printf("Obstacle detected, stopped\n");
+        random_val = rand() %2;
+        
+        //turn 90 degrees on random direction
+        if (random_val == 1){
+            motor_turn_left();
+        } else {
+            motor_turn_right();
+        }    
+        motor_forward(0,0);
+        vTaskDelay(200);
+        motor_forward(100,100);
+        if (random_val == 1){
+            motor_turn_right();
+        } else {
+            motor_turn_left();
+        }  
+        motor_forward(0,0);
+        vTaskDelay(200);
+        motor_forward(100,100);
+    }
+    else {
+        motor_forward(100,0);
+    }    
+}
+
+
+void solve_maze() {
+    
+    
+    
+    uint16 start_time = 0;
+    uint16 stop_time = 0;
+    
+    
+    struct sensors_ dig; 
+    reflectance_digital(&dig);
+    
+    detect_horizontal_line();
+    IR_wait();
+    print_mqtt(MAIN_TOPIC, "%s maze", READY_SUBTOPIC);
+    start_time = xTaskGetTickCount();
+    print_mqtt(MAIN_TOPIC, "%s %d", START_SUBTOPIC, start_time);
+    
+        
+    pass_intersection(1400); // After 1400ms, if seeing no intersection, stop
+    motor_forward(0,0);
+    stop_time = xTaskGetTickCount();
+    print_mqtt(MAIN_TOPIC,"%s %d",STOP_SUBTOPIC, stop_time);
+    print_mqtt(MAIN_TOPIC, "%s %d", RUNTIME_SUBTOPIC, stop_time-start_time);
+
+    
+}
 /* [] END OF FILE */
