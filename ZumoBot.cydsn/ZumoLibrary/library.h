@@ -36,30 +36,53 @@
 
 void go_straight();
 
-// turn with random angle between 90 and 270 degrees
+//Start the program
+void progStart(bool motor, bool reflectance, bool IR, bool Ultra);
+
+// End the program
+void progEnd(uint32_t delay);
+
+//Motor turn left or right
+void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
+
+//Turn with random angle between 90 and 270 degrees
 void motor_tank_turn();
 
-// go forward with number lines
+//Go forward with number lines
 void motor_forward_line (uint8 number);
 
+<<<<<<< HEAD
 // general function to turn
 void motor_turn_to_direction(char dir);
 // turn left
+=======
+//Turn left
+>>>>>>> defcda2... refactor sumo wrestling, add more comments
 void motor_turn_left();
 
-// turn right
+//Turn right
 void motor_turn_right();
 
 //Motor stops and wait for IR signal
 void detect_horizontal_line();
+
+//Sumo wrestling
+void sumo_wrestling();
+
+//Follow line
 void follow_line(uint8 line_number);
 
+<<<<<<< HEAD
 
 void avoid_obstacles();
+=======
+//Solve maze
+>>>>>>> defcda2... refactor sumo wrestling, add more comments
 void solve_maze();
 
-void progEnd(uint32_t delay);
-void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
+
+
+
 
 #endif
 /* [] END OF FILE */

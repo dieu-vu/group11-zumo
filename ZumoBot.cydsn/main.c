@@ -74,98 +74,12 @@
 //motor
 void zmain(void){
     
-    //Declare variables
-    struct sensors_ dig;
-    int d = Ultra_GetDistance();
-    int random_val;
-    TickType_t start = 0;
-    TickType_t stop = 0;
-    //Start reflectance sensor
-    reflectance_start();
-    //Set threshhold value to swith digi value between 0 and 1
-    reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000);
-    
-    //Start the IR sensor
-    IR_Start();
-    //Clear IR receive buffer
-    IR_flush(); 
-    //Enable motor controller
-    motor_start();
-    //Set speed to zero to stop motors
-    motor_forward(0,0);         
-    //Start the Ultrasonic distance sensor
-    Ultra_Start();
-    //Start the program when button is pressed
-    while(SW1_Read());
-    //Turn on the led
-    BatteryLed_Write(true);
-    vTaskDelay(500);
-    BatteryLed_Write(false);
-    reflectance_digital(&dig);
-    
-    //Start to run to the corner
-    start = xTaskGetTickCount();
-    motor_turn(0,100,260);
-    motor_forward(50,0);
-    //Stop when seeing the line
-    detect_horizontal_line();
-    send_mqtt("zumo011/ready", "zumo");
-    //Wait for IR signal
-    IR_wait();
-    print_mqtt("zumo011/start", "%d", start);
-    //Enter the ring
-    while(dig.R3==1 && dig.R2==1 && dig.R1==1 && dig.L3==1 && dig.L2==1 && dig.L1==1) {
-        motor_forward(200,50);
-        reflectance_digital(&dig);   
-    }
-    motor_forward(50,0);
-      
-    while(SW1_Read() == 1) {
-        d = Ultra_GetDistance();
-        reflectance_digital(&dig);
-    
-        //Detect obstacle from the distance <= 10 cm
-        if (d <= 10 ){ 
-            print_mqtt("zumo011/obstacle", "%d", xTaskGetTickCount());
-            motor_forward(0,0); 
-            vTaskDelay(200);
-            //Set random value to turn
-            random_val = rand() %2;
-            //Turn 90 degrees on random direction
-            if (random_val == 1){
-                //Turn left
-                tank_turn_direction('L',100,260);
-                motor_forward(50,0);
-                reflectance_digital(&dig);
-            } else {
-                //Turn right
-                tank_turn_direction('R',100,260);
-                motor_forward(50,0);
-                reflectance_digital(&dig);
-            }    
-        }
-        //When detect the black edges, make the tank_turn
-        if(dig.L3 == 1 && dig.R3 == 0){
-            motor_forward(0,0);
-            tank_turn_direction('R',100,260);
-            reflectance_digital(&dig);
-
-        }else if(dig.R3 == 1 && dig.L3 == 0){
-            motor_forward(0,0);
-            tank_turn_direction('L',100,260);
-            reflectance_digital(&dig);
-        }
-        //After turning from the edge, continue move forward
-        motor_forward(100,50);
-        reflectance_digital(&dig);
-    }
-    //Robot stop running when user button is pressed
-    while(SW1_Read() == 1);
-    motor_stop();
-    stop = xTaskGetTickCount();
-    print_mqtt("zumo011/stop", "%d", stop);
-    print_mqtt("zumo011/time", "%d", stop - start);
-    progEnd(100);
+    //Start the program
+    progStart(true, true, true, true);
+    //Sumo wrestling
+    sumo_wrestling();
+    //End the program
+    progEnd(200);
 }
 #endif
 
