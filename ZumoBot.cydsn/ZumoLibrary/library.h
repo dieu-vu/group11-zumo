@@ -51,13 +51,10 @@ void motor_tank_turn();
 //Go forward with number lines
 void motor_forward_line (uint8 number);
 
-<<<<<<< HEAD
 // general function to turn
 void motor_turn_to_direction(char dir);
-// turn left
-=======
+
 //Turn left
->>>>>>> defcda2... refactor sumo wrestling, add more comments
 void motor_turn_left();
 
 //Turn right
@@ -72,12 +69,10 @@ void sumo_wrestling();
 //Follow line
 void follow_line(uint8 line_number);
 
-<<<<<<< HEAD
-
+//Avoid obstacles
 void avoid_obstacles();
-=======
+
 //Solve maze
->>>>>>> defcda2... refactor sumo wrestling, add more comments
 void solve_maze();
 
 
