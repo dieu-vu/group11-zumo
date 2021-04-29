@@ -34,6 +34,7 @@
 #include <stdint.h>
 #include <time.h>
 
+void go_straight();
 
 // turn with random angle between 90 and 270 degrees
 void motor_tank_turn();
@@ -41,6 +42,8 @@ void motor_tank_turn();
 // go forward with number lines
 void motor_forward_line (uint8 number);
 
+// general function to turn
+void motor_turn_to_direction(char dir);
 // turn left
 void motor_turn_left();
 
@@ -51,7 +54,7 @@ void motor_turn_right();
 void detect_horizontal_line();
 void follow_line(uint8 line_number);
 
-void pass_intersection(uint16 time_interval);
+void pass_intersection(uint16 time_limit, uint8 intersect_count);
 void avoid_obstacles();
 void solve_maze();
 

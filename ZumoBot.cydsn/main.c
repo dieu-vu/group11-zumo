@@ -191,7 +191,7 @@ void zmain(void){
     struct sensors_ dig;
     
     reflectance_start();    // start reflectance
-    reflectance_set_threshold(9000, 9000, 9000, 9000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
+    reflectance_set_threshold(9000, 9000, 14000, 14000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
     
     IR_Start(); // start IR
     IR_flush(); // clear IR receive buffer
