@@ -74,9 +74,12 @@
 //motor
 void zmain(void){
     
+    //Declare variables
     struct sensors_ dig;
     int d = Ultra_GetDistance();
     int random_val;
+    TickType_t start = 0;
+    TickType_t stop = 0;
     
     reflectance_start();
     reflectance_set_threshold(11000,11000, 9000,9000, 11000, 11000); // set threshhold value to swith digi value between 0 and 1
@@ -94,6 +97,8 @@ void zmain(void){
     BatteryLed_Write(false);
     reflectance_digital(&dig);
     
+    start = xTaskGetTickCount();
+    print_mqtt("zumo011/start", 
     motor_turn(0,100,260);
     motor_forward(50,0);
     //Stop when seeing the line
