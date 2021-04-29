@@ -124,8 +124,8 @@ void motor_turn_right(int *direction) {
     } 
 }
 
-
-void detect_horizontal_line(){ //Check if seeing a line, Motor stops 
+/***Check if seeing a line, Motor stops***/
+void detect_horizontal_line(){  
     struct sensors_ dig; 
     reflectance_digital(&dig);
     vTaskDelay(100);
