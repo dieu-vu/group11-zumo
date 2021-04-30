@@ -50,9 +50,6 @@ void motor_turn_to_direction(char dir);
 //Go forward with number lines
 void motor_forward_line (uint8 number);
 
-// general function to turn
-void motor_turn_to_direction(char dir);
-
 //Turn left from current direction and update the direction after the turn
 void motor_turn_left(int *direction);
 
@@ -85,6 +82,9 @@ void avoid_obstacles();
 
 //Solve maze
 void solve_maze();
+
+//Follow line
+void follow_line(uint8 line_number);
 
 
 

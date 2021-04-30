@@ -56,21 +56,14 @@
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
 #define MAIN_TOPIC "Zumo011/"
-
-
-//#define TIME_TOPIC "button" //remove this in the main project code to submit
-//#define TURN_TOPIC "Zumo11/turn" //remove this in the main project code to submit
-//#define LAP_TOPIC "Zumo11/lap" //remove this in the main project code to submit
-
 #define PRESSED 1
 #define RELEASE 0
-
 
 
 /******* PROJECT CODE FOLLOW *******/
 
 /*****SUMO WRESTLING*****/
-#if 1
+#if 0
 //motor
 void zmain(void){
     
