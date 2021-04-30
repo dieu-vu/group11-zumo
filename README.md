@@ -5,6 +5,9 @@
  [Dung Tran](https://github.com/pdung1989) and [Dieu Vu](https://github.com/dieu-vu)
  
  ## Projects ##
+	- [Sumo wrestling](#sumo-wrestling)
+	- [Line follower](#line-follower)
+	- [Maze](#maze)
  
 ### 1. Sumo Wrestling ###
   
@@ -40,7 +43,7 @@ Zumo028/obstacle 4988
 Zumo028/stop 5210
 Zumo028/time 2909
 ```
-### 2. Line following
+### 2. Line follower
 **Track**: race_track
 
 Robot follows the black line using reflective sensors in the front of the robot. Track total length is about 10 meters. Robot has six reflective sensors. The center sensors are used mainly to keep the robot on the track and side sensors to detect intersections or tight curves on the track. The robot must follow the start and stop rules stated below. The intersections are in a 90-degree angle on a straight line. The competition track is 2 cm wide. Make the robot run as fast as possible.
@@ -85,7 +88,7 @@ Zumo028/line 53933
 Zumo028/stop 54290
 Zumo028/time 53080
 ```
-### 3. Maze solving
+### 3. Maze
 **Track**: Grid, Grid_1, Grid_2, Grid_3, Grid_4, Grid_5
 
 Robot finds a path through a grid by following lines and taking turns at intersections to avoid obstacles.
