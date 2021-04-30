@@ -1,4 +1,4 @@
-# Zumo Peoject
+# Zumo Project
  #### Controlling Zumo Robot by using Metropolia PSoC-Zumo adapter
 
  ## Team member: ##
