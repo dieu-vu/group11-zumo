@@ -85,3 +85,51 @@ Zumo028/line 53933
 Zumo028/stop 54290
 Zumo028/time 53080
 ```
+### 3. Maze solving
+**Track**: Grid, Grid_1, Grid_2, Grid_3, Grid_4, Grid_5
+
+Robot finds a path through a grid by following lines and taking turns at intersections to avoid obstacles.
+
+**Start**: Robot drives to the line and waits on the line for a start signal. The start signal is given with an IR remote.
+**End**: Robot has run straight for a while without seeing an intersection.
+**Obstacles**: There are four bricks at random locations, never on the first, second or last full-width row. They are never oriented diagonally.
+
+Robot must send the following data over MQTT connection:
+- Ready indicator when robot stops on the start line and starts to wait for IR start signal:
+	- Subtopic: ready
+	- Data: “maze”
+- Start time (systick based time stamp = number of milliseconds since the robot code started)
+	- Subtopic: start
+- Stop time (when the robot stops on the finish line it sends stop time stamp)
+	- Subtopic: stop
+- Run time (from start to finish, number of milliseconds between start and stop)
+	- Subtopic: time
+- Bonus (optional):
+	- Send coordinates of each intersection the robot visits
+		- Subtopic: position
+
+For example, Zumo028 sends:
+```
+Zumo028/ready maze
+Zumo028/start 1210
+Zumo028/stop 24290
+Zumo028/time 23080
+```
+```
+Zumo028/ready maze 
+Zumo028/start 1210 
+Zumo028/position 0 0 
+Zumo028/position 0 1 
+Zumo028/position 0 2 
+Zumo028/position 0 3 
+Zumo028/position 0 4 
+Zumo028/position 0 5 
+Zumo028/position -1 5 
+Zumo028/position -2 5 
+Zumo028/position -2 6 
+Zumo028/position -2 7
+...
+Zumo028/position 0 13
+Zumo028/stop 24290
+Zumo028/time 23080
+```
