@@ -96,7 +96,6 @@ void zmain(void){
     IR_Start();
     
     IR_flush(); // clear IR receive buffer
-    //printf("Buffer cleared\n");
     
     motor_start();              // enable motor controller
     motor_forward(0,0);         // set speed to zero to stop motors
