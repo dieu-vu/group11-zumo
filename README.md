@@ -21,14 +21,15 @@ Robot must send the following data over MQTT connection:
 - Ready indicator when robot stops on the start line and starts to wait for IR start signal:
   - Subtopic: ready
   - Data: “zumo”
-Start time (systick based time stamp = number of milliseconds since the robot code started)
-Subtopic: start
-Stop time (when the user button is pressed robot stops and sends stop time stamp)
-Subtopic: stop
-Run time (from start to finish, number of milliseconds between start and stop)
-Subtopic: time
-Timestamp, number of milliseconds since boot, of each turn to avoid the obstacle
-Subtopic: obstacle
+- Start time (systick based time stamp = number of milliseconds since the robot code started)
+  - Subtopic: start
+- Stop time (when the user button is pressed robot stops and sends stop time stamp)
+  - Subtopic: stop
+- Run time (from start to finish, number of milliseconds between start and stop)
+  - Subtopic: time
+- Timestamp, number of milliseconds since boot, of each turn to avoid the obstacle
+  - Subtopic: obstacle
+
 For example, Zumo028 sends:
 ```
 Zumo028/ready zumo
