@@ -70,7 +70,7 @@
 /******* PROJECT CODE FOLLOW *******/
 
 /*****SUMO WRESTLING*****/
-#if 0
+#if 1
 //motor
 void zmain(void){
     
@@ -118,7 +118,7 @@ void zmain(void){
 
 /*****MAZE SOLVING*****/
 
-#if 1
+#if 0
 //reflectance
 void zmain(void){
     struct sensors_ dig;

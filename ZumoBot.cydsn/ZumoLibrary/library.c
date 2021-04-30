@@ -20,6 +20,7 @@
 #define MISS_SUBTOPIC "miss"
 #define LINE_SUBTOPIC "line"
 #define POSITION_SUBTOPIC "position"
+#define OBSTACLE_SUBTOPIC "obstacle"
 enum direction {north = 0, east = 1, south = 2, west =3};
 
 void motor_tank_turn(){
@@ -479,10 +480,10 @@ void sumo_wrestling(){
     motor_forward(50,0);
     
     detect_horizontal_line();   //Stop when seeing the line
-    send_mqtt("zumo011/ready", "zumo");
+    print_mqtt(MAIN_TOPIC, "%s zumo", READY_SUBTOPIC);
     
     IR_wait();  //Wait for IR signal
-    print_mqtt("zumo011/start", "%d", start);
+    print_mqtt(MAIN_TOPIC, "%s %d", START_SUBTOPIC, start);
     
     //Enter the ring
     while(dig.R3==1 && dig.R2==1 && dig.R1==1 && dig.L3==1 && dig.L2==1 && dig.L1==1) {
@@ -497,7 +498,7 @@ void sumo_wrestling(){
     
         //Detect obstacle from the distance <= 10 cm
         if (d <= 10 ){ 
-            print_mqtt("zumo011/obstacle", "%d", xTaskGetTickCount());
+            print_mqtt(MAIN_TOPIC, "%s %d", OBSTACLE_SUBTOPIC, xTaskGetTickCount());
             motor_forward(0,0); 
             vTaskDelay(200);
             
@@ -532,8 +533,8 @@ void sumo_wrestling(){
     while(SW1_Read() == 1);
     motor_stop();
     stop = xTaskGetTickCount();
-    print_mqtt("zumo011/stop", "%d", stop);
-    print_mqtt("zumo011/time", "%d", stop - start);
+    print_mqtt(MAIN_TOPIC, "%s %d", STOP_SUBTOPIC, stop);
+    print_mqtt(MAIN_TOPIC, "%s %d", RUNTIME_SUBTOPIC, stop - start);
 }
 
 /* [] END OF FILE */
