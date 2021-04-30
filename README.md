@@ -6,7 +6,7 @@
  
  ## Projects ##
   	- [Sumo Wrestling](#sumo-wrestling "Goto sumo-wrestling")
-	- [Line Follower](#line-follower)
+	- [Line Follower](#line-follower "Goto line-follower")
 	- [Maze](#maze)
 
  
@@ -44,7 +44,7 @@ Zumo028/obstacle 4988
 Zumo028/stop 5210
 Zumo028/time 2909
 ```
-### Line follower
+### Line Follower
 **Track**: race_track
 
 Robot follows the black line using reflective sensors in the front of the robot. Track total length is about 10 meters. Robot has six reflective sensors. The center sensors are used mainly to keep the robot on the track and side sensors to detect intersections or tight curves on the track. The robot must follow the start and stop rules stated below. The intersections are in a 90-degree angle on a straight line. The competition track is 2 cm wide. Make the robot run as fast as possible.
