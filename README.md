@@ -29,10 +29,10 @@ Timestamp, number of milliseconds since boot, of each turn to avoid the obstacle
 Subtopic: obstacle
 For example, Zumo028 sends:
 
-Zumo028/ready zumo
-Zumo028/start 2301
-Zumo028/obstacle 3570
-Zumo028/obstacle 4553
-Zumo028/obstacle 4988
-Zumo028/stop 5210
-Zumo028/time 2909
+>>Zumo028/ready zumo
+>>Zumo028/start 2301
+>>Zumo028/obstacle 3570
+>>Zumo028/obstacle 4553
+>>Zumo028/obstacle 4988
+>>Zumo028/stop 5210
+>>Zumo028/time 2909
