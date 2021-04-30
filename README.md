@@ -6,9 +6,9 @@
  
  ## Projects ##
  
-[Sumo Wrestling](#sumo-wrestling "Goto sumo-wrestling")
-[Line Follower](#line-follower "Goto line-follower")
-[Maze](#maze)
+- [Sumo Wrestling](#sumo-wrestling)
+- [Line Follower](#line-follower)
+- [Maze](#maze)
 
  
 ### Sumo Wrestling ###
