@@ -1,7 +1,7 @@
 # Zumo Peoject
- ####Controlling Zumo Robot by using Metropolia PSoC-Zumo adapter
+ ###Controlling Zumo Robot by using Metropolia PSoC-Zumo adapter
 
- ### Team member: ###
+ ## Team member: ##
  [Dung Tran](https://github.com/pdung1989) and [Dieu Vu](https://github.com/dieu-vu)
  
  ## Projects ##
