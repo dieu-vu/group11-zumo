@@ -5,9 +5,9 @@
  [Dung Tran](https://github.com/pdung1989) and [Dieu Vu](https://github.com/dieu-vu)
  
  ## Projects ##
-	- [Sumo wrestling](#1. Sumo-wrestling)
-	- [Line follower](#2. Line-follower)
-	- [Maze](#3. Maze)
+[Sumo wrestling](#1. Sumo Wrestling)
+[Line follower](#2. Line follower)
+[Maze](#3. Maze)
  
 ### 1. Sumo Wrestling ###
   
