@@ -34,7 +34,6 @@
 #include <stdint.h>
 #include <time.h>
 
-void go_straight();
 
 //Start the program
 void progStart(bool motor, bool reflectance, bool IR, bool Ultra);
@@ -45,8 +44,8 @@ void progEnd(uint32_t delay);
 //Motor turn left or right
 void tank_turn_direction(char dir, uint8_t speed, uint32_t delay);
 
-//Turn with random angle between 90 and 270 degrees
-void motor_tank_turn();
+//Motor turns to the given direction and correct the turn angle continuously using sensors
+void motor_turn_to_direction(char dir);
 
 //Go forward with number lines
 void motor_forward_line (uint8 number);
@@ -54,11 +53,11 @@ void motor_forward_line (uint8 number);
 // general function to turn
 void motor_turn_to_direction(char dir);
 
-//Turn left
-void motor_turn_left();
+//Turn left from current direction and update the direction after the turn
+void motor_turn_left(int *direction);
 
-//Turn right
-void motor_turn_right();
+//Turn right from current direction and update the direction after the turn
+void motor_turn_right(int *direction);
 
 //Motor stops and wait for IR signal
 void detect_horizontal_line();
@@ -66,8 +65,20 @@ void detect_horizontal_line();
 //Sumo wrestling
 void sumo_wrestling();
 
-//Follow line
-void follow_line(uint8 line_number);
+//Function to check if robot pass (an) intersection(s)
+void pass_intersection(uint8 intersect_count);
+
+//Function to Adjust robot to align with the straight line
+void go_straight();
+
+//Robot moves until reaching the edge of the maze (L1 and R1 = 0)
+void go_until_the_end();
+
+//Update coordinates when passing an intersection
+void move_one_step(int *longitude, int *latitude, int *direction);
+
+//Deciding turn direction based on current coordinates and direction
+int decide_direction(int longitude, int direction);
 
 //Avoid obstacles
 void avoid_obstacles();

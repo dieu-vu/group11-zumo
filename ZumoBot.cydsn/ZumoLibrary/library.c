@@ -56,7 +56,6 @@ void progEnd(uint32_t delay){
     }
 }
 
-
 /***Tank turn with given direction***/
 void tank_turn_direction(char dir, uint8_t speed, uint32_t delay){
     if (dir=='L'){
@@ -221,7 +220,8 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     
 }
 
-void pass_intersection(uint8 intersect_count){     //Function to check if robot pass (an) intersection(s)
+/***Function to check if robot pass (an) intersection(s)***/
+void pass_intersection(uint8 intersect_count){     
    
     uint8 passed_intersections = 0;
     
@@ -255,7 +255,8 @@ void pass_intersection(uint8 intersect_count){     //Function to check if robot 
     }
 }
 
-void go_straight(){     // Function to Adjust robot to align with the straight line
+/***Function to Adjust robot to align with the straight line***/
+void go_straight(){     
     struct sensors_ dig;
     int aligned_times = 0;
     while(aligned_times < 5) {  //check 5 times if the robot can read signal from L1 and R1 to make sure it aligns with the straight line
@@ -339,7 +340,6 @@ int decide_direction(int longitude, int direction){
     };
     return 1;
 }
-
 
 /***Avoid obstacles and turn back to maze when reaching the edge***/
 void avoid_obstacles(){
