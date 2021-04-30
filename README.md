@@ -8,7 +8,7 @@
  
 #### 1. Sumo Wrestling ####
   
-** Track **: sumo_ring_w_obstacle 
+**Track**: sumo_ring_w_obstacle 
 
 Robot must drive along the line to the edge of the sumo ring and wait for start signal. The start signal is given with an IR remote. The robot drives around and avoids hitting the red triangle. Robot uses reflectance sensors to stay inside the ring. After entering the ring robot must stop when user button is pressed.
 
