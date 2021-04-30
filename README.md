@@ -4,9 +4,9 @@
  ### Team member: ###
  [Dung Tran](https://github.com/pdung1989) and [Dieu Vu](https://github.com/dieu-vu)
  
- ### Projects ###
+ ## Projects ##
  
-#### 1. Sumo Wrestling ####
+### 1. Sumo Wrestling ###
   
 **Track**: sumo_ring_w_obstacle 
 
