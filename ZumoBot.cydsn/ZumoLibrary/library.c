@@ -23,13 +23,8 @@
 #define OBSTACLE_SUBTOPIC "obstacle"
 enum direction {north = 0, east = 1, south = 2, west =3};
 
-void motor_tank_turn(){
-    int number = (rand() % (78 - 27 + 1)) + 27; // 27 equal 90 degree and 78 equal 270 degree
-    SetMotors(0, 1, 100, 100, number * 10);
-    motor_stop();
-}
 
-/***START THE PROGRAM***/
+/***Start the program***/
 void progStart(bool motor, bool reflectance, bool IR, bool Ultra){
     if(motor){
         //Enable motor controller
@@ -55,13 +50,14 @@ void progStart(bool motor, bool reflectance, bool IR, bool Ultra){
      }
 }
 
-/***END THE PROGRAM***/
+/***End the Program***/
 void progEnd(uint32_t delay){
     while(true){
         vTaskDelay(delay);
     }
 }
 
+/***Tank turn with given direction***/
 void tank_turn_direction(char dir, uint8_t speed, uint32_t delay){
     if (dir=='L'){
         SetMotors(1,0,speed, speed, delay);
@@ -71,47 +67,14 @@ void tank_turn_direction(char dir, uint8_t speed, uint32_t delay){
     }
 }
 
-void motor_forward_line(uint8 number) { //function used for week 4 ex3 group assignment
-    int lines = 0;
-    bool in_line = true;
-    struct sensors_ dig; 
-    reflectance_digital(&dig);
-    vTaskDelay(100);
-    
-    while(lines < number) {         // move if lines < number of lines
-        reflectance_digital(&dig);  // read sensors
-        
-        // if all of sensors in line robot is in line and count the number of lines if in_line variable change from false
-        if (dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1) {
-            if (!in_line) {
-                lines++;
-                in_line = true;
-            }
-            motor_forward(100, 10);
-        } else {
-            in_line = false;    // robot isnot in line
-            if (dig.L3 == 1) {  // turn left if sensor L3 in black
-                motor_turn(100, 200, 10);
-            } else if (dig.L2 == 1) {   // turn left if sensor L2 in black
-                motor_turn(100, 150, 10);   
-            } else if (dig.R3 == 1) {       // turn right if sensor R3 in black
-                motor_turn(200, 100, 10);
-            } else if (dig.R2 == 1) {       // turn right if sensor R2 in black
-                motor_turn(150, 100, 10);
-            } else {
-                motor_forward(100, 10);     // go forward
-            }
-        }
-    }
-}
-
-void motor_turn_to_direction(char dir) { 
+/***Motor turns to the given direction and correct the turn angle continuously using sensors***/
+void motor_turn_to_direction(char dir){ 
     int moving_speed = 40;
 
     struct sensors_ dig;
     tank_turn_direction(dir, moving_speed, 20);
     vTaskDelay(1000);
-    while (true) {
+    while (true){
         // turn until sensor has value 001100
         reflectance_digital(&dig);
         if (dig.L3 == 0 && dig.L2 == 0 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 0 && dig.R3 == 0) {
@@ -132,16 +95,18 @@ void motor_turn_to_direction(char dir) {
     }
 }
 
-void motor_turn_left(int *direction) { 
+/***Turn left from current direction and update the direction after the turn***/
+void motor_turn_left(int *direction){ 
     motor_turn_to_direction('L');   //motor turns left
-    if (*direction == north) {
+    if (*direction == north){
         *direction = west;          //then update direction to heading to the left if the previous direction is upward (north)
-    } else {
+    } else{
         *direction = *direction - 1; //otherwise following the sequence in the enumeration
     }   
 }
 
-void motor_turn_right(int *direction) {
+/***Turn right from current direction and update the direction after the turn***/
+void motor_turn_right(int *direction){
     motor_turn_to_direction('R');
     if (*direction == west) {
         *direction = north;
@@ -163,6 +128,8 @@ void detect_horizontal_line(){
     motor_forward(0,0);         // stop motors
 }    
 
+
+/***Line following***/
 void follow_line(uint8 line_number){ // follow the curve line and turn around to find the way when out of the track
     
     struct sensors_ dig; 
@@ -187,7 +154,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
            
         /*if detecting a full line:*/
         if(dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
-            if (!in_line) {
+            if (!in_line){
                 count++;
                 in_line=true;
             }
@@ -211,7 +178,7 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
                 reflectance_digital(&dig);     
             }       
         }
-        else {
+        else{
             in_line = false;
             if (dig.L1 == 1 || dig.R1 == 1){
                 //move forward if L1 and R1 have sensoring signal
@@ -254,7 +221,8 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
     
 }
 
-void pass_intersection(uint8 intersect_count) {     //Function to check if robot pass (an) intersection(s)
+/***Function to check if robot pass (an) intersection(s)***/
+void pass_intersection(uint8 intersect_count){     
    
     uint8 passed_intersections = 0;
     
@@ -263,23 +231,23 @@ void pass_intersection(uint8 intersect_count) {     //Function to check if robot
     reflectance_digital(&dig);
     vTaskDelay(100);
     
-    while(true) {         
+    while(true){         
         if (passed_intersections >= intersect_count && intersect_count !=0){    //Escape the function when the robot pass the given number of intersections
             break;
         }
         reflectance_digital(&dig);  // read sensors
         // if all of sensors are detected, the robot is passing a crossing line
-        while ((dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1) || (dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)) { //See an intersection
+        while ((dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1) || (dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)){ //See an intersection
             motor_forward(100,0);
             reflectance_digital(&dig);
             pass_intersection = true;       //the robot keeps moving until it passes an intersection
         }
         
-        if (dig.L1 == 0 && dig.R1 == 0) { //After passing an intersection and going over the lines, check if the robot reaches the edge
+        if (dig.L1 == 0 && dig.R1 == 0){ //After passing an intersection and going over the lines, check if the robot reaches the edge
             break;  //escape if out of the maze
         }
         go_straight();      //otherwise, the robot adjust the direction to the straight line and continue going following the straight line
-        if (pass_intersection) {
+        if (pass_intersection){
             passed_intersections++;         //After passing the intersection, the line and not out of maze, update number of intersections passed
             pass_intersection = false;      //then reset pass boolean to check the next intersection  
         }
@@ -288,7 +256,8 @@ void pass_intersection(uint8 intersect_count) {     //Function to check if robot
     }
 }
 
-void go_straight() {     // Function to Adjust robot to align with the straight line
+/***Function to Adjust robot to align with the straight line***/
+void go_straight(){     
     struct sensors_ dig;
     int aligned_times = 0;
     while(aligned_times < 5) {  //check 5 times if the robot can read signal from L1 and R1 to make sure it aligns with the straight line
@@ -296,16 +265,16 @@ void go_straight() {     // Function to Adjust robot to align with the straight 
         if (dig.L1 == 1 && dig.R1 == 1) {
             motor_forward(30, 1);     // go forward if R1 or L1 sensor =1
             aligned_times++;
-        } else if (dig.L3 == 1) {  // turn left if sensor L3 in black
+        } else if (dig.L3 == 1){  // turn left if sensor L3 in black
             tank_turn_direction('L', 8, 20);
             aligned_times = 0;            
-        } else if (dig.L2 == 1) {   // turn left if sensor L2 in black
+        } else if (dig.L2 == 1){   // turn left if sensor L2 in black
             aligned_times = 0;            
             tank_turn_direction('L', 5, 20);
-        } else if (dig.R3 == 1) {       // turn right if sensor R3 in black
+        } else if (dig.R3 == 1){       // turn right if sensor R3 in black
             aligned_times = 0;            
             tank_turn_direction('R', 8, 20);
-        } else if (dig.R2 == 1) {       // turn right if sensor R2 in black
+        } else if (dig.R2 == 1){       // turn right if sensor R2 in black
             aligned_times = 0;            
             tank_turn_direction('R', 5, 20);
         }
@@ -313,7 +282,8 @@ void go_straight() {     // Function to Adjust robot to align with the straight 
     motor_forward(0,0); //stop
 }
 
-void go_until_the_end(){ //Robot moves until reaching the edge of the maze (L1 and R1 = 0)
+/***Robot moves until reaching the edge of the maze (L1 and R1 = 0)***/
+void go_until_the_end(){ 
     struct sensors_ dig;
     while(true) {
         reflectance_digital(&dig);
@@ -325,11 +295,12 @@ void go_until_the_end(){ //Robot moves until reaching the edge of the maze (L1 a
     }
 }
 
-void move_one_step(int *longitude, int *latitude, int *direction) { //Update coordinates when passing an intersection
+/***Update coordinates when passing an intersection***/
+void move_one_step(int *longitude, int *latitude, int *direction){ 
     pass_intersection(1);
     motor_forward(100,100); 
     motor_forward(0,0); //stop
-    switch (*direction) {
+    switch (*direction){
         case north:                 
             *latitude = *latitude + 1; 
             break;
@@ -345,25 +316,25 @@ void move_one_step(int *longitude, int *latitude, int *direction) { //Update coo
     }
 }
 
-
+/***Deciding turn direction based on current coordinates and direction***/
 int decide_direction(int longitude, int direction){ 
-    /* if robot is heading to the left or on the left side of the grid (negative longitude)
+    /* If robot is heading to the left or on the left side of the grid (negative longitude)
     , then return -1 - Robot will turn left in the next step.
     Otherwise, return 1. Robot will turn right in the next step */
-    switch (direction) {
+    switch (direction){
         case north:
-            if (longitude < 0) {  //if heading up north and on the left side
-                return 1;   //turn right
-            } else {            //if heading up north and on the right side    
+            if (longitude < 0){  //if heading up north and on the left side
+                return 1;       //turn right
+            } else {            //if heading up north and not on the left side 
                 return -1;      //turn left
             }
         case east:              //if heading to the right side
             return -1;          //turn left to go upward (go north)
         case south:             //if heading downward
-            if (longitude < 0) {   //if on the left side, turn left
+            if (longitude < 0){   //if on the left side, turn left
                 return -1;
-            } else {
-                return 1;
+            } else {                // if heading south (upward) and not on the right side, 
+                return 1;           //turn right
             }
         case west:          //if heading to the left side
             return 1;       //turn right to go upward (go north)
@@ -371,6 +342,7 @@ int decide_direction(int longitude, int direction){
     return 1;
 }
 
+/***Avoid obstacles and turn back to maze when reaching the edge***/
 void avoid_obstacles(){
    
     uint8 d = Ultra_GetDistance();
@@ -390,9 +362,11 @@ void avoid_obstacles(){
         d = Ultra_GetDistance();
         
         //Check if there is obstacle, or out of maze (L1 and R1 =0)
-        //Decide the direction to turn base on the longitude of the current position   
-        if (d < 15){ // Detect obstacle from the distance < 15 cm
-            motor_forward(0,0); //stop
+        //Decide the direction to turn base on the longitude of the current position  
+        
+        // 1- Detect obstacle from the distance < 15 cm
+        if (d < 15){ 
+            motor_forward(0,0);
             printf("Obstacle detected, distance %d\n", d);
             turn_direction = decide_direction(longitude, direction);    //check the previous direction and longitude to decide next direction
             if (turn_direction == -1){
@@ -403,8 +377,8 @@ void avoid_obstacles(){
             motor_forward(0,0);
             print_mqtt(MAIN_TOPIC,"%s %d %d", POSITION_SUBTOPIC, longitude, latitude);
         }
-        //if the robot goes out of the maze, it also turns following the same logic when meeting obstacles
-        else if (dig.L1 == 0 && dig.R1 == 0) {  
+        //2- if the robot goes out of the maze, it also turns following the same logic when meeting obstacles
+        else if (dig.L1 == 0 && dig.R1 == 0){  
             turn_direction = decide_direction(longitude, direction);
             if (turn_direction == -1){
                 motor_turn_left(&direction);
@@ -414,12 +388,12 @@ void avoid_obstacles(){
             motor_forward(0,0);
             print_mqtt(MAIN_TOPIC,"%s %d %d", POSITION_SUBTOPIC, longitude, latitude);
         }
-        // If not detecting any obstacles, or out of maze:
-        else {
+        //3- If not detecting any obstacles, or out of maze:
+        else{
             move_one_step(&longitude, &latitude, &direction); //continue moving to the next intersections and update coordinates
             if (longitude == 0 && latitude >= 11) { //if at the coordinates with longitude 0 and any latitude higher than 11 (the last two full rows)
                 motor_forward(0,0);                
-                if (direction == 1) {             //if robot is heading to the right side, then turn left
+                if (direction == 1){             //if robot is heading to the right side, then turn left
                     motor_turn_left(&direction);
                 } else if (direction == 3){          //if robot is heading to the left side, then turn right
                     motor_turn_right(&direction);
@@ -433,7 +407,8 @@ void avoid_obstacles(){
     go_until_the_end();
 }
 
-void solve_maze() {
+/***Solve maze function, using the avoid_obstacles function***/
+void solve_maze(){
     
     uint32 start_time = 0;
     uint32 stop_time = 0;
@@ -458,7 +433,7 @@ void solve_maze() {
  
 }
 
-/***SUMO WRESTLING***/
+/***Sumo Wrestling***/
 void sumo_wrestling(){
     
     //Declare variables
@@ -492,7 +467,7 @@ void sumo_wrestling(){
     }
     motor_forward(50,0);
       
-    while(SW1_Read() == 1) {
+    while(SW1_Read() == 1){
         d = Ultra_GetDistance();
         reflectance_digital(&dig);
     
