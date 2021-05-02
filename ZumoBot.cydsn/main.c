@@ -99,8 +99,8 @@ void zmain(void){
     BatteryLed_Write(false);
     reflectance_digital(&dig);
     
-   // follow the curve line and turn around to find the way when out of the track
-    follow_line(2); //if passing param line_number>1, the robot turns around line_number times and continue until it meets the next line
+   // follow the curve line and stop at the 2nd horizontal line
+    follow_line(2); 
     
     motor_stop();               // disable motor controller
     
