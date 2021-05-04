@@ -443,10 +443,8 @@ void sumo_wrestling(){
     TickType_t start = 0;
     TickType_t stop = 0;
     
-    while(SW1_Read());  //When button is pressed
-    BatteryLed_Write(true); //Turn on the led
-    vTaskDelay(500);
-    BatteryLed_Write(false);
+    //When button is pressed and light on
+    button_start(true);
     reflectance_digital(&dig);
     
     //Start to run to the corner by turning left and then go forward
@@ -512,6 +510,17 @@ void sumo_wrestling(){
     stop = xTaskGetTickCount();
     print_mqtt(MAIN_TOPIC, "%s %d", STOP_SUBTOPIC, stop);
     print_mqtt(MAIN_TOPIC, "%s %d", RUNTIME_SUBTOPIC, stop - start);
+}
+
+/***Press button, light on***/
+void button_start(bool button_press){
+    
+    if(button_press == 1){
+    while(SW1_Read());  //When button is pressed
+    BatteryLed_Write(true); //Turn on the led
+    vTaskDelay(500);
+    BatteryLed_Write(false);
+    }
 }
 
 /* [] END OF FILE */

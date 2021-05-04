@@ -86,10 +86,10 @@ void solve_maze();
 //Follow line
 void follow_line(uint8 line_number);
 
-
+//Press button, light on
+void button_start(bool button_press);
 
 
 
 #endif
 /* [] END OF FILE */
-
