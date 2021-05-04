@@ -60,7 +60,6 @@
 
 /*****SUMO WRESTLING*****/
 #if 1
-//motor
 void zmain(void){
     
     progStart(true, true, true, true); //Start the program
@@ -71,7 +70,6 @@ void zmain(void){
 
 /*****LINE FOLLOWER*****/
 #if 0
-
 void zmain(void){
     
     progStart(true, false, true, false); //Start the program
@@ -86,7 +84,6 @@ void zmain(void){
 /*****MAZE SOLVING*****/
 
 #if 0
-//motor
 void zmain(void){
     
     progStart(true, false, true, false);    //Start the program
