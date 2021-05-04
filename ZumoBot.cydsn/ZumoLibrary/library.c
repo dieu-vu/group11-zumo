@@ -419,12 +419,12 @@ void solve_maze(){
     reflectance_digital(&dig);
     
     detect_horizontal_line();
-    IR_wait();
+    IR_wait();  //IR start
     print_mqtt(MAIN_TOPIC, "%s maze", READY_SUBTOPIC);
     start_time = xTaskGetTickCount();
     print_mqtt(MAIN_TOPIC, "%s %d", START_SUBTOPIC, start_time);
      
-    avoid_obstacles();
+    avoid_obstacles();  //Avoid obstacles
    
     motor_forward(0,0);
     stop_time = xTaskGetTickCount();
@@ -453,7 +453,7 @@ void sumo_wrestling(){
     motor_forward(50,0);
     
     detect_horizontal_line();   //Stop when seeing the line
-    print_mqtt(MAIN_TOPIC, "%s zumo", READY_SUBTOPIC);
+    print_mqtt(MAIN_TOPIC, "%s zumo", READY_SUBTOPIC); 
     
     IR_wait();  //Wait for IR signal
     print_mqtt(MAIN_TOPIC, "%s %d", START_SUBTOPIC, start);
