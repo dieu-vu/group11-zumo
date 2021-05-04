@@ -84,14 +84,11 @@ void zmain(void){
     progStart(true, false, true, false);
     
     struct sensors_ dig;
-    reflectance_start();
+    reflectance_start();    //start refluctance sensor
     reflectance_set_threshold(10000,10000,9000,9000,10000,10000); // set threshhold value to swith digi value between 0 and 1
-    
-    while(SW1_Read()); //Press the button
-    BatteryLed_Write(true);
-    vTaskDelay(500);
-    BatteryLed_Write(false);
     reflectance_digital(&dig);
+    
+    button_start(true); //Press the button
     
    // follow the curve line and stop at the 2nd horizontal line
     follow_line(2); 
