@@ -466,7 +466,8 @@ void sumo_wrestling(){
         reflectance_digital(&dig);   
     }
     motor_forward(50,0);
-      
+    
+    //When the robot enters the ring, it will detect the obstacle and black edges of the ring  
     while(SW1_Read() == 1){
         d = Ultra_GetDistance();
         reflectance_digital(&dig);
@@ -490,14 +491,15 @@ void sumo_wrestling(){
             }    
         }
         //When detect the black edges, make the tank_turn
+        //Check the sensors L3, R3
         if(dig.L3 == 1 && dig.R3 == 0){
             motor_forward(0,0);
-            tank_turn_direction('R',100,260);
+            tank_turn_direction('R',100,260); //Turn right
             reflectance_digital(&dig);
 
         }else if(dig.R3 == 1 && dig.L3 == 0){
             motor_forward(0,0);
-            tank_turn_direction('L',100,260);
+            tank_turn_direction('L',100,260);   //Turn left
             reflectance_digital(&dig);
         }
         //After turning from the edge, continue move forward
