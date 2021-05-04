@@ -59,7 +59,7 @@
 /******* ZUMO PROJECT GROUP 11 *******/
 
 /*****SUMO WRESTLING*****/
-#if 0
+#if 1
 //motor
 void zmain(void){
     
