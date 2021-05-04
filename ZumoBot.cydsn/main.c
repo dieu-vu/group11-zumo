@@ -77,23 +77,17 @@ void zmain(void){
 #endif
 
 /*****LINE FOLLOWER*****/
-#if 0
+#if 1
 //motor
 void zmain(void){
     
+    progStart(true, false, true, false);
+    
     struct sensors_ dig;
-    
     reflectance_start();
-    
     reflectance_set_threshold(10000,10000,9000,9000,10000,10000); // set threshhold value to swith digi value between 0 and 1
-    IR_Start();
     
-    IR_flush(); // clear IR receive buffer
-    
-    motor_start();              // enable motor controller
-    motor_forward(0,0);         // set speed to zero to stop motors
-    
-    while(SW1_Read());
+    while(SW1_Read()); //Press the button
     BatteryLed_Write(true);
     vTaskDelay(500);
     BatteryLed_Write(false);
@@ -101,9 +95,7 @@ void zmain(void){
     
    // follow the curve line and stop at the 2nd horizontal line
     follow_line(2); 
-    
     motor_stop();               // disable motor controller
-    
     progEnd(100);
 }
 #endif

@@ -449,9 +449,9 @@ void sumo_wrestling(){
     BatteryLed_Write(false);
     reflectance_digital(&dig);
     
-    //Start to run to the corner
+    //Start to run to the corner by turning left and then go forward
     start = xTaskGetTickCount();
-    motor_turn(0,100,260);
+    motor_turn(0,100,260);   
     motor_forward(50,0);
     
     detect_horizontal_line();   //Stop when seeing the line
