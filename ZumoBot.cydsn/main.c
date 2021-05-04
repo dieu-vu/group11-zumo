@@ -55,44 +55,30 @@
  * @brief   
  * @details  ** Enable global interrupt since Zumo library uses interrupts. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
 */
-#define MAIN_TOPIC "Zumo011/"
-#define PRESSED 1
-#define RELEASE 0
 
-
-/******* PROJECT CODE FOLLOW *******/
+/******* ZUMO PROJECT GROUP 11 *******/
 
 /*****SUMO WRESTLING*****/
 #if 0
 //motor
 void zmain(void){
     
-    //Start the program
-    progStart(true, true, true, true);
-    //Sumo wrestling
-    sumo_wrestling();
-    //End the program
-    progEnd(200);
+    progStart(true, true, true, true); //Start the program
+    sumo_wrestling();   //Sumo wrestling
+    progEnd(200);   //End the program
 }
 #endif
 
 /*****LINE FOLLOWER*****/
-#if 1
-//motor
+#if 0
+
 void zmain(void){
     
-    progStart(true, false, true, false);
-    
-    struct sensors_ dig;
-    reflectance_start();    //start refluctance sensor
-    reflectance_set_threshold(10000,10000,9000,9000,10000,10000); // set threshhold value to swith digi value between 0 and 1
-    reflectance_digital(&dig);
-    
+    progStart(true, false, true, false); //Start the program
+    reflectance_linefollower(true); //Start refluctance sensors
     button_start(true); //Press the button
-    
-   // follow the curve line and stop at the 2nd horizontal line
-    follow_line(2); 
-    motor_stop();               // disable motor controller
+    follow_line(2); //Follow the curve line and stop at the 2nd horizontal line
+    motor_stop();   //Disable motor controller
     progEnd(100);
 }
 #endif
@@ -100,26 +86,13 @@ void zmain(void){
 /*****MAZE SOLVING*****/
 
 #if 0
-//reflectance
+//motor
 void zmain(void){
-    struct sensors_ dig;
     
-    reflectance_start();    // start reflectance
-    reflectance_set_threshold(9000, 9000, 14000, 14000, 9000, 9000); // set center sensor threshold to 11000 and others to 9000
-    
-    IR_Start(); // start IR
-    IR_flush(); // clear IR receive buffer
-    motor_start(); // start motor
-    motor_forward(0,0);   
-    
-    while(SW1_Read());  // wait SW1
-    BatteryLed_Write(true);
-    vTaskDelay(500);
-    BatteryLed_Write(false);
-    reflectance_digital(&dig);
-
-    solve_maze();
-    
+    progStart(true, false, true, false);    //Start the program
+    reflectance_maze(true); //Start refluctance sensor
+    button_start(true);  //Press the button
+    solve_maze();   //Solve maze
     progEnd(200);
 }   
 #endif

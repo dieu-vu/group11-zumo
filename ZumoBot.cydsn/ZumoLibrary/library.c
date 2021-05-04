@@ -523,4 +523,25 @@ void button_start(bool button_press){
     }
 }
 
+/***Set reflectance sensor for Line Follower project***/
+void reflectance_linefollower(bool ref_line){
+    
+    if(ref_line == 1){
+        struct sensors_ dig;
+        reflectance_start();    //Start refluctance sensor
+        reflectance_set_threshold(10000,10000,9000,9000,10000,10000); //Set threshhold value to swith digi value between 0 and 1
+        reflectance_digital(&dig);
+    }  
+}
+
+/***Set reflectance sensor for Maze Solving project***/
+void reflectance_maze(bool ref_maze){
+    
+    if(ref_maze == 1){
+        struct sensors_ dig;
+        reflectance_start();    //Start refluctance sensor
+        reflectance_set_threshold(9000, 9000, 14000, 14000, 9000, 9000); //Set threshhold value to swith digi value between 0 and 1
+        reflectance_digital(&dig);
+    }  
+}
 /* [] END OF FILE */

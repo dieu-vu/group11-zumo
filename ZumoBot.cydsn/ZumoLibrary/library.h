@@ -89,6 +89,11 @@ void follow_line(uint8 line_number);
 //Press button, light on
 void button_start(bool button_press);
 
+//Set reflectance sensor for Line Follower project
+void reflectance_linefollower(bool ref_line);
+
+//Set reflectance sensor for Maze Solving project
+void reflectance_maze(bool ref_maze);
 
 
 #endif
