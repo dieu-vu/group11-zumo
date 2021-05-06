@@ -165,16 +165,17 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
                 start_time = xTaskGetTickCount(); // get start time
                 print_mqtt(MAIN_TOPIC,"%s %d", START_SUBTOPIC, start_time); // print out start time MQTT message                
             }   
-            if (count == line_number){   //at the last crossing line
-                motor_forward(0,0);
-                stop_time = xTaskGetTickCount(); // get stop time
+            if (count == line_number){   //when robot is at the last crossing line
+                motor_forward(0,0);      //it stops
+                stop_time = xTaskGetTickCount(); // then gets stop time
                 print_mqtt(MAIN_TOPIC,"%s %d", STOP_SUBTOPIC, stop_time);
                 print_mqtt(MAIN_TOPIC,"%s %d", RUNTIME_SUBTOPIC, stop_time - start_time); //return runtime
                 print_mqtt(MAIN_TOPIC,"missed: %d times", missed);
                 IR_wait();                  //wait for signal
             }
+            //After detecting one full crossing line, keep moving to pass the line as long as count< line_number
             while (dig.L1 == 1 && dig.L2 == 1 && dig.L3 == 1 && dig.R2 == 1 && dig.R1 == 1 &&dig.R3 == 1){
-                motor_forward(50,0);
+                motor_forward(50,0); 
                 reflectance_digital(&dig);     
             }       
         }
@@ -182,10 +183,10 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
             in_line = false;
             if (dig.L1 == 1 || dig.R1 == 1){
                 //move forward if L1 and R1 have sensoring signal
-                if (count_miss != 0){
+                if (count_miss != 0){ //If the robot has missed the line in the last iteration and then come back to line
                     line_time = xTaskGetTickCount();
-                    print_mqtt(MAIN_TOPIC,"%s %d", LINE_SUBTOPIC, line_time);
-                    count_miss = 0;
+                    print_mqtt(MAIN_TOPIC,"%s %d", LINE_SUBTOPIC, line_time); //print "get back to line" message
+                    count_miss = 0; //then reset the missing line counter
                 }
                 motor_forward(250,0);
             }
@@ -200,25 +201,24 @@ void follow_line(uint8 line_number){ // follow the curve line and turn around to
                 motor_forward(100,0);               
             } 
             else if (!(dig.L3 == 1 && dig.L2 == 1 && dig.L1 == 1 && dig.R1 == 1 && dig.R2 == 1 && dig.R3 == 1)){ 
-                //if no signal found, turn clockwise until robot can find the way again 
+                //if no signal found, turn clockwise and move a bit until robot can find the way again 
                 tank_turn_direction('R',75,50);
                 motor_forward(75,50);    
             }  
             else {
-                motor_forward(250,0);
+                motor_forward(250,0); //Otherwise, the robot moving forward
             }    
         }
         reflectance_digital(&dig);
-        if (!(dig.L1 == 1 || dig.R1 == 1)){
+        if (!(dig.L1 == 1 || dig.R1 == 1)){ //If the center sensors BOTH go off the line
             while (count_miss <1){
                 miss_time = xTaskGetTickCount();
-                print_mqtt(MAIN_TOPIC,"%s %d", MISS_SUBTOPIC, miss_time);
+                print_mqtt(MAIN_TOPIC,"%s %d", MISS_SUBTOPIC, miss_time); //print missing message
                 count_miss++;
                 missed++;
             }
         }
     }
-    
 }
 
 /***Function to check if robot pass (an) intersection(s)***/
@@ -342,7 +342,17 @@ int decide_direction(int longitude, int direction){
     return 1;
 }
 
-/***Avoid obstacles and turn back to maze when reaching the edge***/
+/***Function: Avoid obstacles and turn back to maze when reaching the edge***/
+
+/*Strategy for avoid_obstacles and solving maze:
+- Robot Turns when 1- Detecting obstacles and then 2- Reaching the edge of the maze
+- Use the function decide_direction to decide which direction to turn
+- Update the current coordinates and direction
+- After the turn, use the function go_straight to align the robot with the straight line.
+- Continue moving along the straight line one by one grid and update coordinates, until reaching the next obstacle or the edge of maze
+- When robot is at coordinates (0,11), it decides the turning direction based on current direction and turns
+- Then it move to the end of the maze using go_until_the_end function and then stop. */
+
 void avoid_obstacles(){
    
     uint8 d = Ultra_GetDistance();
